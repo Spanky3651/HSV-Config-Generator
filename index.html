@@ -411,7 +411,7 @@
         <span class="arrow">→</span>
         <div class="step"><span class="num">4</span> Export or ⚡ Push to Quest</div>
       </div>
-      <div class="callout"><span class="ci">◈</span><span><b style="color:#cfe6c2">How a cut is scored:</b> every slice is worth up to <b style="color:#fff">115</b> points — up to <b style="color:#fff">70</b> for your pre-swing angle, <b style="color:#fff">15</b> for how close to center you cut, and <b style="color:#fff">30</b> for your follow-through. Each <b style="color:#fff">judgment tier</b> below says "if the total cut score is at least <i>this</i> threshold, draw the number using <i>this</i> text and color."</span></div>
+      <div class="callout"><span class="ci">◈</span><span><b style="color:#cfe6c2">How a cut is scored:</b> every slice is worth up to <b style="color:#fff">115</b> points - up to <b style="color:#fff">70</b> for your pre-swing angle, <b style="color:#fff">15</b> for how close to center you cut, and <b style="color:#fff">30</b> for your follow-through. Each <b style="color:#fff">judgment tier</b> below says "if the total cut score is at least <i>this</i> threshold, draw the number using <i>this</i> text and color."</span></div>
     </section>
 
     <!-- Global settings -->
@@ -423,10 +423,10 @@
           <div>
             <label class="field">Display Mode <span class="info" data-tip="How HSV draws the score popup. format = your custom text templates (normal choice). numeric = just the plain number. textOnly = your words with the numbers stripped. scoreOnRelease = waits until your swing fully finishes instead of updating mid-swing.">i</span></label>
             <select id="displayMode">
-              <option value="format">format — custom text</option>
-              <option value="numeric">numeric — just the number</option>
-              <option value="textOnly">textOnly — text, no numbers</option>
-              <option value="scoreOnRelease">scoreOnRelease — update on release</option>
+              <option value="format">format - custom text</option>
+              <option value="numeric">numeric - just the number</option>
+              <option value="textOnly">textOnly - text, no numbers</option>
+              <option value="scoreOnRelease">scoreOnRelease - update on release</option>
             </select>
           </div>
           <div>
@@ -469,7 +469,7 @@
           <button class="tiny primary" id="btnAddJudgment">+ Add tier</button>
         </div>
       </div>
-      <div class="panel-sub">These are the score bands. When you slice a block, HSV reads down this list from the top and uses the <b>first tier whose threshold your cut score reaches</b>. So a 115 cut uses the top tier; a 108 cut falls through to the first tier at 105 or below. Each tier sets the <b>threshold</b> (minimum score), the <b>text template</b> (what's drawn, using the tokens below), and the <b>color</b>. Order matters — keep thresholds descending (use <b>Sort desc</b> if they drift). <b>Fade</b> is HSV's color-lerp: the tier's color blends toward the tier above it as the score climbs — the spectrum bar below shows the exact color at every score.</div>
+      <div class="panel-sub">These are the score bands. When you slice a block, HSV reads down this list from the top and uses the <b>first tier whose threshold your cut score reaches</b>. So a 115 cut uses the top tier; a 108 cut falls through to the first tier at 105 or below. Each tier sets the <b>threshold</b> (minimum score), the <b>text template</b> (what's drawn, using the tokens below), and the <b>color</b>. Order matters - keep thresholds descending (use <b>Sort desc</b> if they drift). <b>Fade</b> is HSV's color-lerp: the tier's color blends toward the tier above it as the score climbs - the spectrum bar below shows the exact color at every score.</div>
       <div class="panel-body">
         <div class="bandwrap" id="bandWrap" title="Click anywhere to jump the simulator to that score">
           <canvas id="bandCanvas"></canvas>
@@ -484,7 +484,7 @@
     <!-- Sub judgments -->
     <section class="panel">
       <div class="panel-head"><span class="dot"></span><h2>Swing / Accuracy Sub-Judgments</h2></div>
-      <div class="panel-sub">Optional text swaps for the pieces of a swing, used by the <code>%B</code>, <code>%C</code>, <code>%A</code>, and <code>%T</code> tokens. Example: your attached config shows a blank space when your pre-swing is a perfect 70 and a <code>-</code> when it isn't — a quick visual cue that a swing was short. Each row is "if this part's score is at least <i>threshold</i>, substitute <i>text</i>."</div>
+      <div class="panel-sub">Optional text swaps for the pieces of a swing, used by the <code>%B</code>, <code>%C</code>, <code>%A</code>, and <code>%T</code> tokens. Example: your attached config shows a blank space when your pre-swing is a perfect 70 and a <code>-</code> when it isn't - a quick visual cue that a swing was short. Each row is "if this part's score is at least <i>threshold</i>, substitute <i>text</i>."</div>
       <div class="panel-body">
         <div class="subgrid">
           <div class="subcard" id="sub-before">
@@ -557,7 +557,7 @@
       <div class="panel-body">
         <div class="stage" id="stage">
           <div class="scanlines"></div>
-          <div class="badge">CUT · <b id="stageTier">—</b></div>
+          <div class="badge">CUT · <b id="stageTier">-</b></div>
           <div class="block"></div>
           <div class="hittext" id="hittext"></div>
         </div>
@@ -572,7 +572,7 @@
           <div class="simrow"><label>Time-dep <span class="info" data-tip="Simulated time-dependency value (0-1) used by the %d and %T tokens in the preview. It does not change the score itself.">i</span></label><input type="range" id="simTime" min="0" max="100" value="0"><span class="val" id="simTimeV">0.0</span></div>
           <div class="preset-row" id="presetRow"></div>
         </div>
-        <div class="inline-note">Replay mimics the in-game decay — pop in, drift upward, fade out — then rests visible for editing. Colors include the Fade blend. Releasing a slider re-triggers the replay; clicking the spectrum bar jumps the sim to any score.</div>
+        <div class="inline-note">Replay mimics the in-game decay - pop in, drift upward, fade out - then rests visible for editing. Colors include the Fade blend. Releasing a slider re-triggers the replay; clicking the spectrum bar jumps the sim to any score.</div>
       </div>
     </section>
 
@@ -581,7 +581,7 @@
       <div class="panel-head quest-head"><span class="dot"></span><h2>Send to Quest</h2>
         <div class="head-actions"><button class="tiny ghost" id="btnUsbDiag" title="USB / ADB conflict help">⚠ Diagnostics</button><span class="status-pill off" id="qStatus"><span class="led"></span><span id="qStatusText">Disconnected</span></span></div>
       </div>
-      <div class="panel-sub">Pushes the config straight onto your headset over the USB cable — no BMBF, no file manager, no sideloading app. It speaks the same <b>ADB-over-WebUSB</b> protocol ModsBeforeFriday uses, right from the browser.</div>
+      <div class="panel-sub">Pushes the config straight onto your headset over the USB cable - no BMBF, no file manager, no sideloading app. It speaks the same <b>ADB-over-WebUSB</b> protocol ModsBeforeFriday uses, right from the browser.</div>
       <div class="panel-body">
 
         <div class="callout amber" id="qEnvWarn" style="display:none;margin-bottom:12px;"><span class="ci">▲</span><span id="qEnvWarnText"></span></div>
@@ -607,10 +607,10 @@
         </div>
 
         <div class="dev-info" id="qDevInfo" style="display:none;">
-          <span class="k">Model</span><span class="v" id="qModel">—</span>
-          <span class="k">Product</span><span class="v" id="qProduct">—</span>
-          <span class="k">Serial</span><span class="v" id="qSerial">—</span>
-          <span class="k">Configs</span><span class="v" id="qConfigs">—</span>
+          <span class="k">Model</span><span class="v" id="qModel">-</span>
+          <span class="k">Product</span><span class="v" id="qProduct">-</span>
+          <span class="k">Serial</span><span class="v" id="qSerial">-</span>
+          <span class="k">Configs</span><span class="v" id="qConfigs">-</span>
         </div>
 
         <div class="qbtns">
@@ -624,10 +624,10 @@
         <details class="help">
           <summary>Not working? Read this</summary>
           <div class="hb">
-            <b style="color:#cdd8e2">"Push to Quest" is greyed out or says WebUSB unavailable</b> — WebUSB needs desktop Chrome or Edge (Firefox and Safari don't support it), and the app must be in its own browser tab, not embedded inside another page. Open <a href="https://spanky3651.github.io/hsv-generator/" target="_blank" rel="noopener">the app directly</a> and try again.<br><br>
-            <b style="color:#cdd8e2">Headset never appears in the picker</b> — the cable must carry data (some charge-only cables don't), Developer Mode must be on, and you must accept the USB-debugging prompt inside the headset. Make sure no other ADB tool (SideQuest, BMBF, a terminal <code>adb</code>) is holding the connection — only one can own it at a time.<br><br>
-            <b style="color:#cdd8e2">"Configs folder not found"</b> — launch Beat Saber once with HSV installed so the mod creates its folder, then try again. You can also point <i>Destination folder</i> anywhere you like.<br><br>
-            <b style="color:#cdd8e2">In-game</b> — after pushing, open Beat Saber → Mods → HitScoreVisualizer and select the config (or reload) to apply it.
+            <b style="color:#cdd8e2">"Push to Quest" is greyed out or says WebUSB unavailable</b> - WebUSB needs desktop Chrome or Edge (Firefox and Safari don't support it), and the app must be in its own browser tab, not embedded inside another page. Open <a href="https://spanky3651.github.io/hsv-generator/" target="_blank" rel="noopener">the app directly</a> and try again.<br><br>
+            <b style="color:#cdd8e2">Headset never appears in the picker</b> - the cable must carry data (some charge-only cables don't), Developer Mode must be on, and you must accept the USB-debugging prompt inside the headset. Make sure no other ADB tool (SideQuest, BMBF, a terminal <code>adb</code>) is holding the connection - only one can own it at a time.<br><br>
+            <b style="color:#cdd8e2">"Configs folder not found"</b> - launch Beat Saber once with HSV installed so the mod creates its folder, then try again. You can also point <i>Destination folder</i> anywhere you like.<br><br>
+            <b style="color:#cdd8e2">In-game</b> - after pushing, open Beat Saber → Mods → HitScoreVisualizer and select the config (or reload) to apply it.
           </div>
         </details>
 
@@ -646,7 +646,7 @@
       <div class="panel-head"><span class="dot"></span><h2>Live config.json</h2>
         <div class="head-actions"><button class="tiny" id="btnApplyJson" title="Parse this text and load it into the editor">▲ Apply edits</button><button class="tiny" id="btnCopy2">⧉ Copy</button></div>
       </div>
-      <div class="panel-sub">Always in sync with the UI — and editable: paste or hand-tweak raw JSON here, then <b>Apply edits</b> to load it. Unknown keys from imported files are preserved untouched on export.</div>
+      <div class="panel-sub">Always in sync with the UI - and editable: paste or hand-tweak raw JSON here, then <b>Apply edits</b> to load it. Unknown keys from imported files are preserved untouched on export.</div>
       <div class="panel-body">
         <textarea class="json" id="jsonView" spellcheck="false"></textarea>
       </div>
@@ -676,7 +676,7 @@
   <div class="usbcard">
     <h2>⚠ USB BUS LOCKED // ADB CONFLICT DETECTED</h2>
     <div class="sub2">webusb interface claim failed</div>
-    <p>Chrome couldn't claim the Quest's ADB interface. Only one program can own it at a time — a background ADB server from <b>SideQuest</b>, <b>Meta Quest Link</b>, <b>Android Studio</b>, or a terminal <b>adb</b> session is almost certainly holding it. Kill it, then retry.</p>
+    <p>Chrome couldn't claim the Quest's ADB interface. Only one program can own it at a time - a background ADB server from <b>SideQuest</b>, <b>Meta Quest Link</b>, <b>Android Studio</b>, or a terminal <b>adb</b> session is almost certainly holding it. Kill it, then retry.</p>
     <div class="usberr" id="usbModalErr"></div>
     <div class="cmdgroup">
       <div class="oslabel">Windows · CMD or PowerShell</div>
@@ -690,7 +690,7 @@
     </div>
     <ol class="steps">
       <li><b>Unplug</b> the Quest from this PC.</li>
-      <li><b>Copy</b> a command above and run it in a terminal to kill the background ADB server. Fully quit SideQuest / Meta Quest Link / Android Studio if they're running — they restart the server.</li>
+      <li><b>Copy</b> a command above and run it in a terminal to kill the background ADB server. Fully quit SideQuest / Meta Quest Link / Android Studio if they're running - they restart the server.</li>
       <li><b>Replug</b> the USB cable, then hit <b>Retry WebUSB Connection</b>.</li>
     </ol>
     <div class="usbbtns">
@@ -735,7 +735,7 @@ const ATTACHED_CONFIG = {
 
 /* The HSV mod's own generated default config (HsvConfigModel.Default in the
    mod source), translated to the 3.x schema this tool edits. The accuracy
-   sub-judgment supplies an opening <u> tag, which the tier templates close —
+   sub-judgment supplies an opening <u> tag, which the tier templates close -
    underline appears only on max-accuracy cuts. */
 const DEFAULT_HSV_CONFIG = {
   majorVersion:3, minorVersion:3, patchVersion:3,
@@ -1098,7 +1098,7 @@ function renderAllSub(){
   renderSub("afterCutAngleJudgments","sub-after");
   document.getElementById("tdEnable").checked = !!state.timeDependencyJudgments;
   if(state.timeDependencyJudgments){ renderSub("timeDependencyJudgments","sub-time"); }
-  else { document.querySelector('#sub-time .sub-rows').innerHTML='<div class="hint">Disabled — %T renders empty.</div>'; }
+  else { document.querySelector('#sub-time .sub-rows').innerHTML='<div class="hint">Disabled - %T renders empty.</div>'; }
 }
 
 /* =========================================================================
@@ -1122,9 +1122,9 @@ function renderPreview(triggerAnim){
 
   if(!tier){
     stage.style.color="#e6edf3";
-    stage.innerHTML='<span style="font-size:1.5em;font-weight:800">'+total+'</span><br><span style="font-size:11px;color:#8593a0;font-family:var(--mono);font-weight:400">below every tier — vanilla score shown</span>';
+    stage.innerHTML='<span style="font-size:1.5em;font-weight:800">'+total+'</span><br><span style="font-size:11px;color:#8593a0;font-family:var(--mono);font-weight:400">below every tier - vanilla score shown</span>';
     tierChip.textContent="NO TIER"; tierChip.style.color="var(--warn)"; tierChip.style.borderColor="var(--warn)";
-    stageTier.textContent="—";
+    stageTier.textContent="-";
     runAnim();
     return;
   }
@@ -1229,15 +1229,15 @@ function validate(){
     if(J[i].threshold in seen){ items.push(["err","Duplicate threshold "+J[i].threshold+" (tiers #"+(seen[J[i].threshold]+1)+" & #"+(i+1)+"). Only the first is ever reachable."]); }
     else seen[J[i].threshold]=i;
     if(i>0 && J[i].threshold >= J[i-1].threshold){
-      items.push(["warn","Tier #"+(i+1)+" (thr "+J[i].threshold+") is not below tier #"+i+" (thr "+J[i-1].threshold+"). HSV matches top-down — this tier may be unreachable. Use “Sort desc”."]);
+      items.push(["warn","Tier #"+(i+1)+" (thr "+J[i].threshold+") is not below tier #"+i+" (thr "+J[i-1].threshold+"). HSV matches top-down - this tier may be unreachable. Use “Sort desc”."]);
     }
-    if(J[i].threshold>115) items.push(["warn","Tier #"+(i+1)+" threshold "+J[i].threshold+" exceeds the 115 max cut score — unreachable."]);
+    if(J[i].threshold>115) items.push(["warn","Tier #"+(i+1)+" threshold "+J[i].threshold+" exceeds the 115 max cut score - unreachable."]);
     if(J[i].threshold<0) items.push(["err","Tier #"+(i+1)+" has a negative threshold."]);
-    if(!J[i].text || !J[i].text.trim()) items.push(["warn","Tier #"+(i+1)+" (thr "+J[i].threshold+") has empty text — nothing will display."]);
+    if(!J[i].text || !J[i].text.trim()) items.push(["warn","Tier #"+(i+1)+" (thr "+J[i].threshold+") has empty text - nothing will display."]);
   }
   // catch-all
   if(J.length && !J.some(j=>j.threshold<=0)){
-    items.push(["warn","No tier at threshold 0 — cuts below the lowest threshold show nothing. Add a 0 catch-all."]);
+    items.push(["warn","No tier at threshold 0 - cuts below the lowest threshold show nothing. Add a 0 catch-all."]);
   }
 
   // token sanity for format mode
@@ -1245,12 +1245,12 @@ function validate(){
     J.forEach((j,i)=>{
       const t=j.text||"";
       const hasScore=/%s|%p|%b|%c|%a|%B|%C|%A/.test(t);
-      if(t.trim() && !hasScore){ items.push(["warn","Tier #"+(i+1)+" text has no score token (%s, %B, …) — only static text will show."]); }
-      // unmatched tags — only unclosed OPENERS are worth flagging; stray closers are
+      if(t.trim() && !hasScore){ items.push(["warn","Tier #"+(i+1)+" text has no score token (%s, %B, …) - only static text will show."]); }
+      // unmatched tags - only unclosed OPENERS are worth flagging; stray closers are
       // legitimate (the official HSV default closes tags that %C substitution opens)
       const opens=(t.match(/<\s*(size|color|b|i|u)\b/gi)||[]).length;
       const closes=(t.match(/<\s*\/\s*(size|color|b|i|u)\s*>/gi)||[]).length;
-      if(opens>closes){ items.push(["warn","Tier #"+(i+1)+" has "+(opens-closes)+" rich-text tag(s) opened but never closed — styles may leak in-game."]); }
+      if(opens>closes){ items.push(["warn","Tier #"+(i+1)+" has "+(opens-closes)+" rich-text tag(s) opened but never closed - styles may leak in-game."]); }
       // unknown % tokens (strip rich-text tags first so <size=200%> isn't mistaken for a token)
       const stripped=t.replace(/<[^>]*>/g,"").replace(/%%/g,"");
       const bad=(stripped.match(/%[^BbCcAasdpTn]/g)||[]);
@@ -1266,20 +1266,20 @@ function validate(){
       if(r.threshold>max) items.push(["warn",lbl+" row #"+(i+1)+" threshold "+r.threshold+" exceeds its "+max+" max."]);
       if(r.threshold<0) items.push(["err",lbl+" row #"+(i+1)+" threshold is negative."]);
     });
-    for(let i=1;i<arr.length;i++){ if(arr[i].threshold>=arr[i-1].threshold){ items.push(["warn",lbl+" rows are not in descending order — check row #"+(i+1)+"."]); break; } }
+    for(let i=1;i<arr.length;i++){ if(arr[i].threshold>=arr[i-1].threshold){ items.push(["warn",lbl+" rows are not in descending order - check row #"+(i+1)+"."]); break; } }
     if(arr.length && !arr.some(r=>r.threshold<=0)) items.push(["warn",lbl+" has no 0 catch-all row."]);
   });
 
   // uses %T but no timeDependencyJudgments
   const usesT = J.some(j=>/%T/.test(j.text||""));
-  if(usesT && !state.timeDependencyJudgments){ items.push(["warn","Text uses %T but Time-Dependency judgments are disabled — %T renders empty."]); }
+  if(usesT && !state.timeDependencyJudgments){ items.push(["warn","Text uses %T but Time-Dependency judgments are disabled - %T renders empty."]); }
 
   // config-level sanity
-  if(state.isDefaultConfig){ items.push(["warn","isDefaultConfig is true — HSV treats default configs as its own and may overwrite or ignore your edits. Keep it false for custom configs."]); }
+  if(state.isDefaultConfig){ items.push(["warn","isDefaultConfig is true - HSV treats default configs as its own and may overwrite or ignore your edits. Keep it false for custom configs."]); }
   const VALID_MODES=["format","numeric","textOnly","scoreOnRelease"];
   if(VALID_MODES.indexOf(state.displayMode)===-1){ items.push(["warn","displayMode \""+state.displayMode+"\" is not a standard HSV mode ("+VALID_MODES.join(" / ")+")."]); }
   const sortedJx=J.slice().sort((a,b)=>b.threshold-a.threshold);
-  if(sortedJx.length && sortedJx[0].fade){ items.push(["warn","The highest tier ("+sortedJx[0].threshold+") has Fade on, but there is no tier above it to blend toward — Fade does nothing there."]); }
+  if(sortedJx.length && sortedJx[0].fade){ items.push(["warn","The highest tier ("+sortedJx[0].threshold+") has Fade on, but there is no tier above it to blend toward - Fade does nothing there."]); }
 
   if(!items.length){ items.push(["ok","Config is valid. No conflicts detected."]); }
 
@@ -1639,7 +1639,7 @@ document.querySelectorAll("#usbModal [data-cmd]").forEach(b=>b.addEventListener(
   const done=()=>{ const t=b.textContent; b.textContent="✓ copied"; setTimeout(()=>{ b.textContent="⧉ copy"; },1500); toast("Copied: "+cmd); };
   navigator.clipboard.writeText(cmd).then(done).catch(()=>{
     const ta=document.createElement("textarea"); ta.value=cmd; document.body.appendChild(ta); ta.select();
-    try{ document.execCommand("copy"); done(); }catch(e){ toast("Copy failed — select the text manually",true); }
+    try{ document.execCommand("copy"); done(); }catch(e){ toast("Copy failed - select the text manually",true); }
     ta.remove();
   });
 }));
@@ -1686,7 +1686,7 @@ async function questConnect(){
     const Manager=usbMod.AdbDaemonWebUsbDeviceManager.BROWSER;
     if(!Manager){ throw new Error("WebUSB device manager unavailable in this browser/context."); }
 
-    qlog("Opening device picker — choose your Quest…","dim");
+    qlog("Opening device picker - choose your Quest…","dim");
     const device=await Manager.requestDevice();
     if(!device){ qlog("No device selected.","warn"); qStatus("off","Disconnected"); Q.el.connect.disabled=false; Q.connecting=false; return; }
     Q.device=device;
@@ -1708,15 +1708,15 @@ async function questConnect(){
     Q.adb=adb;
 
     // Device info from the ADB banner
-    let model="—",product="—";
+    let model="-",product="-";
     try{
       const b=adb.banner;
-      model=(b&&(b.model))||"—";
-      product=(b&&(b.product))||"—";
+      model=(b&&(b.model))||"-";
+      product=(b&&(b.product))||"-";
     }catch(e){}
     Q.el.model.textContent=model;
     Q.el.product.textContent=product;
-    Q.el.serial.textContent=device.serial||"—";
+    Q.el.serial.textContent=device.serial||"-";
     Q.el.devInfo.style.display="grid";
 
     qStatus("on","Connected");
@@ -1737,7 +1737,7 @@ async function questConnect(){
     const kind=classifyUsbError(e);
     if(kind==="locked"){
       qStatus("busy","Busy / Locked");
-      qlog("Interface claim failed — another ADB server (SideQuest, Meta Quest Link, Android Studio, a terminal adb) is holding the device. Opening the conflict helper…","warn");
+      qlog("Interface claim failed - another ADB server (SideQuest, Meta Quest Link, Android Studio, a terminal adb) is holding the device. Opening the conflict helper…","warn");
       openUsbModal(msg);
     } else if(kind==="security"){
       qStatus("err","Blocked");
@@ -1772,7 +1772,7 @@ async function checkConfigsFolder(){
     Q.el.configs.textContent = exists ? "found ✓" : "not found";
     Q.el.configs.style.color = exists ? "var(--accent)" : "var(--warn)";
     if(exists) qlog("Configs folder found on headset.","ok");
-    else qlog("Configs folder not found — launch Beat Saber once with HSV installed, or change the destination path.","warn");
+    else qlog("Configs folder not found - launch Beat Saber once with HSV installed, or change the destination path.","warn");
     return exists;
   }catch(e){
     qlog("Could not stat Configs folder: "+((e&&e.message)||e),"warn");
