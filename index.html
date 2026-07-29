@@ -624,7 +624,7 @@
         <details class="help">
           <summary>Not working? Read this</summary>
           <div class="hb">
-            <b style="color:#cdd8e2">"Push to Quest" is greyed out or says WebUSB unavailable</b> - WebUSB needs desktop Chrome or Edge (Firefox and Safari don't support it), and the app must be in its own browser tab, not embedded inside another page. Open <a href="https://spanky3651.github.io/hsv-generator/" target="_blank" rel="noopener">the app directly</a> and try again.<br><br>
+            <b style="color:#cdd8e2">"Push to Quest" is greyed out or says WebUSB unavailable</b> - WebUSB needs desktop Chrome or Edge (Firefox and Safari don't support it), and the app must be in its own browser tab, not embedded inside another page. Open <a href="https://spanky3651.github.io/HSV-Config-Generator/" target="_blank" rel="noopener">the app directly</a> and try again.<br><br>
             <b style="color:#cdd8e2">Headset never appears in the picker</b> - the cable must carry data (some charge-only cables don't), Developer Mode must be on, and you must accept the USB-debugging prompt inside the headset. Make sure no other ADB tool (SideQuest, BMBF, a terminal <code>adb</code>) is holding the connection - only one can own it at a time.<br><br>
             <b style="color:#cdd8e2">"Configs folder not found"</b> - launch Beat Saber once with HSV installed so the mod creates its folder, then try again. You can also point <i>Destination folder</i> anywhere you like.<br><br>
             <b style="color:#cdd8e2">In-game</b> - after pushing, open Beat Saber → Mods → HitScoreVisualizer and select the config (or reload) to apply it.
@@ -667,7 +667,7 @@
     </span>
   </a>
   <div class="footlinks">
-    <a href="https://spanky3651.github.io/hsv-generator/" target="_blank" rel="noopener">🌐 Live App</a><span class="sep">·</span><a href="https://github.com/Spanky3651/hsv-generator" target="_blank" rel="noopener">⌥ Source on GitHub</a>
+    <a href="https://spanky3651.github.io/HSV-Config-Generator/" target="_blank" rel="noopener">🌐 Live App</a><span class="sep">·</span><a href="https://github.com/Spanky3651/HSV-Config-Generator" target="_blank" rel="noopener">⌥ Source on GitHub</a>
   </div>
 </div>
 
@@ -1611,11 +1611,11 @@ function closeUsbModal(){ document.getElementById("usbModal").classList.remove("
 /* Detect whether WebUSB is usable in this context */
 function webusbAvailable(){
   if(!("usb" in navigator)){ return {ok:false, reason:"This browser has no WebUSB. Use Chrome or Edge on desktop."}; }
-  if(!window.isSecureContext){ return {ok:false, reason:"This page is not in a secure context. Use the https app at spanky3651.github.io/hsv-generator (or open the file locally in Chrome)."}; }
+  if(!window.isSecureContext){ return {ok:false, reason:"This page is not in a secure context. Use the https app at spanky3651.github.io/HSV-Config-Generator (or open the file locally in Chrome)."}; }
   // Embedded iframes usually lack the 'usb' permission-policy
   const framed = window.self !== window.top;
   if(framed){
-    return {ok:"maybe", reason:"The app looks embedded inside another page. If the device picker doesn't open, open the app in its own tab: spanky3651.github.io/hsv-generator"};
+    return {ok:"maybe", reason:"The app looks embedded inside another page. If the device picker doesn't open, open the app in its own tab: spanky3651.github.io/HSV-Config-Generator"};
   }
   return {ok:true};
 }
@@ -1742,7 +1742,7 @@ async function questConnect(){
     } else if(kind==="security"){
       qStatus("err","Blocked");
       Q.el.envWarn.style.display="flex";
-      Q.el.envWarnText.textContent="WebUSB was blocked by the browser (SecurityError). Open the app in its own Chrome/Edge tab at spanky3651.github.io/hsv-generator and try again.";
+      Q.el.envWarnText.textContent="WebUSB was blocked by the browser (SecurityError). Open the app in its own Chrome/Edge tab at spanky3651.github.io/HSV-Config-Generator and try again.";
       toast("WebUSB blocked in this context",true);
     } else if(kind==="cancelled"){
       qStatus("off","Disconnected");
