@@ -386,7 +386,6 @@
     <input type="file" id="importFile" accept=".json,application/json" hidden />
     <button class="ghost" id="btnUndo" disabled title="Undo last structural change (Ctrl+Z)">↶ Undo</button>
     <button class="cyan" id="btnImport">⇪ Import JSON</button>
-    <button class="ghost" id="btnSample">↻ My Config</button>
     <button class="ghost" id="btnReset">↺ HSV Default</button>
     <button class="ghost" id="btnCopy">⧉ Copy</button>
     <button class="primary" id="btnExport">⤓ Export config.json</button>
@@ -705,33 +704,6 @@
 
 <script>
 "use strict";
-
-/* =========================================================================
-   DEFAULT CONFIG  (the attached HSV 3.3.3 file, verbatim)
-   ========================================================================= */
-const ATTACHED_CONFIG = {
-  majorVersion:3, minorVersion:3, patchVersion:3,
-  isDefaultConfig:false,
-  displayMode:"format",
-  doIntermediateUpdates:true,
-  timeDependencyDecimalPrecision:0,
-  timeDependencyDecimalOffset:0,
-  judgments:[
-    {threshold:115,text:"<size=200%>%B%s%A%n</size>",color:[1.0,0.85,0.1,1.0],fade:false},
-    {threshold:114,text:"<size=150%>%B%s%A%n%d%T</size>",color:[1.0,1.0,1.0,1.0],fade:false},
-    {threshold:113,text:"<size=125%>%B%s%A%n%d%T</size>",color:[1.0,0.04,0.94,1.0],fade:false},
-    {threshold:112,text:"<size=125%>%B%s%A%n%d%T</size>",color:[0.26,0.04,1.0,1.0],fade:false},
-    {threshold:111,text:"<size=125%>%B%s%A%n%d%T</size>",color:[0.04,0.62,1.0,1.0],fade:false},
-    {threshold:110,text:"<size=125%>%B%s%A%n%d%T</size>",color:[0.04,1.0,0.79,1.0],fade:false},
-    {threshold:105,text:"<size=110%>%B%s%A%n%d%T</size>",color:[0.66,1.0,0.04,1.0],fade:false},
-    {threshold:50, text:"%BBruh.%A<size=75%>%n%s%n%d%T</size>",color:[1.0,0.58,0.03,1.0],fade:false},
-    {threshold:0,  text:"%BF%A<size=75%>%n%s%n%d%T</size>",color:[1.0,0.0,0.0,1.0],fade:false}
-  ],
-  beforeCutAngleJudgments:[{threshold:70,text:" "},{threshold:0,text:"-"}],
-  accuracyJudgments:[{threshold:15,text:" "},{threshold:0,text:" - "}],
-  afterCutAngleJudgments:[{threshold:30,text:" "},{threshold:0,text:"-"}],
-  timeDependencyJudgments:null
-};
 
 /* The HSV mod's own generated default config (HsvConfigModel.Default in the
    mod source), translated to the 3.x schema this tool edits. The accuracy
@@ -1353,7 +1325,7 @@ function parseConfigText(txt){
 
 function importConfig(obj){
   _colorsNormalized=0;
-  const d=ATTACHED_CONFIG;
+  const d=DEFAULT_HSV_CONFIG;
   const norm={
     majorVersion:num(obj.majorVersion,d.majorVersion),
     minorVersion:num(obj.minorVersion,d.minorVersion),
@@ -1493,7 +1465,6 @@ document.getElementById("importFile").addEventListener("change",e=>{
   e.target.value="";
 });
 document.getElementById("btnExport").addEventListener("click",exportConfig);
-document.getElementById("btnSample").addEventListener("click",()=>{ pushUndo(); state=clone(ATTACHED_CONFIG); renderAll(); toast("Loaded MSploit config"); });
 document.getElementById("btnReset").addEventListener("click",()=>{
   pushUndo();
   state=clone(DEFAULT_HSV_CONFIG);
