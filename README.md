@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="icon.png" width="96" alt="MSploit" />
-
 # HSV Config Generator
 
 **A visual editor, live simulator, and USB deployment tool for Beat Saber's HitScoreVisualizer mod — in a single HTML file.**
