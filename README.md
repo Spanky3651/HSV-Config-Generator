@@ -4,9 +4,9 @@
 
 **A visual editor, live simulator, and USB deployment tool for Beat Saber's HitScoreVisualizer mod - in a single HTML file.**
 
-[![Live App](https://img.shields.io/badge/▶_live_app-spanky3651.github.io-38bdff?style=flat-square&labelColor=0d1117)](https://spanky3651.github.io/HSV-Config-Generator/)
+[![Live App](https://img.shields.io/badge/▶_live_app-spanky3651.github.io-1e6bff?style=flat-square&labelColor=0d1117)](https://spanky3651.github.io/HSV-Config-Generator/)
 [![Pages Deploy](https://github.com/Spanky3651/HSV-Config-Generator/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Spanky3651/HSV-Config-Generator/actions)
-[![No Dependencies](https://img.shields.io/badge/dependencies-none-2f7bff?style=flat-square&labelColor=0d1117)](#how-it-works)
+[![No Dependencies](https://img.shields.io/badge/dependencies-none-ff1e3c?style=flat-square&labelColor=0d1117)](#how-it-works)
 
 ### **[▶ Open the app](https://spanky3651.github.io/HSV-Config-Generator/)**
 
