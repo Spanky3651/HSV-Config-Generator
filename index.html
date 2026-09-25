@@ -1977,10 +1977,11 @@ document.querySelectorAll(".tokenchip[title]").forEach(c=>{ c.setAttribute("data
   if (!box) return;
   var BASE = 'https://hsv-generator.goatcounter.com/counter/TOTAL';
 
-  function showText(n) {
-    box.title = String(n) + ' total visits to HSV Config Generator';
+  function showText(raw, num) {
+    var word = (num === 1) ? 'visit' : 'visits';
+    box.title = String(raw) + ' total ' + word + ' to HSV Config Generator';
     box.innerHTML = '<span class="fc-dot">&#9670;</span>' +
-      '<span class="fc-n">' + String(n) + '</span> visits';
+      '<span class="fc-n">' + String(raw) + '</span> ' + word;
     box.hidden = false;
   }
   function showImg() {
@@ -1997,12 +1998,23 @@ document.querySelectorAll(".tokenchip[title]").forEach(c=>{ c.setAttribute("data
     img.src = BASE + '.svg?no_branding=1';
   }
 
+  /* GoatCounter returns the count as a formatted string ("1,234"), so "0" is
+     truthy - parse it to a real number before deciding whether to show anything. */
+  function toNum(v) {
+    if (v === null || v === undefined) return null;
+    var n = parseInt(String(v).replace(/[^0-9-]/g, ''), 10);
+    return isNaN(n) ? null : n;
+  }
+
   if (!window.fetch) { showImg(); return; }
   fetch(BASE + '.json', { cache: 'no-store' })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (d) {
-      var n = d && (d.count || d.count_unique);
-      if (n) showText(n); else showImg();
+      if (!d) { showImg(); return; }
+      var raw = (d.count !== undefined && d.count !== null) ? d.count : d.count_unique;
+      var n = toNum(raw);
+      if (n === null) { showImg(); return; }  // unreadable -> try the SVG counter
+      if (n > 0) showText(raw, n);            // zero visits -> badge stays hidden
     })
     .catch(function () { showImg(); });
 })();
