@@ -418,7 +418,13 @@
   .footlinks a{color:var(--blue);text-decoration:none;padding:5px 11px;border:1px solid var(--border-2);border-radius:8px;transition:.15s;}
   .footlinks a:hover{border-color:var(--blue);box-shadow:0 0 10px rgba(47,140,255,.25);color:#fff;text-decoration:none;}
   .footlinks .sep{color:var(--muted-2);}
-  .foot-updated{width:100%;text-align:center;font-family:var(--mono);font-size:12px;color:var(--muted-2);letter-spacing:.4px;margin-top:14px;}
+  .foot-meta{display:flex;align-items:center;justify-content:center;gap:6px 16px;flex-wrap:wrap;margin-top:14px;}
+  .foot-updated{font-family:var(--mono);font-size:12px;color:var(--muted-2);letter-spacing:.4px;}
+  .foot-count{display:inline-flex;align-items:center;font-family:var(--mono);font-size:12px;color:var(--muted-2);letter-spacing:.3px;white-space:nowrap;}
+  .foot-count[hidden]{display:none;}
+  .foot-count .fc-n{color:#cfe0ff;font-weight:700;text-shadow:0 0 8px rgba(30,107,255,.45);margin:0 3px;}
+  .foot-count .fc-dot{color:var(--red);margin-right:5px;}
+  .foot-count .fc-img{height:15px;vertical-align:middle;filter:invert(1) brightness(1.5);opacity:.9;}
 
   /* ============================================================
      MOBILE (≤720px)
@@ -781,7 +787,10 @@
   <div class="footlinks">
     <a href="https://spanky3651.github.io/HSV-Config-Generator/" target="_blank" rel="noopener">🌐 Live App</a><span class="sep">·</span><a href="https://github.com/Spanky3651/HSV-Config-Generator" target="_blank" rel="noopener">⌥ Source on GitHub</a>
   </div>
-  <div class="foot-updated" id="footUpdated" data-updated="2026-09-25T11:57:00Z">Last updated recently</div>
+  <div class="foot-meta">
+    <div class="foot-count" id="footCount" hidden></div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-09-25T11:57:00Z">Last updated recently</div>
+  </div>
 </div>
 
 <!-- USB conflict diagnostic overlay -->
@@ -1418,6 +1427,7 @@ function exportConfig(){
   const blob = new Blob([JSON.stringify(buildExportObject(),null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a"); a.href=url; a.download="config.json"; a.click();
+  track("export");
   setTimeout(()=>URL.revokeObjectURL(url),1000);
   toast("Exported config.json");
 }
@@ -1572,7 +1582,7 @@ document.getElementById("importFile").addEventListener("change",e=>{
   const file=e.target.files[0]; if(!file) return;
   const reader=new FileReader();
   reader.onload=ev=>{
-    try{ const obj=parseConfigText(ev.target.result); pushUndo(); importConfig(obj); }
+    try{ const obj=parseConfigText(ev.target.result); pushUndo(); importConfig(obj); track("import"); }
     catch(err){ toast("Import failed: "+((err&&err.message)||"invalid JSON"),true); }
   };
   reader.readAsText(file);
@@ -1585,6 +1595,7 @@ document.getElementById("btnReset").addEventListener("click",()=>{
   renderAll(); toast("Loaded the official HSV default template");
 });
 function copyJson(){
+  track("copy-json");
   const ta=document.getElementById("jsonView");
   navigator.clipboard.writeText(ta.value).then(()=>toast("Copied to clipboard")).catch(()=>{
     ta.select();
@@ -1594,7 +1605,7 @@ function copyJson(){
 document.getElementById("btnApplyJson").addEventListener("click",()=>{
   try{
     const obj=parseConfigText(document.getElementById("jsonView").value);
-    pushUndo(); importConfig(obj);
+    pushUndo(); importConfig(obj); track("apply-json");
   }catch(e){ toast("Apply failed: "+((e&&e.message)||"invalid JSON"),true); }
 });
 
@@ -1805,6 +1816,7 @@ async function questConnect(){
     Q.el.devInfo.style.display="grid";
 
     qStatus("on","Connected");
+    track("quest-connect");
     qlog("Authenticated. Connected to "+model+".","ok");
 
     // Check the Configs folder exists
@@ -1888,6 +1900,7 @@ async function questPush(){
     });
     await sync.dispose?.();
     qlog("✓ Pushed successfully. Select it in Beat Saber → Mods → HitScoreVisualizer.","ok");
+    track("quest-push");
     toast("Pushed to Quest ✓");
   }catch(e){
     const msg=(e&&e.message)||String(e);
@@ -1955,6 +1968,51 @@ window.addEventListener("scroll",hideTip,true);
 // Promote token-chip titles to rich tooltips
 document.querySelectorAll(".tokenchip[title]").forEach(c=>{ c.setAttribute("data-tip",c.getAttribute("title")); c.removeAttribute("title"); });
 
+/* Footer live usage counter - total visits from GoatCounter's public counter endpoint
+   (needs "Allow adding visitor counts on your website" enabled in GoatCounter Site settings).
+   Tries the themed JSON first; if the browser blocks it cross-origin, falls back to GoatCounter's
+   own <img> SVG counter (not subject to CORS). Silently stays hidden if neither can load. */
+(function () {
+  var box = document.getElementById('footCount');
+  if (!box) return;
+  var BASE = 'https://hsv-generator.goatcounter.com/counter/TOTAL';
+
+  function showText(n) {
+    box.title = String(n) + ' total visits to HSV Config Generator';
+    box.innerHTML = '<span class="fc-dot">&#9670;</span>' +
+      '<span class="fc-n">' + String(n) + '</span> visits';
+    box.hidden = false;
+  }
+  function showImg() {
+    var img = new Image();
+    img.className = 'fc-img';
+    img.alt = 'total visits';
+    img.title = 'Total visits to HSV Config Generator';
+    img.onload = function () {
+      box.innerHTML = '<span class="fc-dot">&#9670;</span>';
+      box.appendChild(img);
+      box.hidden = false;
+    };
+    img.onerror = function () {};   // endpoint off/unreachable -> stay hidden
+    img.src = BASE + '.svg?no_branding=1';
+  }
+
+  if (!window.fetch) { showImg(); return; }
+  fetch(BASE + '.json', { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      var n = d && (d.count || d.count_unique);
+      if (n) showText(n); else showImg();
+    })
+    .catch(function () { showImg(); });
+})();
+
+/* Custom feature events -> GoatCounter (no-op until the tracker loads). */
+function track(name){
+  try{ if(window.goatcounter && window.goatcounter.count)
+    window.goatcounter.count({path:'app/'+name, title:name, event:true}); }catch(e){}
+}
+
 /* Footer "last updated" - render as a live relative time (X minutes/hours/days ago). */
 (function(){
   var elu=document.getElementById('footUpdated');
@@ -1990,5 +2048,14 @@ renderPresets();
 renderAll();
 initQuestEnv();
 </script>
+<!-- ============================================================================
+     USAGE ANALYTICS (GoatCounter) - privacy-friendly, no cookies.
+     Dashboard: https://hsv-generator.goatcounter.com/  (log in there to view stats).
+     Counts page views automatically; the app also sends custom feature events
+     (export, copy-json, import, apply-json, quest-connect, quest-push) via
+     window.goatcounter.count(), so feature usage shows up too.
+============================================================================ -->
+<script data-goatcounter="https://hsv-generator.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
