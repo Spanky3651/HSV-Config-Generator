@@ -488,7 +488,13 @@
   }
 
 </style>
-</head>
+<style>
+/* Ko-fi support button (shared across MSploit tools) */
+a.kofi-support{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:11px;font-family:system-ui,'Segoe UI',Arial,sans-serif;font-size:14px;font-weight:800;letter-spacing:.2px;text-decoration:none;color:#fff;background:#060607;border:1px solid #2a2a2a;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;}
+a.kofi-support .kofi-heart{font-size:15px;line-height:1;}
+a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:0 8px 24px -8px rgba(255,39,64,.55);color:#fff;text-decoration:none;}
+</style>
+{RULE}<style>.footlinks{align-items:stretch;}.footlinks>a{display:inline-flex;align-items:center;box-sizing:border-box;}</style></head>
 <body>
 
 <header class="topbar">
@@ -786,6 +792,7 @@
   </a>
   <div class="footlinks">
     <a href="https://github.com/Spanky3651/HSV-Config-Generator" target="_blank" rel="noopener">⌥ Source on GitHub</a>
+        <a class="kofi-support" href="https://ko-fi.com/msploit21" target="_blank" rel="noopener" title="Support MSploit on Ko-fi"><span class="kofi-heart">❤️</span>Support me</a>
   </div>
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>

@@ -1,0 +1,15 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local scratch / cleanup
+_to_delete/
+_trash_tmp/
+_pull*.html
+*.bplist
+
+# Tooling / sync artifacts
+.git-rewrite/
+.fuse_hidden*
+*.orig
