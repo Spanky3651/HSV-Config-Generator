@@ -58,7 +58,7 @@ Requirements: **Chrome or Edge on desktop**, a USB-C data cable, and a Quest wit
 
 1. Plug in the headset and click **Connect** - pick the Quest in the browser's device list
 2. Approve **"Allow USB debugging"** inside the headset (tick *Always allow*)
-3. Click **Push config** - the file lands in `/sdcard/ModData/com.beatgames.beatsaber/Mods/HitScoreVisualizer/Configs/`
+3. Click **Push config** - the file lands in `/sdcard/ModData/com.beatgames.beatsaber/Mods/HitScoreVisualizer/`
 4. In Beat Saber: Mods → HitScoreVisualizer → select the config
 
 If the connection fails with a claim/busy error, another ADB server owns the device - quit SideQuest / Quest Link / Android Studio, run `adb kill-server`, replug, and retry. The app's **⚠ Diagnostics** panel walks through exactly this.
