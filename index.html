@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>HSV Config Generator &amp; Editor // HitScoreVisualizer</title>
+<link rel="canonical" href="https://spanky3651.github.io/HSV-Config-Generator/" />
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <meta name="color-scheme" content="dark" />
 <meta name="theme-color" content="#05070c" />
@@ -498,7 +499,25 @@ a.kofi-support .kofi-heart.beat,a.kofi-support:hover .kofi-heart{animation:kofiB
 @media (prefers-reduced-motion:reduce){a.kofi-support .kofi-heart.beat,a.kofi-support:hover .kofi-heart{animation:none;}}
 a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:0 8px 24px -8px rgba(255,39,64,.55);color:#fff;text-decoration:none;}
 </style>
-<style>.footlinks{align-items:stretch;}.footlinks>a{display:inline-flex;align-items:center;box-sizing:border-box;}</style></head>
+<style>.footlinks{align-items:stretch;}.footlinks>a{display:inline-flex;align-items:center;box-sizing:border-box;}</style><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "HSV Config Generator",
+  "url": "https://spanky3651.github.io/HSV-Config-Generator/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (web browser)",
+  "browserRequirements": "Requires a modern web browser",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isAccessibleForFree": true,
+  "description": "Free Beat Saber HitScoreVisualizer config generator, editor and tool. Build judgment tiers, preview hit text exactly as it renders in-game, and push config.json straight to your Quest over USB. Runs in your browser, no install or account."
+}
+</script>
+</head>
 <body>
 
 <header class="topbar">
@@ -802,7 +821,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   </div>
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-06T18:40:46Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-10T10:53:15Z">Last updated recently</div>
   </div>
 </div>
 
