@@ -76,6 +76,13 @@ That said, **I'm happy to make updates** if something doesn't work for you:
 - **Best:** [open an issue](https://github.com/Spanky3651/HSV-Config-Generator/issues) - include your `config.json` and what went wrong
 - **Or reach me on Discord:** [MSploit](https://discord.com/users/909550896571113492)
 
+## More tools
+
+Other free, single-file Beat Saber tools by MSploit:
+
+- **[Playlist Studio](https://spanky3651.github.io/Playlist-Studio/?utm_source=github&utm_campaign=readme-hsv-generator)** - Build Beat Saber playlists from BeatLeader and BeatSaver, with your own scores on every map, PP math, and a ready-to-play `.bplist` export.
+- **[ReeSaber Studio](https://spanky3651.github.io/ReeSaber-Studio/?utm_source=github&utm_campaign=readme-hsv-generator)** - A visual preset editor for the ReeSabers mod, with a live 3D preview and `.json` / `.reesaber` export.
+
 ---
 
 <div align="center">
