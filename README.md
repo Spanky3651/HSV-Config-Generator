@@ -25,13 +25,13 @@ This tool replaces that loop. You edit every part of the config visually, watch 
 ## Features
 
 - **Judgment tier manager** - add, reorder (drag or nudge), duplicate, and delete score bands, with color pickers, typeable hex fields, and per-tier alpha sliders
-- **Live in-game preview** - a simulated cut renders your actual config, including TextMeshPro rich-text tags (`<size>`, `<color>`, `<u>`…), with the float-up-and-fade decay animation from VR
+- **Live in-game preview** - a simulated cut renders your actual config, including the full set of TextMeshPro rich-text tags the game understands (`<size>`, `<color>`, `<alpha>`, `<mark>`, `<sup>`, `<rotate>`…). Tags the game does not know print as plain text, just like in game, with the float-up-and-fade decay animation from VR
 - **Score → color spectrum bar** - every score from 0–115 mapped to the exact color your config produces, including Fade blends; click anywhere to simulate that score
 - **Fade done right** - HSV's `fade` flag is a *color lerp* between adjacent tiers, not a fade-out; the preview and spectrum both model it
 - **Full simulator** - independent pre-swing / accuracy / post-swing / time-dependency sliders, preset buttons, and one-click random cuts
 - **Push to Quest over WebUSB** - speaks ADB from the browser (the same approach as ModsBeforeFriday), with device info, config-folder detection, editable destination path and filename
 - **USB conflict diagnostics** - detects the classic "interface claim failed" lock caused by SideQuest / Quest Link / Android Studio holding the ADB server, and walks you through fixing it with one-click-copyable kill commands
-- **Validation** - duplicate or unreachable thresholds, out-of-range sub-judgments, missing catch-alls, unclosed rich-text tags, missing tokens
+- **Validation** - duplicate or unreachable thresholds, out-of-range sub-judgments, missing catch-alls, unclosed rich-text tags, tags the game will print as text, missing tokens
 - **Import / export with fidelity** - unknown keys from other tools' configs are preserved untouched; 0–255 color arrays are auto-normalized; BOM'd files import cleanly
 - **Quality of life** - 30-level undo, two-step deletes, an editable live JSON panel, Ctrl+S export, and an ⓘ explainer on every single control
 

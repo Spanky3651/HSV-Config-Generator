@@ -295,7 +295,9 @@
     box-shadow:0 0 14px rgba(30,107,255,.5);
   }
   .scanlines{position:absolute;inset:0;pointer-events:none;z-index:3;background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.18) 2px 3px);}
+  @property --tmp-base{syntax:'<length>';inherits:true;initial-value:16px;}
   .hittext{
+    --tmp-base:1em;
     position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);
     text-align:center;font-family:var(--sans);font-weight:800;
     line-height:1.05;white-space:pre;letter-spacing:.5px;
@@ -340,6 +342,8 @@
   .valitem.warn .ico{color:var(--amber);}
   .valitem.ok{background:rgba(34,224,161,.07);border-color:rgba(34,224,161,.28);color:#a9f2d8;}
   .valitem.ok .ico{color:var(--green);}
+  .valitem.info{background:rgba(47,140,255,.07);border-color:rgba(47,140,255,.3);color:#cfe4ff;}
+  .valitem.info .ico{color:var(--blue);}
 
   textarea.json{width:100%;min-height:280px;font-family:var(--mono);font-size:12.5px;line-height:1.55;background:#05080b;border:1px solid var(--border-2);border-radius:var(--r-sm);padding:12px;color:#cfe0f5;resize:vertical;white-space:pre;overflow:auto;}
 
@@ -685,7 +689,8 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <span class="tokenchip" title="Literal percent sign">%%</span>
         </div>
         <div class="legend">
-          <b>Rich text (TextMeshPro):</b> &lt;size=200%&gt;…&lt;/size&gt; · &lt;color=#1e6bff&gt;…&lt;/color&gt; · &lt;b&gt; · &lt;i&gt; · &lt;u&gt; · &lt;alpha=#80&gt;<br>
+          <b>Rich text (TextMeshPro):</b> &lt;size=200%&gt;…&lt;/size&gt; · &lt;color=#1e6bff&gt;…&lt;/color&gt; · &lt;b&gt; · &lt;i&gt; · &lt;u&gt; · &lt;s&gt; · &lt;alpha=#80&gt; · &lt;mark&gt; · &lt;sup&gt; · &lt;sub&gt; · &lt;cspace&gt; · &lt;voffset&gt; · &lt;rotate&gt; · &lt;br&gt; and the rest of the TextMeshPro set. Unknown tags print as plain text, same as in game.<br>
+          <b>Characters:</b> the game font may lack some symbols and draw them as empty boxes. The preview cannot detect that, so test unusual symbols in game.<br>
           <b>Scoring model:</b> pre-swing max <b>70</b> + accuracy max <b>15</b> + post-swing max <b>30</b> = <b>115</b>.
         </div>
       </div>
@@ -823,7 +828,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
     <div class="foot-more">More Beat Saber tools: <a href="https://spanky3651.github.io/Playlist-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">Playlist Studio</a><span class="sep">&middot;</span><a href="https://spanky3651.github.io/ReeSaber-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">ReeSaber Studio</a></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-12T15:00:00Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-12T13:30:00Z">Last updated recently</div>
   </div>
 </div>
 
@@ -1011,42 +1016,109 @@ function colorTagToCss(val){
   if(/^[a-zA-Z]+$/.test(val)) return val.toLowerCase();          // named color
   return "inherit";                                             // reject everything else
 }
+/* TextMeshPro rich-text tags the game understands. Anything else is printed in game
+   as plain text, so the preview prints it too. */
+const TMP_TAGS = new Set(["align","allcaps","alpha","b","br","color","cspace","font","font-weight","gradient","i","indent",
+  "line-height","line-indent","link","lowercase","margin","mark","mspace","noparse","nobr","page","pos","rotate","s",
+  "size","smallcaps","space","sprite","style","sub","sup","u","uppercase","voffset","width"]);
+/* Known to the game, but they need game assets or page layout the preview cannot copy. */
+const TMP_NO_PREVIEW = new Set(["font","gradient","style","link","align","width","margin","indent","line-indent","pos","page","mspace","sprite"]);
+/* Tags with no closing partner. */
+const TMP_SINGLE = new Set(["br","space","sprite","page","pos"]);
+const TMP_TAG_RE = /^<(\/?)(#[0-9a-fA-F]{3,8}|[a-zA-Z][a-zA-Z-]*)(\s*=\s*[^<>]*|\s+[^<>]*)?>$/;
+
+function tmpLen(v, numUnit){
+  v = String(v).trim().replace(/^"|"$/g,"");
+  const m = v.match(/^([+-]?\d*\.?\d+)\s*(em|px|%)?$/i);
+  if(!m) return null;
+  return {n:parseFloat(m[1]), u:(m[2]||numUnit).toLowerCase()};
+}
+function tmpCss(L){ return L.u==="%" ? (L.n/100)+"em" : L.n+L.u; }
+
+function tmpTagStyle(name, val){
+  const v = val===undefined ? undefined : String(val).trim().replace(/^"|"$/g,"");
+  switch(name){
+    case "b": return "font-weight:900;";
+    case "i": return "font-style:italic;";
+    case "u": return "text-decoration:underline;";
+    case "s": return "text-decoration:line-through;";
+    case "color": return v===undefined ? "" : "color:"+colorTagToCss(v)+";";
+    case "mark": return v===undefined ? "" : "background-color:"+colorTagToCss(v)+";";
+    case "alpha": {
+      const m = v && v.match(/^#([0-9a-fA-F]{2})$/);
+      return m ? "opacity:"+(parseInt(m[1],16)/255).toFixed(3)+";" : "";
+    }
+    case "size": {
+      if(v===undefined) return "";
+      if(/^[+-]/.test(v)){ const L=tmpLen(v,"px"); return L ? "font-size:calc(1em + "+tmpCss(L)+");" : ""; }
+      const L = tmpLen(v,"px"); if(!L) return "";
+      if(L.u==="px") return "font-size:"+L.n+"px;";
+      const f = L.u==="%" ? L.n/100 : L.n;          // % and em scale the default size, not the parent's
+      return "font-size:"+f+"em;font-size:calc(var(--tmp-base) * "+f+");";
+    }
+    case "sup": return "font-size:.6em;vertical-align:super;";
+    case "sub": return "font-size:.6em;vertical-align:sub;";
+    case "smallcaps": return "font-variant:small-caps;";
+    case "allcaps": case "uppercase": return "text-transform:uppercase;";
+    case "lowercase": return "text-transform:lowercase;";
+    case "nobr": return "white-space:nowrap;";
+    case "font-weight": { const n=parseInt(v,10); return n ? "font-weight:"+n+";" : ""; }
+    case "cspace": { const L=v!==undefined&&tmpLen(v,"px"); return L ? "letter-spacing:"+tmpCss(L)+";" : ""; }
+    case "voffset": { const L=v!==undefined&&tmpLen(v,"px"); return L ? "position:relative;top:calc(-1 * "+tmpCss(L)+");" : ""; }
+    case "line-height": { const L=v!==undefined&&tmpLen(v,"px"); return L ? "line-height:"+(L.u==="%"?L.n+"%":L.n+L.u)+";" : ""; }
+    default: return "";
+  }
+}
+
 function tmpToHtml(str){
-  const parts = str.split(/(<[^>]*>)/g);
-  let html="", open=0;
+  const parts = String(str).split(/(<[^<>]*>)/g);
+  let html = "", noparse = false;
+  const stack = [];                                   // open tags, innermost last
+  const openSpan = e => '<span style="'+e.style+'">';
+  const textHtml = t => {
+    let rot = null;
+    for(let k=stack.length-1;k>=0;k--){ if(stack[k].name==="rotate"){ rot=stack[k].rot; break; } }
+    if(rot===null || !rot) return escapeHtml(t).replace(/\n/g,"<br>");
+    return Array.from(t).map(ch => ch==="\n" ? "<br>" :
+      '<span style="display:inline-block;transform:rotate('+(-rot)+'deg)">'+escapeHtml(ch)+'</span>').join("");
+  };
+  const closeAt = idx => {                             // close stack[idx], keep the tags above it open
+    const above = stack.slice(idx+1);
+    html += "</span>".repeat(stack.length-idx);
+    stack.length = idx;
+    above.forEach(e => { stack.push(e); html += openSpan(e); });
+  };
   for(const part of parts){
     if(part==="") continue;
-    const tag = part.match(/^<\s*(\/?)\s*([a-zA-Z]+)(?:\s*=\s*([^>]*))?>$/);
-    if(tag){
-      const closing = tag[1]==="/";
-      const name = tag[2].toLowerCase();
-      const val = tag[3];
-      if(closing){
-        if(open>0){ html+="</span>"; open--; }
-        continue;
-      }
-      let style="";
-      if(name==="size" && val!==undefined){
-        const v=val.trim();
-        if(v.endsWith("%")){ style="font-size:"+(parseFloat(v)/100)+"em;"; }
-        else { style="font-size:"+parseFloat(v)+"px;"; }
-      } else if(name==="color" && val!==undefined){
-        style="color:"+colorTagToCss(val)+";";
-      } else if(name==="b"){ style="font-weight:900;"; }
-      else if(name==="i"){ style="font-style:italic;"; }
-      else if(name==="u"){ style="text-decoration:underline;"; }
-      else if(name==="alpha" && val!==undefined){
-        const am=val.trim().match(/^#([0-9a-fA-F]{2})$/);
-        if(!am) continue;
-        style="opacity:"+(parseInt(am[1],16)/255).toFixed(3)+";";
-      }
-      else { continue; } // unknown tag ignored (no span opened)
-      html+='<span style="'+style+'">'; open++;
-    } else {
-      html += escapeHtml(part).replace(/\n/g,"<br>");
+    if(noparse){
+      if(/^<\/noparse>$/i.test(part)) noparse = false; else html += textHtml(part);
+      continue;
     }
+    const tag = part.match(TMP_TAG_RE);
+    let name = tag ? tag[2].toLowerCase() : null;
+    let val = tag && tag[3]!==undefined ? tag[3].replace(/^\s*=\s*/,"") : undefined;
+    if(name && name[0]==="#"){ val = name; name = "color"; }
+    if(!tag || !TMP_TAGS.has(name) || (tag[1] && tag[3]!==undefined)){
+      html += textHtml(part);                          // the game prints unknown tags as text
+      continue;
+    }
+    if(tag[1]){                                       // closing tag: end the latest tag with this name
+      for(let k=stack.length-1;k>=0;k--){ if(stack[k].name===name){ closeAt(k); break; } }
+      continue;
+    }
+    if(name==="noparse"){ noparse = true; continue; }
+    if(name==="br"){ html += "<br>"; continue; }
+    if(name==="space"){ const L=val!==undefined&&tmpLen(val,"px"); if(L) html += '<span style="display:inline-block;width:'+tmpCss(L)+'"></span>'; continue; }
+    if(name==="sprite"){ html += '<span style="opacity:.55" title="Sprite: drawn from game assets, not shown in the preview">&#9635;</span>'; continue; }
+    if(TMP_SINGLE.has(name)) continue;
+    if(name==="alpha"){                               // a new alpha replaces the old one instead of stacking
+      for(let k=stack.length-1;k>=0;k--){ if(stack[k].name==="alpha"){ closeAt(k); break; } }
+    }
+    const e = {name, style:tmpTagStyle(name,val)};
+    if(name==="rotate") e.rot = parseFloat(String(val||"0").replace(/"/g,""))||0;
+    stack.push(e); html += openSpan(e);
   }
-  while(open>0){ html+="</span>"; open--; }
+  html += "</span>".repeat(stack.length);
   return html;
 }
 
@@ -1091,7 +1163,7 @@ function renderJudgments(){
           <input type="number" value="${j.threshold}" data-field="threshold" data-idx="${idx}" min="0" max="115" step="1">
         </div>
         <div class="jgrow">
-          <label class="field">Text template <span class="info" data-tip="What gets drawn for this tier. Tokens: %s = score, %B / %C / %A = swing-part text from the Sub-Judgments panel, %t / %T = time dependency, %d = cut direction, %n = newline. Style with TMP tags like <size=150%> or <color=#1e6bff>.">i</span></label>
+          <label class="field">Text template <span class="info" data-tip="What gets drawn for this tier. Tokens: %s = score, %B / %C / %A = swing-part text from the Sub-Judgments panel, %t / %T = time dependency, %d = cut direction, %n = newline. Style with TextMeshPro tags like <size=150%>, <color=#1e6bff> or <alpha=#80>.">i</span></label>
           <textarea data-field="text" data-idx="${idx}" rows="1" spellcheck="false">${escapeHtml(j.text||"")}</textarea>
         </div>
         <div class="jcard-tools">
@@ -1399,8 +1471,8 @@ function validate(){
       if(t.trim() && !hasScore){ items.push(["warn","Tier #"+(i+1)+" text has no score token (%s, %B, …) - only static text will show."]); }
       // unmatched tags - only unclosed OPENERS are worth flagging; stray closers are
       // legitimate (the official HSV default closes tags that %C substitution opens)
-      const opens=(t.match(/<\s*(size|color|b|i|u)\b/gi)||[]).length;
-      const closes=(t.match(/<\s*\/\s*(size|color|b|i|u)\s*>/gi)||[]).length;
+      const opens=(t.match(/<(size|color|#[0-9a-f]{3,8}|b|i|u|s|mark|sup|sub|smallcaps|allcaps|uppercase|lowercase|cspace|voffset|line-height|nobr|font-weight|rotate|font|gradient|style|link|align|width|margin|indent|line-indent|mspace)(?=[\s=>])/gi)||[]).length;
+      const closes=(t.match(/<\/(size|color|b|i|u|s|mark|sup|sub|smallcaps|allcaps|uppercase|lowercase|cspace|voffset|line-height|nobr|font-weight|rotate|font|gradient|style|link|align|width|margin|indent|line-indent|mspace)>/gi)||[]).length;
       if(opens>closes){ items.push(["warn","Tier #"+(i+1)+" has "+(opens-closes)+" rich-text tag(s) opened but never closed - styles may leak in-game."]); }
       // unknown % tokens (strip rich-text tags first so <size=200%> isn't mistaken for a token)
       const stripped=t.replace(/<[^>]*>/g,"").replace(/%%/g,"");
@@ -1408,6 +1480,25 @@ function validate(){
       if(bad.length){ items.push(["warn","Tier #"+(i+1)+" has unrecognized token(s): "+[...new Set(bad)].join(", ")+"."]); }
     });
   }
+
+  // rich-text tags the game does not know (printed as text in game) or the preview cannot draw
+  const tagSources=[];
+  J.forEach((j,i)=>tagSources.push(["Tier #"+(i+1),j.text]));
+  ["beforeCutAngleJudgments","accuracyJudgments","afterCutAngleJudgments","timeDependencyJudgments"].forEach(nm=>{
+    (state[nm]||[]).forEach((r,i)=>tagSources.push([SUB_RANGES[nm].label+" row #"+(i+1),r.text]));
+  });
+  const noPrev=new Set();
+  tagSources.forEach(([where,t])=>{
+    const unknown=new Set();
+    (String(t||"").replace(/<noparse>[\s\S]*?(<\/noparse>|$)/gi,"").match(/<[^<>]*>/g)||[]).forEach(raw=>{
+      const m=raw.match(TMP_TAG_RE);
+      const nm=m ? (m[2][0]==="#" ? "color" : m[2].toLowerCase()) : null;
+      if(!m || !TMP_TAGS.has(nm) || (m[1] && m[3]!==undefined)) unknown.add(raw);
+      else if(TMP_NO_PREVIEW.has(nm)) noPrev.add("<"+nm+">");
+    });
+    if(unknown.size) items.push(["warn",where+" has "+[...unknown].join(" ")+", which the game does not treat as a tag. It shows up as plain text in game."]);
+  });
+  if(noPrev.size) items.push(["info","Not drawn in the preview: "+[...noPrev].join(" ")+". These need game assets or page layout the preview cannot copy, but they still work in game."]);
 
   // sub-judgment ranges
   ["beforeCutAngleJudgments","accuracyJudgments","afterCutAngleJudgments","timeDependencyJudgments"].forEach(nm=>{
@@ -1432,11 +1523,11 @@ function validate(){
   const sortedJx=J.slice().sort((a,b)=>b.threshold-a.threshold);
   if(sortedJx.length && sortedJx[0].fade){ items.push(["err","The highest tier ("+sortedJx[0].threshold+") has Fade on. HSV rejects a config whose top judgment has fade=true - turn Fade off on the highest tier."]); }
 
-  if(!items.length){ items.push(["ok","Config is valid. No conflicts detected."]); }
+  if(!items.some(i=>i[0]!=="info")){ items.push(["ok","Config is valid. No conflicts detected."]); }
 
   const body=document.getElementById("valBody");
   body.innerHTML="";
-  const icons={err:"✕",warn:"▲",ok:"✓"};
+  const icons={err:"✕",warn:"▲",ok:"✓",info:"i"};
   items.forEach(([type,msg])=>{
     const d=document.createElement("div"); d.className="valitem "+type;
     d.innerHTML='<span class="ico">'+icons[type]+'</span><span>'+escapeHtml(msg)+'</span>';
