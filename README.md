@@ -28,12 +28,20 @@ This tool replaces that loop. You edit every part of the config visually, watch 
 - **Live in-game preview** - a simulated cut renders your actual config, including the full set of TextMeshPro rich-text tags the game understands (`<size>`, `<color>`, `<alpha>`, `<mark>`, `<sup>`, `<rotate>`…). Tags the game does not know print as plain text, just like in game, with the float-up-and-fade decay animation from VR
 - **Score → color spectrum bar** - every score from 0–115 mapped to the exact color your config produces, including Fade blends; click anywhere to simulate that score
 - **Fade done right** - HSV's `fade` flag is a *color lerp* between adjacent tiers, not a fade-out; the preview and spectrum both model it
-- **Full simulator** - independent pre-swing / accuracy / post-swing / time-dependency sliders, preset buttons, and one-click random cuts
+- **Full simulator** - independent pre-swing / accuracy / post-swing / time-dependency sliders, a cut-side control for the `%d` arrow, preset buttons, one-click random cuts, and Miss / Bad cut previews
+- **Stream preview** - fires a quick burst of cuts across the stage so you can check the text stays readable at speed (it uses your real cuts when a replay is loaded)
+- **Backgrounds and color vision** - preview on dark, bright, blue or red lighting, and see your colors the way protanopia, deuteranopia, tritanopia or grayscale vision sees them; validation flags neighbouring tiers that colorblind players can't tell apart
+- **Tune from your replays** - drop BeatLeader `.bsor` replays to see how often each tier really shows up for your cuts, then **Even out tiers** suggests thresholds that split your cuts evenly (115 and 0 tiers stay put). Replays never leave your browser
+- **Starter templates** - Classic HSV, Clean numbers, Accuracy trainer, Aim arrows, Hype, and Colorblind friendly
+- **Bad cut and miss text** - your own text and colors for misses, wrong-direction cuts, wrong-saber cuts and bombs, with cycle or random order
+- **Compare** - pin a version (or load another file) and see both side by side for the same cut, plus a list of what changed
 - **Push to Quest over WebUSB** - speaks ADB from the browser (the same approach as ModsBeforeFriday), with device info, config-folder detection, editable destination path and filename
+- **Load from Quest** - list the configs already on the headset, open one, edit it, and push it back. Every push first shows what will change compared with the copy on the headset
 - **USB conflict diagnostics** - detects the classic "interface claim failed" lock caused by SideQuest / Quest Link / Android Studio holding the ADB server, and walks you through fixing it with one-click-copyable kill commands
 - **Validation** - duplicate or unreachable thresholds, out-of-range sub-judgments, missing catch-alls, unclosed rich-text tags, tags the game will print as text, missing tokens
 - **Import / export with fidelity** - unknown keys from other tools' configs are preserved untouched; 0–255 color arrays are auto-normalized; BOM'd files import cleanly
-- **Quality of life** - 30-level undo, two-step deletes, an editable live JSON panel, Ctrl+S export, and an ⓘ explainer on every single control
+- **Share by link** - copy a link that opens your exact config (compressed into the link itself, nothing is uploaded)
+- **Quality of life** - autosave (your work survives a closed tab), 30-level undo, two-step deletes, an editable live JSON panel, Ctrl+S export, and an ⓘ explainer on every single control
 
 ## How it works
 
@@ -59,7 +67,7 @@ Requirements: **Chrome or Edge on desktop**, a USB-C data cable, and a Quest wit
 
 1. Plug in the headset and click **Connect** - pick the Quest in the browser's device list
 2. Approve **"Allow USB debugging"** inside the headset (tick *Always allow*)
-3. Click **Push config** - the file lands in `/sdcard/ModData/com.beatgames.beatsaber/Mods/HitScoreVisualizer/`
+3. Click **Push config** - you see what changes compared with the copy on the headset, then the file lands in `/sdcard/ModData/com.beatgames.beatsaber/Mods/HitScoreVisualizer/`. To edit a config that's already there, pick it under **Configs on headset** and click **Load**
 4. In Beat Saber: Mods → HitScoreVisualizer → select the config
 
 If the connection fails with a claim/busy error, another ADB server owns the device - quit SideQuest / Quest Link / Android Studio, run `adb kill-server`, replug, and retry. The app's **⚠ Diagnostics** panel walks through exactly this.
@@ -70,7 +78,7 @@ Download `index.html`, double-click it. That's the whole install.
 
 ## Compatibility & support
 
-Fair warning: I built this for **my own setup**, and that's what it's tested against. Other setups - different HSV versions, PC vs Quest installs, configs using newer schema features like chain judgments or bad-cut displays - may not work perfectly out of the box. (The tool preserves any config keys it doesn't understand, so importing and re-exporting won't destroy them, but it can't edit them either.)
+Fair warning: I built this for **my own setup**, and that's what it's tested against. Other setups - different HSV versions, PC vs Quest installs, configs using newer schema features like chain judgments or a fixed position - may not work perfectly out of the box. (The tool preserves any config keys it doesn't understand, so importing and re-exporting won't destroy them, but it can't edit them either.)
 
 That said, **I'm happy to make updates** if something doesn't work for you:
 

@@ -151,7 +151,7 @@
   }
   @media(max-width:1080px){ .layout{grid-template-columns:1fr;} .sticky-col{position:static !important;max-height:none !important;overflow:visible !important;} }
   .col-left{display:flex;flex-direction:column;gap:16px;min-width:0;}
-  .sticky-col{position:sticky;top:78px;align-self:start;display:flex;flex-direction:column;gap:16px;max-height:calc(100vh - 96px);overflow:auto;padding-right:2px;}
+  .sticky-col{position:sticky;top:calc(var(--hdr,77px) + 1px);align-self:start;display:flex;flex-direction:column;gap:16px;max-height:calc(100vh - var(--hdr,77px) - 19px);overflow:auto;padding-right:2px;}
   .sticky-col > *{flex:0 0 auto;}
 
   /* ---------- Panels ---------- */
@@ -408,7 +408,7 @@
   #tipbox{position:fixed;display:none;z-index:400;max-width:300px;background:#0b141f;border:1px solid var(--blue);border-radius:9px;padding:10px 13px;font-size:13.5px;line-height:1.55;color:#d7e6f5;box-shadow:0 6px 24px rgba(0,0,0,.75),0 0 16px rgba(47,140,255,.18);pointer-events:none;font-family:var(--sans);}
 
   /* ---------- Toast ---------- */
-  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#0b141f;border:1px solid var(--blue);color:#cfe4ff;font-family:var(--mono);font-size:13.5px;padding:11px 18px;border-radius:9px;box-shadow:0 0 24px rgba(47,140,255,.3);opacity:0;pointer-events:none;transition:.25s;z-index:200;}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#0b141f;border:1px solid var(--blue);color:#cfe4ff;font-family:var(--mono);font-size:13.5px;padding:11px 18px;border-radius:9px;box-shadow:0 0 24px rgba(47,140,255,.3);opacity:0;pointer-events:none;transition:.25s;z-index:340;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
   /* ---------- Footer + credit ---------- */
@@ -492,6 +492,108 @@
     .brand h1{font-size:15px;}
     .preset-row button{flex:1 1 auto;justify-content:center;}
   }
+  /* ---------- Starter templates ---------- */
+  .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;}
+  .tpl-card{display:flex;flex-direction:column;align-items:stretch;gap:7px;text-align:left;white-space:normal;padding:11px 12px;border-radius:var(--r-sm);background:linear-gradient(180deg,#0e131c,#0a0e15);border:1px solid var(--border-2);}
+  .tpl-card .tpl-n{font-size:14.5px;font-weight:800;color:#fff;}
+  .tpl-card .tpl-d{font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.45;}
+  .tpl-strip{height:12px;border-radius:4px;border:1px solid var(--border-2);display:block;width:100%;}
+
+  /* ---------- Replay tuning ---------- */
+  .dropzone{display:flex;align-items:center;justify-content:center;gap:12px;padding:20px 14px;border:1.5px dashed var(--border-2);border-radius:var(--r-sm);background:#05080b;color:var(--muted);font-size:14px;cursor:pointer;text-align:center;transition:.15s;}
+  .dropzone b{color:#cfe4ff;}
+  .dropzone .dz-ic{font-size:22px;color:var(--green);}
+  .dropzone:hover,.dropzone:focus,.dropzone.over{border-color:var(--green);box-shadow:0 0 14px rgba(34,224,161,.18);outline:none;}
+  .rp-sum{font-family:var(--mono);font-size:13.5px;color:var(--muted);line-height:1.7;margin:14px 0 10px;}
+  .rp-sum b{color:#fff;font-size:15px;}
+  .rp-head,.rp-row{display:grid;grid-template-columns:88px minmax(0,1fr) 92px;gap:10px;align-items:center;}
+  .rp-head{font-family:var(--mono);font-size:12px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.8px;padding:0 2px 6px;border-bottom:1px solid var(--border);}
+  .rp-row{padding:7px 2px;border-bottom:1px solid #12151d;font-family:var(--mono);font-size:14px;}
+  .rp-row .rp-t{display:flex;align-items:center;gap:8px;color:#fff;font-weight:700;}
+  .rp-row .rp-dot{width:12px;height:12px;border-radius:3px;flex:none;border:1px solid #ffffff33;}
+  .rp-row .rp-bar{height:14px;border-radius:0 4px 4px 0;min-width:2px;}
+  .rp-row .rp-n{text-align:right;color:#cfe4ff;font-size:15px;}
+  .rp-row .rp-n small{color:var(--muted-2);font-size:12px;margin-left:4px;}
+  .rp-subs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+  .rp-chip{font-family:var(--mono);font-size:12.5px;padding:5px 10px;border:1px solid var(--border-2);border-radius:20px;color:var(--muted);background:var(--panel-2);}
+  .rp-chip b{color:#fff;font-size:14px;}
+  .rp-sug{margin-top:12px;border:1px solid rgba(34,224,161,.3);background:rgba(34,224,161,.05);border-radius:var(--r-sm);padding:12px 13px;font-size:13.5px;color:#cfeee2;line-height:1.6;}
+  .rp-sug table{border-collapse:collapse;font-family:var(--mono);font-size:13.5px;margin:8px 0 10px;}
+  .rp-sug td{padding:3px 14px 3px 0;}
+  .rp-sug td.chg{color:var(--green);font-weight:700;}
+
+  /* ---------- Bad cut / miss rows ---------- */
+  .ev-row{display:grid;grid-template-columns:auto minmax(0,1fr) 34px 30px;gap:7px;align-items:center;margin-bottom:7px;}
+  .ev-row.miss{grid-template-columns:minmax(0,1fr) 34px 30px;}
+  .ev-row select{padding:8px 28px 8px 9px;font-size:13px;max-width:150px;}
+  .ev-row input[type=text]{font-family:var(--mono);font-size:14px;padding:8px 9px;}
+  .ev-row .swatch{width:34px;height:34px;}
+  .ev-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:4px;}
+  .ev-empty{font-size:12.5px;color:var(--muted-2);font-family:var(--mono);margin-bottom:9px;}
+
+  /* ---------- Preview view controls, backgrounds, vision ---------- */
+  .vrow{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:8px 10px;align-items:center;margin-top:10px;}
+  .vrow label.field{margin:0;font-size:12px;}
+  .vrow select{padding:7px 28px 7px 9px;font-size:13px;}
+  .stage.bg-bright{background:linear-gradient(180deg,#f2f5fa,#c9d2de);}
+  .stage.bg-bright::before{background:radial-gradient(ellipse at 50% 60%,transparent 40%,#0003 100%);}
+  .stage.bg-blue{background:radial-gradient(ellipse at 50% 30%,#2a6cff,#08183f 70%);}
+  .stage.bg-red{background:radial-gradient(ellipse at 50% 30%,#ff2a4a,#3f0812 70%);}
+  .vis-protan{filter:url(#cvd-protan);} .vis-deutan{filter:url(#cvd-deutan);} .vis-tritan{filter:url(#cvd-tritan);} .vis-gray{filter:url(#cvd-gray);}
+  .hittext.sp{top:44%;}
+
+  /* ---------- Compare ---------- */
+  .cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .cmp-lbl{font-family:var(--mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
+  .cmp-lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cmp-lbl span{color:#cfe4ff;text-transform:none;}
+  .stage.mini{height:140px;}
+  .stage.mini .hittext{font-size:13px;}
+  .bandwrap.slim{height:14px;margin-top:6px;cursor:default;}
+  .difflist{margin:0;padding:0 0 0 18px;font-size:13.5px;color:var(--muted);line-height:1.6;max-height:220px;overflow:auto;}
+  .difflist li b{color:#fff;}
+  .difflist li.same{list-style:none;margin-left:-18px;color:var(--green);}
+
+  /* ---------- Quest: load from headset ---------- */
+  .qload{margin:4px 0 12px;}
+  .qload-row{display:flex;gap:8px;align-items:center;}
+  .qload-row select{flex:1;min-width:0;}
+
+  /* ---------- Generic confirm dialog ---------- */
+  .gmodal{position:fixed;inset:0;z-index:320;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.78);backdrop-filter:blur(4px);padding:20px;}
+  .gmodal[hidden]{display:none;}
+  .gcard{width:min(560px,100%);max-height:88vh;overflow:auto;background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--border-2);border-radius:var(--r);box-shadow:0 20px 70px rgba(0,0,0,.7),0 0 40px rgba(47,140,255,.14);padding:20px 22px;}
+  .gcard h3{margin:0 0 10px;font-family:var(--mono);font-size:15px;letter-spacing:1px;text-transform:uppercase;color:#fff;}
+  .gbody{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:16px;}
+  .gbody b{color:#fff;}
+  .gbody code{font-family:var(--mono);color:#4d9bff;background:#0c1622;padding:1px 5px;border-radius:4px;font-size:13px;word-break:break-all;}
+
+  /* ---------- What's New ---------- */
+  .wn-back{position:fixed;inset:0;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;z-index:330;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;}
+  .wn-back[hidden]{display:none;}
+  .wn-back.show{opacity:1;pointer-events:auto;}
+  .wn-card{width:100%;max-width:460px;background:var(--panel);border:1px solid var(--border-2);border-radius:16px;box-shadow:0 20px 70px -20px rgba(30,107,255,.5),0 0 0 1px #000;overflow:hidden;max-height:88vh;display:flex;flex-direction:column;}
+  .wn-head{padding:15px 18px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#0e131c,#0a0e15);display:flex;align-items:center;gap:10px;}
+  .wn-head h3{margin:0;font-family:var(--mono);font-size:15px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;flex:1;}
+  .wn-star{color:var(--amber);font-size:18px;}
+  .wn-chip{font-family:var(--mono);font-size:11px;font-weight:700;color:#2f8cff;border:1px solid #2f8cff66;background:#1e6bff1a;padding:2px 8px;border-radius:5px;letter-spacing:1px;}
+  .wn-body{padding:4px 18px;overflow:auto;}
+  .wn-item{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #12151d;}
+  .wn-item:last-child{border-bottom:0;}
+  .wn-ic{width:32px;height:32px;flex:none;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#1e6bff14;border:1px solid #1e6bff33;color:#2f8cff;font-size:15px;}
+  .wn-t{font-size:15px;font-weight:800;color:#fff;margin:0 0 2px;}
+  .wn-d{font-size:13px;color:var(--muted);line-height:1.5;margin:0;}
+  .wn-foot{padding:14px 18px;border-top:1px solid var(--border);}
+
+  @media(max-width:720px){
+    .vrow{grid-template-columns:auto 1fr;}
+    .cmp-grid{grid-template-columns:1fr;}
+    .ev-row{grid-template-columns:minmax(0,1fr) 34px 30px;}
+    .ev-row select{grid-column:1 / -1;max-width:none;}
+    .rp-head,.rp-row{grid-template-columns:70px minmax(0,1fr) 80px;}
+    .tpl-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:420px){ .tpl-grid{grid-template-columns:1fr;} }
 
 </style>
 <style>
@@ -540,6 +642,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     <button class="cyan" id="btnImport">⇪ Import JSON</button>
     <button class="ghost" id="btnReset">↺ HSV Default</button>
     <button class="ghost" id="btnCopy">⧉ Copy</button>
+    <button class="ghost" id="btnShare" title="Copy a link that opens this exact config">🔗 Share</button>
     <button class="primary" id="btnExport">⤓ Export config.json</button>
     <button class="violet primary" id="btnQuestTop">⚡ Push to Quest</button>
   </div>
@@ -565,6 +668,13 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
       <div class="callout"><span class="ci">◈</span><span><b style="color:#fff">How a cut is scored:</b> every slice is worth up to <b style="color:#fff">115</b> points - up to <b style="color:#fff">70</b> for your pre-swing angle, <b style="color:#fff">15</b> for how close to center you cut, and <b style="color:#fff">30</b> for your follow-through. Each <b style="color:#fff">judgment tier</b> below says "if the total cut score is at least <i>this</i> threshold, draw the number using <i>this</i> text and color."</span></div>
     </section>
 
+    <!-- Starter templates -->
+    <section class="panel" id="tplPanel">
+      <div class="panel-head"><span class="dot"></span><h2>Starter Templates</h2><span class="count">click one to load it · Undo goes back</span></div>
+      <div class="panel-sub">Not sure where to start? Load a ready-made config, then tweak it. Each card shows its colors from 0 to 115.</div>
+      <div class="panel-body"><div class="tpl-grid" id="tplGrid"></div></div>
+    </section>
+
     <!-- Global settings -->
     <section class="panel">
       <div class="panel-head"><span class="dot"></span><h2>Global Settings</h2></div>
@@ -582,11 +692,11 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
             </select>
           </div>
           <div>
-            <label class="field">Time-Dep Precision <span class="info" data-tip="How many decimal places the %d token shows. Time dependency is a 0-1 stat measuring how much your cut angle relied on timing rather than a clean swing arc (0 = clean, 1 = fully timing-dependent). Precision 2 shows 0.35; precision 0 shows 0.">i</span></label>
+            <label class="field">Time-Dep Precision <span class="info" data-tip="How many decimal places the %t token shows. Time dependency is a 0-1 stat measuring how much your cut angle relied on timing rather than a clean swing arc (0 = clean, 1 = fully timing-dependent). Precision 2 shows 0.35; precision 0 shows 0.">i</span></label>
             <input type="number" id="tdPrecision" min="0" max="6" step="1" />
           </div>
           <div>
-            <label class="field">Time-Dep Offset <span class="info" data-tip="Multiplies the raw 0-1 time-dependency by 10^offset before %d displays it. Offset 2 turns 0.35 into 35 so you can show it as a whole number - pair that with Precision 0. Offset 0 leaves it as a decimal.">i</span></label>
+            <label class="field">Time-Dep Offset <span class="info" data-tip="Multiplies the raw 0-1 time-dependency by 10^offset before %t displays it. Offset 2 turns 0.35 into 35 so you can show it as a whole number - pair that with Precision 0. Offset 0 leaves it as a decimal.">i</span></label>
             <input type="number" id="tdOffset" min="0" max="6" step="1" />
           </div>
         </div>
@@ -633,6 +743,28 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
       </div>
     </section>
 
+    <!-- Replay tuning -->
+    <section class="panel" id="replayPanel">
+      <div class="panel-head"><span class="dot" style="background:var(--green);box-shadow:0 0 8px var(--green)"></span><h2>Tune From Your Replays</h2>
+        <div class="head-actions"><button class="tiny ghost" id="btnReplayClear" disabled>✕ Clear</button></div>
+      </div>
+      <div class="panel-sub">Drop one or more <code>.bsor</code> replay files (download them from your BeatLeader score page) to see how often each tier would really show up for <b>your</b> cuts. If most cuts land in one tier, its color tells you nothing. <b>Even out tiers</b> suggests thresholds that split your cuts more evenly. Files stay in your browser.</div>
+      <div class="panel-body">
+        <label class="dropzone" id="replayDrop" tabindex="0">
+          <input type="file" id="replayFile" accept=".bsor" multiple hidden>
+          <span class="dz-ic">⇪</span><span><b>Drop .bsor replays here</b> or click to choose files</span>
+        </label>
+        <div id="replayOut" hidden>
+          <div class="rp-sum" id="replaySum"></div>
+          <div class="rp-head"><span>Tier</span><span>Share of your cuts</span><span>Cuts</span></div>
+          <div id="replayDist"></div>
+          <div class="rp-subs" id="replaySubs"></div>
+          <div class="qbtns" style="margin-top:12px;"><button class="primary tiny" id="btnEvenTiers">⚖ Even out tiers</button></div>
+          <div id="replaySuggest"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- Sub judgments -->
     <section class="panel">
       <div class="panel-head"><span class="dot"></span><h2>Swing / Accuracy Sub-Judgments</h2></div>
@@ -663,6 +795,28 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
             <label class="switch" style="margin-bottom:10px;"><input type="checkbox" id="tdEnable" /><span class="track"></span>Enabled</label>
             <div class="sub-rows"></div>
             <button class="tiny" data-addsub="timeDependencyJudgments">+ Add row</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bad cuts & misses -->
+    <section class="panel" id="eventPanel">
+      <div class="panel-head"><span class="dot" style="background:var(--red);box-shadow:0 0 8px var(--red)"></span><h2>Bad Cuts &amp; Misses</h2></div>
+      <div class="panel-sub">Optional text shown instead of the game's own when you <b>miss</b> a note or make a <b>bad cut</b> (wrong direction, wrong saber color, or a bomb). Leave a list empty to keep the game's default. Tokens like <code>%s</code> are not filled in here, but rich-text tags work. Preview them with the <b>Miss</b> and <b>Bad cut</b> buttons in the preview.</div>
+      <div class="panel-body">
+        <div class="subgrid">
+          <div class="subcard">
+            <h3>Bad cut text <span class="info" data-tip="Shown when a cut doesn't count: wrong direction, wrong saber color, or hitting a bomb. Set Type to limit a row to one kind of bad cut, or leave it on Any. With several rows, HSV cycles through them in order, or picks at random when Randomize is on.">i</span></h3>
+            <div class="ev-rows" id="badRows"></div>
+            <div class="ev-foot"><button class="tiny" id="btnAddBad">+ Add bad cut text</button>
+              <label class="switch"><input type="checkbox" id="randBad"><span class="track"></span>Randomize</label></div>
+          </div>
+          <div class="subcard">
+            <h3>Miss text <span class="info" data-tip="Shown when a note goes past without being cut. With several rows, HSV cycles through them in order, or picks at random when Randomize is on.">i</span></h3>
+            <div class="ev-rows" id="missRows"></div>
+            <div class="ev-foot"><button class="tiny" id="btnAddMiss">+ Add miss text</button>
+              <label class="switch"><input type="checkbox" id="randMiss"><span class="track"></span>Randomize</label></div>
           </div>
         </div>
       </div>
@@ -706,7 +860,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
       <div class="panel-head">
         <span class="dot" style="background:var(--accent-2);box-shadow:0 0 8px var(--accent-2)"></span>
         <h2>In-Game Live Preview</h2>
-        <div class="head-actions"><button class="tiny cyan" id="btnReplay">▶ Replay</button></div>
+        <div class="head-actions"><button class="tiny" id="btnStream" title="Fire a quick burst of cuts like a fast stream">≋ Stream</button><button class="tiny cyan" id="btnReplay">▶ Replay</button></div>
       </div>
       <div class="panel-body">
         <div class="stage" id="stage">
@@ -714,6 +868,12 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <div class="badge">CUT · <b id="stageTier">-</b></div>
           <div class="block"></div>
           <div class="hittext" id="hittext"></div>
+        </div>
+        <div class="vrow">
+          <label class="field" for="viewBg">Background <span class="info" data-tip="Check that your colors stay readable in bright maps and colored lighting, not just on black.">i</span></label>
+          <select id="viewBg"><option value="dark">Dark</option><option value="bright">Bright</option><option value="blue">Blue lights</option><option value="red">Red lights</option></select>
+          <label class="field" for="viewVision">Vision <span class="info" data-tip="Shows the preview and the color bar the way a colorblind player sees them. About 1 in 12 men has some red-green colorblindness.">i</span></label>
+          <select id="viewVision"><option value="normal">Normal</option><option value="protan">Protanopia (red-blind)</option><option value="deutan">Deuteranopia (green-blind)</option><option value="tritan">Tritanopia (blue-blind)</option><option value="gray">Grayscale</option></select>
         </div>
         <div class="sim-controls">
           <div class="totline">
@@ -727,7 +887,23 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <div class="simrow"><label>Cut side <span class="info" data-tip="Which side of the note's center line your saber passed. The %d token draws an arrow from your cut toward the center (cut left of center shows →). There is no arrow on a perfect 15 accuracy cut, same as in game.">i</span></label><select id="simSide" style="flex:1"><option value="left">Left of center (→)</option><option value="right">Right of center (←)</option><option value="above">Above center (↓)</option><option value="below">Below center (↑)</option><option value="random">Random each replay</option></select></div>
           <div class="preset-row" id="presetRow"></div>
         </div>
-        <div class="inline-note">Replay mimics the in-game decay - pop in, drift upward, fade out - then rests visible for editing. Colors include the Fade blend. Releasing a slider re-triggers the replay; clicking the spectrum bar jumps the sim to any score.</div>
+        <div class="inline-note"><b>Stream</b> fires a quick burst of cuts (your replay cuts when one is loaded) to check that the text stays readable at speed. Replay mimics the in-game decay - pop in, drift upward, fade out - then rests visible for editing. Colors include the Fade blend. Releasing a slider re-triggers the replay; clicking the spectrum bar jumps the sim to any score.</div>
+      </div>
+    </section>
+
+    <!-- Compare -->
+    <section class="panel" id="comparePanel">
+      <div class="panel-head"><span class="dot" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></span><h2>Compare</h2>
+        <div class="head-actions"><button class="tiny" id="btnPinB" title="Keep a copy of the current config to compare against">📌 Pin current</button><button class="tiny" id="btnLoadB" title="Compare against a config file">⇪ Load file</button><button class="tiny ghost" id="btnClearB" disabled>✕</button><input type="file" id="fileB" accept=".json,application/json" hidden></div>
+      </div>
+      <div class="panel-sub" id="cmpHint">Pin the current config (or load another file), keep editing, and see both side by side for the same cut, plus a list of what changed.</div>
+      <div class="panel-body" id="cmpBody" hidden>
+        <div class="cmp-grid">
+          <div><div class="cmp-lbl">Pinned · <span id="cmpNameB">B</span></div><div class="stage mini" id="stageB"><div class="scanlines"></div><div class="hittext" id="hittextB"></div></div><div class="bandwrap slim"><canvas id="bandB"></canvas></div></div>
+          <div><div class="cmp-lbl">Current</div><div class="stage mini" id="stageA"><div class="scanlines"></div><div class="hittext" id="hittextA"></div></div><div class="bandwrap slim"><canvas id="bandA"></canvas></div></div>
+        </div>
+        <div class="cmp-lbl" style="margin-top:12px;">What changed since the pinned version</div>
+        <ul class="difflist" id="cmpDiff"></ul>
       </div>
     </section>
 
@@ -745,7 +921,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <li>On the Quest, enable <b>Developer Mode</b> (Meta Quest phone app → your headset → Developer Mode → on).</li>
           <li>Plug the headset into this PC with a USB-C cable. Inside the headset, approve <b>"Allow USB debugging"</b> when it pops up (tick <i>Always allow</i>).</li>
           <li>Beat Saber must have been launched <b>at least once with HSV installed</b>, so the mod has created its folder.</li>
-          <li>Click <b>Connect</b>, pick your headset in Chrome's device list, then <b>Push config</b>.</li>
+          <li>Click <b>Connect</b>, pick your headset in Chrome's device list, then <b>Push config</b>. You can also load a config that's already on the headset, edit it, and push it back. Before anything is overwritten you'll see what changed.</li>
         </ol>
 
         <div class="field-row">
@@ -766,6 +942,11 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <span class="k">Product</span><span class="v" id="qProduct">-</span>
           <span class="k">Serial</span><span class="v" id="qSerial">-</span>
           <span class="k">Configs</span><span class="v" id="qConfigs">-</span>
+        </div>
+
+        <div class="qload" id="qLoadRow" hidden>
+          <label class="field" for="qList">Configs on headset <span class="info" data-tip="The .json files in the destination folder. Load one to edit it here. Its name is copied to File name, so Push saves your changes back over it.">i</span></label>
+          <div class="qload-row"><select id="qList"></select><button class="tiny violet" id="btnQLoad">⇩ Load</button><button class="tiny ghost" id="btnQRefresh" title="List the files again">⟳</button></div>
         </div>
 
         <div class="qbtns">
@@ -828,7 +1009,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
     <div class="foot-more">More Beat Saber tools: <a href="https://spanky3651.github.io/Playlist-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">Playlist Studio</a><span class="sep">&middot;</span><a href="https://spanky3651.github.io/ReeSaber-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">ReeSaber Studio</a></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-12T13:30:00Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-12T14:11:00Z">Last updated recently</div>
   </div>
 </div>
 
@@ -860,6 +1041,39 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </div>
   </div>
 </div>
+
+<!-- Generic confirm dialog (push summary, shared link) -->
+<div class="gmodal" id="gModal" hidden>
+  <div class="gcard" role="dialog" aria-modal="true" aria-labelledby="gTitle">
+    <h3 id="gTitle"></h3>
+    <div class="gbody" id="gBody"></div>
+    <div class="usbbtns"><button class="primary" id="gOk">OK</button><button class="ghost" id="gCancel">Cancel</button></div>
+  </div>
+</div>
+
+<!-- What's New (shown until dismissed, then never again) -->
+<div class="wn-back" id="whatsnewBack" hidden>
+  <div class="wn-card" role="dialog" aria-modal="true" aria-label="What's new in HSV Config Generator">
+    <div class="wn-head"><span class="wn-star">★</span><h3>What's New</h3><span class="wn-chip">6 updates</span></div>
+    <div class="wn-body">
+      <div class="wn-item"><span class="wn-ic">⇪</span><div><p class="wn-t">Tune from your replays</p><p class="wn-d">Drop BeatLeader .bsor replays to see how often each tier really shows up for your cuts, then even out the thresholds in one click.</p></div></div>
+      <div class="wn-item"><span class="wn-ic">⇩</span><div><p class="wn-t">Load from your Quest</p><p class="wn-d">Open a config that's already on your headset, edit it, and push it back. You see what changed before anything is overwritten.</p></div></div>
+      <div class="wn-item"><span class="wn-ic">▦</span><div><p class="wn-t">Starter templates</p><p class="wn-d">Clean numbers, an accuracy trainer, aim arrows, a hype setup with words, and a colorblind-friendly set.</p></div></div>
+      <div class="wn-item"><span class="wn-ic">✕</span><div><p class="wn-t">Bad cut and miss text</p><p class="wn-d">Set your own text and colors for misses, wrong-direction cuts, wrong-saber cuts and bombs.</p></div></div>
+      <div class="wn-item"><span class="wn-ic">🔗</span><div><p class="wn-t">Share by link</p><p class="wn-d">Copy a link that opens your exact config. Great for Discord and Reddit.</p></div></div>
+      <div class="wn-item"><span class="wn-ic">≋</span><div><p class="wn-t">Better previews</p><p class="wn-d">A fast stream of cuts, bright and colored backgrounds, a colorblind view, side-by-side compare, and your work now saves automatically.</p></div></div>
+    </div>
+    <div class="wn-foot"><button type="button" class="primary" id="whatsnewClose" style="width:100%;justify-content:center;">Got it</button></div>
+  </div>
+</div>
+
+<!-- Color-vision simulation (Machado et al. 2009, severity 1.0, linear RGB) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="cvd-protan" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.152286 1.052583 -0.204868 0 0  0.114503 0.786281 0.099216 0 0  -0.003882 -0.048116 1.051998 0 0  0 0 0 1 0"/></filter>
+  <filter id="cvd-deutan" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.011820 0.042940 0.968881 0 0  0 0 0 1 0"/></filter>
+  <filter id="cvd-tritan" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.303900 0 0  0 0 0 1 0"/></filter>
+  <filter id="cvd-gray" color-interpolation-filters="linearRGB"><feColorMatrix type="saturate" values="0"/></filter>
+</svg>
 
 <div id="tipbox"></div>
 <div class="toast" id="toast"></div>
@@ -942,8 +1156,8 @@ function pickJudgment(arr, value){
 /* HSV fade semantics: when a judgment has fade=true, its color is linearly
    interpolated toward the color of the judgment ABOVE it, based on where the
    score sits between the two thresholds. */
-function effectiveColorFor(score){
-  const sorted = state.judgments.slice().sort((a,b)=>b.threshold-a.threshold);
+function effectiveColorFor(score, cfg=state, list){
+  const sorted = (list||cfg.judgments).slice().sort((a,b)=>b.threshold-a.threshold);
   let i=-1;
   for(let k=0;k<sorted.length;k++){ if(score>=sorted[k].threshold){ i=k; break; } }
   if(i<0) return null;
@@ -963,29 +1177,29 @@ function effectiveColorFor(score){
   }
   return c;
 }
-function subText(arrName, value){
-  const arr = state[arrName];
+function subText(arrName, value, cfg=state){
+  const arr = cfg[arrName];
   const j = pickJudgment(arr, value);
   return j ? (j.text===undefined?"":j.text) : "";
 }
-function fmtTimeDep(v){
-  const scaled = v * Math.pow(10, Number(state.timeDependencyDecimalOffset)||0);
-  return scaled.toFixed(Number(state.timeDependencyDecimalPrecision)||0);
+function fmtTimeDep(v, cfg=state){
+  const scaled = v * Math.pow(10, Number(cfg.timeDependencyDecimalOffset)||0);
+  return scaled.toFixed(Number(cfg.timeDependencyDecimalPrecision)||0);
 }
-function substituteTokens(text, s){
+function substituteTokens(text, s, cfg=state){
   if(text===undefined||text===null) return "";
   const total = s.pre + s.acc + s.post;
   let out = String(text).replace(/%%/g,"");
-  out = out.replace(/%B/g, subText("beforeCutAngleJudgments", s.pre));
-  out = out.replace(/%C/g, subText("accuracyJudgments", s.acc));
-  out = out.replace(/%A/g, subText("afterCutAngleJudgments", s.post));
-  out = out.replace(/%T/g, state.timeDependencyJudgments ? subText("timeDependencyJudgments", s.timeDep) : "");
+  out = out.replace(/%B/g, subText("beforeCutAngleJudgments", s.pre, cfg));
+  out = out.replace(/%C/g, subText("accuracyJudgments", s.acc, cfg));
+  out = out.replace(/%A/g, subText("afterCutAngleJudgments", s.post, cfg));
+  out = out.replace(/%T/g, cfg.timeDependencyJudgments ? subText("timeDependencyJudgments", s.timeDep, cfg) : "");
   out = out.replace(/%b/g, s.pre);
   out = out.replace(/%c/g, s.acc);
   out = out.replace(/%a/g, s.post);
   out = out.replace(/%s/g, total);
   out = out.replace(/%p/g, (total/115*100).toFixed(2));
-  out = out.replace(/%t/g, fmtTimeDep(s.timeDep));  // time dependence value (mod token is %t)
+  out = out.replace(/%t/g, fmtTimeDep(s.timeDep, cfg));  // time dependence value (mod token is %t)
   out = out.replace(/%d/g, simArrow(s));            // arrow toward the note center; empty at 15 accuracy
   out = out.replace(/%n/g, "\n");
   out = out.replace(//g, "%");
@@ -1327,69 +1541,93 @@ function renderAllSub(){
 function currentTier(){
   return pickJudgment(state.judgments, sim.pre+sim.acc+sim.post);
 }
+/* Render one simulated event with a config. Returns what the stage needs.
+   ev.event: "cut" (default), "miss" or "bad" (ev.badType: WrongDirection / WrongColor / Bomb). */
+function renderEvent(ev, cfg=state){
+  const kind = ev.event||"cut";
+  if(kind!=="cut"){
+    const disp = pickEventDisplay(cfg, kind, ev.badType, ev.evIndex);
+    const label = kind==="miss" ? "MISS" : "BAD CUT · "+BAD_TYPE_LABEL[ev.badType||"WrongDirection"].toUpperCase();
+    if(!disp){
+      return {kind, total:null, tier:null, color:"#e6edf3", chip:"GAME DEFAULT", stageTier:label,
+        html:'<span style="font-size:1.1em;font-weight:800">'+(kind==="miss"?"MISS":"✕")+'</span><br><span style="font-size:11px;color:#8593a0;font-family:var(--mono);font-weight:400">no '+(kind==="miss"?"miss":"bad cut")+' text set - the game shows its own</span>'};
+    }
+    const c = colorOf(disp.color);
+    return {kind, total:null, tier:null, color:rgbaCss(c), hex:rgbaToHex(c), chip:kind==="miss"?"MISS TEXT":"BAD CUT TEXT", stageTier:label,
+      html: tmpToHtml(String(disp.text||"")) || '<span style="opacity:.4">(empty)</span>'};
+  }
+  const total = ev.pre+ev.acc+ev.post;
+  const tier = pickJudgment(cfg.judgments, total);
+  if(!tier){
+    return {kind, total, tier:null, color:"#e6edf3", chip:"NO TIER", stageTier:"-",
+      html:'<span style="font-size:1.5em;font-weight:800">'+total+'</span><br><span style="font-size:11px;color:#8593a0;font-family:var(--mono);font-weight:400">below every tier - vanilla score shown</span>'};
+  }
+  const eff = effectiveColorFor(total, cfg) || tier.color;
+  const effHex = rgbaToHex(eff);
+  let rendered;
+  if(cfg.displayMode==="numeric"){
+    rendered = String(total);
+  } else if(cfg.displayMode==="textOnly"){
+    rendered = String(tier.text||"");                        // mod shows the template literally (no token fill)
+  } else if(cfg.displayMode==="scoreOnTop"){
+    rendered = total + "\n" + String(tier.text||"");         // score on top, then the raw template
+  } else if(cfg.displayMode==="directions"){
+    rendered = String(tier.text||"") + "\n" + simArrow(ev);  // raw template, then the cut direction arrow
+  } else {
+    rendered = substituteTokens(tier.text||"", ev, cfg);
+  }
+  const inner = tmpToHtml(rendered);
+  return {kind, total, tier, eff, hex:effHex, color:rgbaCss(eff), chip:"TIER "+tier.threshold+(tier.fade?" ⇡":""),
+    stageTier:tier.threshold+" · "+effHex.toUpperCase()+(tier.fade?" · FADE":""),
+    html: inner || '<span style="opacity:.4">(empty)</span>'};
+}
 function renderPreview(triggerAnim){
   if(triggerAnim){ const k=Object.keys(SIDE_ARROW); simRandSide=k[Math.floor(Math.random()*k.length)]; }
-  const total = sim.pre+sim.acc+sim.post;
-  const tier = currentTier();
   const stage = document.getElementById("hittext");
   const tierChip = document.getElementById("tierChip");
   const stageTier = document.getElementById("stageTier");
   const mk = document.getElementById("bandMarker");
+  const r = renderEvent(sim);
 
-  document.getElementById("totVal").textContent = total;
-  if(mk) mk.style.left=(total/115*100)+"%";
+  document.getElementById("totVal").textContent = r.total===null ? (r.kind==="miss"?"MISS":"BAD") : r.total;
+  if(mk){ mk.style.display = r.total===null ? "none" : ""; if(r.total!==null) mk.style.left=(r.total/115*100)+"%"; }
 
-  const runAnim=()=>{ if(triggerAnim){ stage.classList.remove("live"); void stage.offsetWidth; stage.classList.add("live"); } };
-
-  if(!tier){
-    stage.style.color="#e6edf3";
-    stage.innerHTML='<span style="font-size:1.5em;font-weight:800">'+total+'</span><br><span style="font-size:11px;color:#8593a0;font-family:var(--mono);font-weight:400">below every tier - vanilla score shown</span>';
-    tierChip.textContent="NO TIER"; tierChip.style.color="var(--warn)"; tierChip.style.borderColor="var(--warn)";
-    stageTier.textContent="-";
-    runAnim();
-    return;
-  }
-  const eff = effectiveColorFor(total) || tier.color;
-  const effHex = rgbaToHex(eff);
-  tierChip.textContent="TIER "+tier.threshold+(tier.fade?" ⇡":"");
-  tierChip.style.color=effHex; tierChip.style.borderColor=effHex;
-  stageTier.textContent=tier.threshold+" · "+effHex.toUpperCase()+(tier.fade?" · FADE":"");
-
-  let rendered;
-  if(state.displayMode==="numeric"){
-    rendered = String(total);
-  } else if(state.displayMode==="textOnly"){
-    rendered = String(tier.text||"");                        // mod shows the template literally (no token fill)
-  } else if(state.displayMode==="scoreOnTop"){
-    rendered = total + "\n" + String(tier.text||"");         // score on top, then the raw template
-  } else if(state.displayMode==="directions"){
-    rendered = String(tier.text||"") + "\n" + simArrow(sim);  // raw template, then the cut direction arrow
+  if(!r.tier){
+    stage.style.color=r.color;
+    stage.innerHTML=r.html;
+    tierChip.textContent=r.chip;
+    const cc = r.kind==="cut" || !r.hex ? "var(--warn)" : r.hex;
+    tierChip.style.color=cc; tierChip.style.borderColor=cc;
+    stageTier.textContent=r.stageTier;
   } else {
-    rendered = substituteTokens(tier.text||"", sim);
+    tierChip.textContent=r.chip;
+    tierChip.style.color=r.hex; tierChip.style.borderColor=r.hex;
+    stageTier.textContent=r.stageTier;
+    stage.style.color = r.color; // fade-blended color, alpha included
+    stage.innerHTML = r.html;
   }
-
-  const inner = tmpToHtml(rendered);
-  stage.style.color = rgbaCss(eff); // fade-blended color, alpha included
-  stage.innerHTML = inner || '<span style="opacity:.4">(empty)</span>';
-  runAnim();
+  if(triggerAnim){ stage.classList.remove("live"); void stage.offsetWidth; stage.classList.add("live"); }
+  if(typeof renderCompare==="function") renderCompare();
 }
 
 /* Score->color spectrum bar */
-function renderBand(){
-  const cv=document.getElementById("bandCanvas"); if(!cv) return;
+function renderBand(cv, cfg=state){
+  cv = cv || document.getElementById("bandCanvas"); if(!cv) return;
   const wrap=cv.parentElement;
   const w=Math.max(20,wrap.clientWidth), h=Math.max(10,wrap.clientHeight);
   const dpr=window.devicePixelRatio||1;
   cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
   const ctx=cv.getContext("2d");
+  ctx.clearRect(0,0,cv.width,cv.height);
+  const sortedJ=cfg.judgments.slice().sort((a,b)=>b.threshold-a.threshold);
   for(let x=0;x<cv.width;x++){
     const score=(x/(cv.width-1))*115;
-    const c=effectiveColorFor(score);
+    const c=effectiveColorFor(score, cfg, sortedJ);
     ctx.fillStyle=c?rgbaCss(c):"#10161d";
     ctx.fillRect(x,0,1,cv.height);
   }
   ctx.fillStyle="rgba(255,255,255,.5)";
-  state.judgments.forEach(j=>{
+  cfg.judgments.forEach(j=>{
     const x=Math.round(Math.max(0,Math.min(115,j.threshold))/115*(cv.width-1));
     ctx.fillRect(x,0,1,cv.height);
   });
@@ -1402,7 +1640,7 @@ function setSimTotal(s){
   let post=s-pre-acc;
   if(post>30){ pre+=post-30; post=30; if(pre>70){ acc+=pre-70; pre=70; } }
   if(post<0){ pre+=post; post=0; if(pre<0){ acc+=pre; pre=0; } if(acc<0) acc=0; }
-  sim.pre=pre; sim.acc=acc; sim.post=post;
+  sim.pre=pre; sim.acc=acc; sim.post=post; sim.event="cut";
   syncSimSliders(); renderPreview(true);
 }
 
@@ -1415,14 +1653,18 @@ function renderPresets(){
     {n:"105",v:[70,5,30]},
     {n:"90",v:[55,5,30]},
     {n:"50",v:[30,5,15]},
-    {n:"Miss 0",v:[0,0,0]},
-    {n:"⚄ Random",v:null}
+    {n:"0",v:[0,0,0]},
+    {n:"⚄ Random",v:null},
+    {n:"Miss",ev:"miss"},
+    {n:"Bad cut",ev:"bad"}
   ];
   const row=document.getElementById("presetRow");
   row.innerHTML="";
   presets.forEach(p=>{
     const b=document.createElement("button"); b.className="tiny"; b.textContent=p.n;
     b.addEventListener("click",()=>{
+      if(p.ev){ presetEvent(p.ev); return; }
+      sim.event="cut";
       if(p.v){ sim.pre=p.v[0]; sim.acc=p.v[1]; sim.post=p.v[2]; }
       else { sim.pre=Math.floor(Math.random()*71); sim.acc=Math.floor(Math.random()*16); sim.post=Math.floor(Math.random()*31); sim.side="random"; }
       syncSimSliders(); renderPreview(true);
@@ -1488,6 +1730,8 @@ function validate(){
     (state[nm]||[]).forEach((r,i)=>tagSources.push([SUB_RANGES[nm].label+" row #"+(i+1),r.text]));
   });
   const noPrev=new Set();
+  (state.badCutDisplays||[]).forEach((r,i)=>tagSources.push(["Bad cut text #"+(i+1),r.text]));
+  (state.missDisplays||[]).forEach((r,i)=>tagSources.push(["Miss text #"+(i+1),r.text]));
   tagSources.forEach(([where,t])=>{
     const unknown=new Set();
     (String(t||"").replace(/<noparse>[\s\S]*?(<\/noparse>|$)/gi,"").match(/<[^<>]*>/g)||[]).forEach(raw=>{
@@ -1523,6 +1767,9 @@ function validate(){
   const sortedJx=J.slice().sort((a,b)=>b.threshold-a.threshold);
   if(sortedJx.length && sortedJx[0].fade){ items.push(["err","The highest tier ("+sortedJx[0].threshold+") has Fade on. HSV rejects a config whose top judgment has fade=true - turn Fade off on the highest tier."]); }
 
+  eventValidation(state).forEach(x=>items.push(x));
+  colorblindIssues(state).forEach(x=>items.push(x));
+
   if(!items.some(i=>i[0]!=="info")){ items.push(["ok","Config is valid. No conflicts detected."]); }
 
   const body=document.getElementById("valBody");
@@ -1540,29 +1787,35 @@ function validate(){
 /* =========================================================================
    EXPORT / JSON view
    ========================================================================= */
-function buildExportObject(){
+function buildExportObject(cfg){
+  const st=cfg||state;   // export the given config, or the editor state
   const o={
-    majorVersion:Number(state.majorVersion),
-    minorVersion:Number(state.minorVersion),
-    patchVersion:Number(state.patchVersion),
-    isDefaultConfig:!!state.isDefaultConfig,
-    displayMode:state.displayMode,
-    doIntermediateUpdates:!!state.doIntermediateUpdates,
-    timeDependencyDecimalPrecision:Number(state.timeDependencyDecimalPrecision),
-    timeDependencyDecimalOffset:Number(state.timeDependencyDecimalOffset),
-    judgments:state.judgments.map(j=>({
+    majorVersion:Number(st.majorVersion),
+    minorVersion:Number(st.minorVersion),
+    patchVersion:Number(st.patchVersion),
+    isDefaultConfig:!!st.isDefaultConfig,
+    displayMode:st.displayMode,
+    doIntermediateUpdates:!!st.doIntermediateUpdates,
+    timeDependencyDecimalPrecision:Number(st.timeDependencyDecimalPrecision),
+    timeDependencyDecimalOffset:Number(st.timeDependencyDecimalOffset),
+    judgments:st.judgments.map(j=>({
       threshold:Number(j.threshold),
       text:j.text||"",
       color:[roundF(j.color[0]),roundF(j.color[1]),roundF(j.color[2]),roundF(j.color[3]===undefined?1:j.color[3])],
       fade:!!j.fade,
       ...(j._extra||{})
     })),
-    beforeCutAngleJudgments:state.beforeCutAngleJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})),
-    accuracyJudgments:state.accuracyJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})),
-    afterCutAngleJudgments:state.afterCutAngleJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})),
-    timeDependencyJudgments:state.timeDependencyJudgments?state.timeDependencyJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})):null,
-    ...(state._extra||{})
+    beforeCutAngleJudgments:st.beforeCutAngleJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})),
+    accuracyJudgments:st.accuracyJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})),
+    afterCutAngleJudgments:st.afterCutAngleJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})),
+    timeDependencyJudgments:st.timeDependencyJudgments?st.timeDependencyJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})):null,
   };
+  // Bad cut / miss text: only written when the config uses them, so other configs export exactly as before
+  if(Array.isArray(st.badCutDisplays)) o.badCutDisplays=st.badCutDisplays.map(exportDisplay);
+  if(st.randomizeBadCutDisplays!==undefined) o.randomizeBadCutDisplays=!!st.randomizeBadCutDisplays;
+  if(Array.isArray(st.missDisplays)) o.missDisplays=st.missDisplays.map(exportDisplay);
+  if(st.randomizeMissDisplays!==undefined) o.randomizeMissDisplays=!!st.randomizeMissDisplays;
+  Object.assign(o, st._extra||{});
   return o;
 }
 function updateJsonView(){
@@ -1582,7 +1835,7 @@ function exportConfig(){
 /* =========================================================================
    IMPORT
    ========================================================================= */
-const KNOWN_TOP_KEYS=["majorVersion","minorVersion","patchVersion","isDefaultConfig","displayMode","doIntermediateUpdates","timeDependencyDecimalPrecision","timeDependencyDecimalOffset","judgments","beforeCutAngleJudgments","accuracyJudgments","afterCutAngleJudgments","timeDependencyJudgments"];
+const KNOWN_TOP_KEYS=["badCutDisplays","randomizeBadCutDisplays","missDisplays","randomizeMissDisplays","majorVersion","minorVersion","patchVersion","isDefaultConfig","displayMode","doIntermediateUpdates","timeDependencyDecimalPrecision","timeDependencyDecimalOffset","judgments","beforeCutAngleJudgments","accuracyJudgments","afterCutAngleJudgments","timeDependencyJudgments"];
 const KNOWN_J_KEYS=["threshold","text","color","fade"];
 let _colorsNormalized=0;
 
@@ -1594,8 +1847,9 @@ function parseConfigText(txt){
   return obj;
 }
 
-function importConfig(obj){
-  _colorsNormalized=0;
+/* Turn any parsed config object into the editor's state shape (pure apart from the
+   _colorsNormalized counter). Used by import, templates, share links, autosave and diffs. */
+function normalizeConfig(obj){
   const d=DEFAULT_HSV_CONFIG;
   const norm={
     majorVersion:num(obj.majorVersion,d.majorVersion),
@@ -1624,12 +1878,25 @@ function importConfig(obj){
     afterCutAngleJudgments:normSub(obj.afterCutAngleJudgments,d.afterCutAngleJudgments),
     timeDependencyJudgments:obj.timeDependencyJudgments?normSub(obj.timeDependencyJudgments,[]):null
   };
+  if(Array.isArray(obj.badCutDisplays)) norm.badCutDisplays=obj.badCutDisplays.map(normDisplay);
+  if(obj.randomizeBadCutDisplays!==undefined) norm.randomizeBadCutDisplays=!!obj.randomizeBadCutDisplays;
+  if(Array.isArray(obj.missDisplays)) norm.missDisplays=obj.missDisplays.map(normDisplay);
+  if(obj.randomizeMissDisplays!==undefined) norm.randomizeMissDisplays=!!obj.randomizeMissDisplays;
   const extra={};
   Object.keys(obj).forEach(k=>{ if(KNOWN_TOP_KEYS.indexOf(k)===-1) extra[k]=clone(obj[k]); });
+  // a non-list badCutDisplays / missDisplays is kept untouched rather than dropped
+  ["badCutDisplays","missDisplays"].forEach(k=>{ if(obj[k]!==undefined && !Array.isArray(obj[k])) extra[k]=clone(obj[k]); });
   if(Object.keys(extra).length) norm._extra=extra;
+  return norm;
+}
+function importConfig(obj, opts){
+  _colorsNormalized=0;
+  const norm=normalizeConfig(obj);
+  const extra=norm._extra||{};
   state=norm;
   renderAll();
-  let msg="Imported "+state.judgments.length+" judgment tiers";
+  if(opts&&opts.silent) return;
+  let msg=((opts&&opts.prefix)||"Imported ")+state.judgments.length+" judgment tiers";
   const nExtra=Object.keys(extra).length;
   if(nExtra) msg+=" · preserved "+nExtra+" extra key"+(nExtra>1?"s":"");
   if(_colorsNormalized) msg+=" · normalized "+_colorsNormalized+" 0–255 color"+(_colorsNormalized>1?"s":"");
@@ -1642,6 +1909,31 @@ function normColor(c){
   let r=num(c[0],1),g=num(c[1],1),b=num(c[2],1),a=c[3]===undefined?1:num(c[3],1);
   if(r>1.001||g>1.001||b>1.001){ r/=255; g/=255; b/=255; if(a>1.001) a/=255; _colorsNormalized++; }
   return [clamp01(r),clamp01(g),clamp01(b),clamp01(a)];
+}
+function colorOf(c){ // pure version of normColor for display use
+  if(!Array.isArray(c)) return [1,1,1,1];
+  let r=num(c[0],1),g=num(c[1],1),b=num(c[2],1),a=c[3]===undefined?1:num(c[3],1);
+  if(r>1.001||g>1.001||b>1.001){ r/=255; g/=255; b/=255; if(a>1.001) a/=255; }
+  return [clamp01(r),clamp01(g),clamp01(b),clamp01(a)];
+}
+const BAD_TYPES=["","WrongDirection","WrongColor","Bomb","All"];
+const BAD_TYPE_LABEL={"":"Any bad cut",All:"Any bad cut (All)",WrongDirection:"Wrong direction",WrongColor:"Wrong color",Bomb:"Bomb"};
+function normDisplay(r){
+  r=(r&&typeof r==="object")?r:{};
+  const out={text:r.text!==undefined?String(r.text):""};
+  if(r.color!==undefined) out.color=normColor(r.color);   // left out when the file had none
+  if(r.type!==undefined) out.type=r.type;                 // kept exactly as written
+
+  const x={}; Object.keys(r).forEach(k=>{ if(["text","color","type"].indexOf(k)===-1) x[k]=clone(r[k]); });
+  if(Object.keys(x).length) out._extra=x;
+  return out;
+}
+function exportDisplay(r){
+  const o={text:r.text||""};
+  if(r.type!==undefined) o.type=r.type;
+  const c=r.color;
+  if(c) o.color=[roundF(c[0]),roundF(c[1]),roundF(c[2]),roundF(c[3]===undefined?1:c[3])];
+  return Object.assign(o, r._extra||{});
 }
 function normSub(arr,fb){
   if(!Array.isArray(arr)) return clone(fb);
@@ -1657,16 +1949,25 @@ function refreshLive(){
   validate();
   updateJsonView();
   document.getElementById("schemaVer").textContent="v"+state.majorVersion+"."+state.minorVersion+"."+state.patchVersion;
+  afterChange();
 }
 function renderAll(){
   renderGlobals();
   renderJudgments();
   renderAllSub();
+  renderEvents();
   syncSimSliders();
   renderPreview(true);
   renderBand();
   validate();
   updateJsonView();
+  afterChange();
+}
+/* Keeps the newer panels in step with every edit */
+function afterChange(){
+  scheduleSave();
+  if(replays.length) renderReplay();
+  const sug=document.getElementById("replaySuggest"); if(sug && sug.innerHTML) sug.innerHTML="";   // a suggestion is only valid for the tiers it was made from
 }
 
 /* =========================================================================
@@ -1678,11 +1979,11 @@ const simPre=document.getElementById("simPre"), simAcc=document.getElementById("
       simPostV=document.getElementById("simPostV"), simTimeV=document.getElementById("simTimeV"),
       simSide=document.getElementById("simSide");
 
-simPre.addEventListener("input",()=>{ sim.pre=+simPre.value; simPreV.textContent=sim.pre; renderPreview(false); });
-simAcc.addEventListener("input",()=>{ sim.acc=+simAcc.value; simAccV.textContent=sim.acc; renderPreview(false); });
-simPost.addEventListener("input",()=>{ sim.post=+simPost.value; simPostV.textContent=sim.post; renderPreview(false); });
-simSide.addEventListener("change",()=>{ sim.side=simSide.value; renderPreview(true); });
-simTime.addEventListener("input",()=>{ sim.timeDep=(+simTime.value)/100; simTimeV.textContent=sim.timeDep.toFixed(2); renderPreview(false); });
+simPre.addEventListener("input",()=>{ sim.event="cut"; sim.pre=+simPre.value; simPreV.textContent=sim.pre; renderPreview(false); });
+simAcc.addEventListener("input",()=>{ sim.event="cut"; sim.acc=+simAcc.value; simAccV.textContent=sim.acc; renderPreview(false); });
+simPost.addEventListener("input",()=>{ sim.event="cut"; sim.post=+simPost.value; simPostV.textContent=sim.post; renderPreview(false); });
+simSide.addEventListener("change",()=>{ sim.event="cut"; sim.side=simSide.value; renderPreview(true); });
+simTime.addEventListener("input",()=>{ sim.event="cut"; sim.timeDep=(+simTime.value)/100; simTimeV.textContent=sim.timeDep.toFixed(2); renderPreview(false); });
 
 document.getElementById("btnReplay").addEventListener("click",()=>renderPreview(true));
 
@@ -1776,7 +2077,10 @@ document.addEventListener("keydown",e=>{
   const tag=((e.target&&e.target.tagName)||"").toLowerCase();
   const inField=(tag==="input"||tag==="textarea"||tag==="select");
   if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key&&e.key.toLowerCase()==="s"){ e.preventDefault(); exportConfig(); }
-  else if((e.ctrlKey||e.metaKey)&&e.key&&e.key.toLowerCase()==="z"&&!inField){ e.preventDefault(); doUndo(); }
+  else if((e.ctrlKey||e.metaKey)&&e.key&&e.key.toLowerCase()==="z"&&!inField){
+    const dlg=document.getElementById("gModal"); if(dlg && !dlg.hidden) return;   // not behind an open dialog
+    e.preventDefault(); doUndo();
+  }
 });
 document.getElementById("btnCopy").addEventListener("click",copyJson);
 document.getElementById("btnCopy2").addEventListener("click",copyJson);
@@ -1968,8 +2272,9 @@ async function questConnect(){
     track("quest-connect");
     qlog("Authenticated. Connected to "+model+".","ok");
 
-    // Check the destination (HSV mod) folder exists
+    // Check the destination (HSV mod) folder exists, then list the configs already there
     await checkConfigsFolder();
+    await questListConfigs();
 
     Q.el.push.disabled=false;
     Q.el.disconnect.disabled=false;
@@ -2030,6 +2335,16 @@ async function checkConfigsFolder(){
 async function questPush(){
   if(!Q.adb){ qlog("Not connected.","err"); return; }
   Q.el.push.disabled=true;
+  let go=false;
+  try{
+    const dir0=Q.el.path.value.trim().replace(/\/+$/,"");
+    let fn0=((Q.el.name.value.trim().split(/[\/\\]/).pop())||"").replace(/^\.+/,"").trim()||"config.json";
+    if(!/\.json$/i.test(fn0)) fn0+=".json";
+    const html=await questPushSummary(dir0+"/"+fn0, fn0);
+    go=await gConfirm({title:"Push to Quest?",html,ok:"⚡ Push",cancel:"Cancel"});
+  }catch(e){ go=false; qlog("Could not prepare the push: "+((e&&e.message)||e),"err"); }
+  if(!go){ qlog("Push cancelled.","dim"); Q.el.push.disabled=!Q.adb; return; }
+  if(!Q.adb){ qlog("Not connected.","err"); Q.el.push.disabled=true; return; }
   const dir=Q.el.path.value.trim().replace(/\/+$/,"");
   // basename only, and no leading dots, so a filename cannot escape the destination folder
   let fname=((Q.el.name.value.trim().split(/[\/\\]/).pop())||"").replace(/^\.+/,"").trim()||"config.json";
@@ -2052,6 +2367,7 @@ async function questPush(){
     qlog("✓ Pushed successfully. Select it in Beat Saber → Mods → HitScoreVisualizer.","ok");
     track("quest-push");
     toast("Pushed to Quest ✓");
+    questListConfigs();
   }catch(e){
     const msg=(e&&e.message)||String(e);
     qlog("Push failed: "+msg,"err");
@@ -2073,6 +2389,7 @@ async function questDisconnect(){
   Q.el.connect.disabled=false;
   Q.el.connect.textContent="🔌 Connect";
   Q.el.devInfo.style.display="none";
+  byId("qLoadRow").hidden=true; Q.files=[];
   qStatus("off","Disconnected");
   qlog("Disconnected.","dim");
 }
@@ -2080,7 +2397,7 @@ async function questDisconnect(){
 document.getElementById("btnQConnect").addEventListener("click",questConnect);
 document.getElementById("btnQPush").addEventListener("click",questPush);
 document.getElementById("btnQDisconnect").addEventListener("click",questDisconnect);
-document.getElementById("qPath").addEventListener("change",()=>{ if(Q.adb) checkConfigsFolder(); });
+document.getElementById("qPath").addEventListener("change",()=>{ if(Q.adb){ checkConfigsFolder().then(()=>questListConfigs()); } });
 document.getElementById("btnQuestTop").addEventListener("click",()=>{
   Q.el.panel.scrollIntoView({behavior:"smooth",block:"center"});
   Q.el.panel.style.transition="box-shadow .3s";
@@ -2197,6 +2514,775 @@ function track(name){
 })();
 
 /* =========================================================================
+   FEATURES ADDED OCT 2026: bad cut / miss text, templates, replay tuning,
+   stream preview, backgrounds + color vision, compare, autosave, share links,
+   loading from the Quest, push summary, What's New
+   ========================================================================= */
+function byId(id){ return document.getElementById(id); }
+function storeGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function storeSet(k,v){ try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } }
+
+/* ---------- Generic confirm dialog ---------- */
+let _gResolve=null;
+function gConfirm(o){
+  return new Promise(res=>{
+    if(_gResolve) _gResolve(false);
+    _gResolve=res;
+    byId("gTitle").textContent=o.title||"";
+    byId("gBody").innerHTML=o.html||"";
+    byId("gOk").textContent=o.ok||"OK";
+    byId("gCancel").textContent=o.cancel||"Cancel";
+    byId("gCancel").hidden=!!o.hideCancel;
+    byId("gModal").hidden=false;
+    setTimeout(()=>{ try{ byId("gOk").focus(); }catch(e){} },30);
+  });
+}
+function gClose(val){
+  byId("gModal").hidden=true;
+  const r=_gResolve; _gResolve=null;
+  if(r) r(val);
+}
+byId("gOk").addEventListener("click",()=>gClose(true));
+byId("gCancel").addEventListener("click",()=>gClose(false));
+byId("gModal").addEventListener("click",e=>{ if(e.target.id==="gModal") gClose(false); });
+
+/* ---------- Miss / bad cut events in the simulator ---------- */
+const BAD_CYCLE=["WrongDirection","WrongColor","Bomb"];
+sim.event="cut"; sim.badType="WrongDirection"; sim.evIndex=0;
+function pickEventDisplay(cfg, kind, badType, idx){
+  const list = kind==="miss" ? cfg.missDisplays : cfg.badCutDisplays;
+  if(!Array.isArray(list) || !list.length) return null;
+  const pool = kind==="miss" ? list : list.filter(d=>!d.type || d.type==="All" || d.type===badType);
+  if(!pool.length) return null;
+  return pool[Math.abs(idx||0) % pool.length];
+}
+function presetEvent(kind){
+  const rnd = kind==="miss" ? state.randomizeMissDisplays : state.randomizeBadCutDisplays;
+  if(kind==="bad"){
+    if(sim.event==="bad"){
+      const i=(BAD_CYCLE.indexOf(sim.badType)+1)%BAD_CYCLE.length;
+      sim.badType=BAD_CYCLE[i];
+      sim.evIndex = rnd ? Math.floor(Math.random()*1000) : (i===0 ? (sim.evIndex||0)+1 : (sim.evIndex||0));
+    } else { sim.badType="WrongDirection"; sim.evIndex=0; }
+  } else {
+    sim.evIndex = sim.event==="miss" ? (rnd ? Math.floor(Math.random()*1000) : (sim.evIndex||0)+1) : 0;
+  }
+  sim.event=kind;
+  renderPreview(true);
+}
+
+/* ---------- Bad cut / miss editor ---------- */
+function renderEvents(){
+  renderEventList("badCutDisplays", byId("badRows"), true);
+  renderEventList("missDisplays", byId("missRows"), false);
+  byId("randBad").checked=!!state.randomizeBadCutDisplays;
+  byId("randMiss").checked=!!state.randomizeMissDisplays;
+}
+function renderEventList(key, wrap, isBad){
+  const arr=state[key];
+  wrap.innerHTML="";
+  if(!Array.isArray(arr) || !arr.length){
+    wrap.innerHTML='<div class="ev-empty">Empty - the game shows its own '+(isBad?"bad cut":"miss")+' text.</div>';
+    return;
+  }
+  arr.forEach((r,idx)=>{
+    const c=colorOf(r.color), hex=rgbaToHex(c);
+    const row=document.createElement("div");
+    row.className="ev-row"+(isBad?"":" miss");
+    let typeSel="";
+    if(isBad){
+      const known=r.type===undefined || r.type===null || BAD_TYPES.indexOf(r.type)!==-1;
+      typeSel='<select data-ek="type" title="Which bad cuts this text is used for">'+
+        BAD_TYPES.filter(t=>t!=="All"||r.type==="All").map(t=>'<option value="'+t+'"'+((r.type||"")===t?" selected":"")+'>'+BAD_TYPE_LABEL[t]+'</option>').join("")+
+        (known?"":'<option value="'+escapeAttr(String(r.type))+'" selected>'+escapeHtml(String(r.type))+' (unknown)</option>')+'</select>';
+    }
+    row.innerHTML=typeSel+
+      '<input type="text" data-ek="text" value="'+escapeAttr(r.text||"")+'" spellcheck="false" placeholder="'+(isBad?"WRONG WAY":"MISS")+'">'+
+      '<div class="swatch" title="Pick color"><div class="fill" style="background:'+rgbaCss(c)+'"></div><input type="color" data-ek="color" value="'+hex+'"></div>'+
+      '<button class="tiny danger" data-ek="del" title="Delete">✕</button>';
+    row.querySelectorAll("[data-ek]").forEach(el=>{
+      const k=el.dataset.ek;
+      if(k==="del"){
+        el.addEventListener("click",()=>{
+          pushUndo();
+          arr.splice(idx,1);
+          if(!arr.length){ delete state[key]; delete state[key==="missDisplays"?"randomizeMissDisplays":"randomizeBadCutDisplays"]; }   // back to the game's own text
+          renderEvents(); refreshLive();
+        });
+      } else {
+        el.addEventListener(k==="type"?"change":"input",()=>{
+          if(k==="text") r.text=el.value;
+          else if(k==="type"){ if(el.value==="") delete r.type; else r.type=el.value; }
+          else if(k==="color"){
+            const rgb=hexToRgbFloats(el.value), a=r.color&&r.color[3]!==undefined?r.color[3]:1;
+            r.color=[roundF(rgb[0]),roundF(rgb[1]),roundF(rgb[2]),a];
+            el.parentElement.querySelector(".fill").style.background=rgbaCss(r.color);
+          }
+          if(sim.event!=="cut") renderPreview(false);
+          refreshLive();
+        });
+      }
+    });
+    wrap.appendChild(row);
+  });
+}
+function claimKey(key){   // a non-list value kept from an imported file must not override rows added here
+  if(state._extra && key in state._extra){ delete state._extra[key]; if(!Object.keys(state._extra).length) delete state._extra; }
+}
+byId("btnAddBad").addEventListener("click",()=>{
+  pushUndo();
+  claimKey("badCutDisplays");
+  if(!Array.isArray(state.badCutDisplays)){ state.badCutDisplays=[]; if(state.randomizeBadCutDisplays===undefined) state.randomizeBadCutDisplays=false; }
+  const n=state.badCutDisplays.length;
+  const starter=[{text:"WRONG WAY",type:"WrongDirection",color:[1,0.6,0.1,1]},{text:"WRONG SABER",type:"WrongColor",color:[0.85,0.45,1,1]},{text:"BOMB",type:"Bomb",color:[1,0.25,0.25,1]}];
+  state.badCutDisplays.push(clone(starter[n]||{text:"BAD CUT",color:[1,0.4,0.4,1]}));
+  renderEvents(); refreshLive();
+});
+byId("btnAddMiss").addEventListener("click",()=>{
+  pushUndo();
+  claimKey("missDisplays");
+  if(!Array.isArray(state.missDisplays)){ state.missDisplays=[]; if(state.randomizeMissDisplays===undefined) state.randomizeMissDisplays=false; }
+  state.missDisplays.push({text:state.missDisplays.length?"OOPS":"MISS",color:[1,0.3,0.3,1]});
+  renderEvents(); refreshLive();
+});
+byId("randBad").addEventListener("change",e=>{ state.randomizeBadCutDisplays=e.target.checked; refreshLive(); });
+byId("randMiss").addEventListener("change",e=>{ state.randomizeMissDisplays=e.target.checked; refreshLive(); });
+
+/* ---------- Starter templates ---------- */
+const W=[1,1,1,1];
+const TEMPLATES=[
+  {id:"classic", name:"Classic HSV", desc:"The mod's own default: colored tiers, + and - swing marks, underline on center hits.", cfg:DEFAULT_HSV_CONFIG},
+  {id:"clean", name:"Clean numbers", desc:"Just the score. White for perfect, cool blues for great cuts, grays below.", cfg:{
+    majorVersion:3,minorVersion:3,patchVersion:3,isDefaultConfig:false,displayMode:"format",doIntermediateUpdates:true,timeDependencyDecimalPrecision:1,timeDependencyDecimalOffset:2,
+    judgments:[
+      {threshold:115,text:"<size=120%>%s</size>",color:W,fade:false},
+      {threshold:113,text:"%s",color:[0.55,0.85,1,1],fade:false},
+      {threshold:110,text:"%s",color:[0.3,0.6,1,1],fade:false},
+      {threshold:105,text:"%s",color:[0.72,0.75,0.82,1],fade:false},
+      {threshold:100,text:"%s",color:[0.52,0.55,0.62,1],fade:false},
+      {threshold:0,text:"<size=85%>%s</size>",color:[0.38,0.4,0.46,1],fade:false}],
+    beforeCutAngleJudgments:[{threshold:70,text:""},{threshold:0,text:""}],
+    accuracyJudgments:[{threshold:15,text:""},{threshold:0,text:""}],
+    afterCutAngleJudgments:[{threshold:30,text:""},{threshold:0,text:""}],
+    timeDependencyJudgments:null}},
+  {id:"trainer", name:"Accuracy trainer", desc:"Traffic-light colors from green to red, plus a + for each full part of the swing.", cfg:{
+    majorVersion:3,minorVersion:3,patchVersion:3,isDefaultConfig:false,displayMode:"format",doIntermediateUpdates:true,timeDependencyDecimalPrecision:1,timeDependencyDecimalOffset:2,
+    judgments:[
+      {threshold:115,text:"%s",color:W,fade:false},
+      {threshold:113,text:"%B%s%C%A",color:[0,1,0,1],fade:false},
+      {threshold:110,text:"%B%s%C%A",color:[1,0.98,0,1],fade:false},
+      {threshold:106,text:"%B%s%C%A",color:[1,0.6,0,1],fade:true},
+      {threshold:100,text:"%B%s%C%A",color:[1,0,0,1],fade:true},
+      {threshold:0,text:"%B%s%C%A",color:[0.5,0,0,1],fade:true}],
+    beforeCutAngleJudgments:[{threshold:70,text:"+"},{threshold:0,text:" "}],
+    accuracyJudgments:[{threshold:15,text:"+"},{threshold:0,text:" "}],
+    afterCutAngleJudgments:[{threshold:30,text:" +"},{threshold:0,text:" "}],
+    timeDependencyJudgments:null}},
+  {id:"aim", name:"Aim arrows", desc:"An arrow under the score points from your cut to the note's center. Its size and color show how far off you were.", cfg:{
+    majorVersion:3,minorVersion:3,patchVersion:3,isDefaultConfig:false,displayMode:"format",doIntermediateUpdates:true,timeDependencyDecimalPrecision:1,timeDependencyDecimalOffset:2,
+    judgments:[
+      {threshold:115,text:"%s",color:W,fade:false},
+      {threshold:113,text:"%s%n%C%d",color:[0,1,0,1],fade:false},
+      {threshold:110,text:"%s%n%C%d",color:[1,0.98,0,1],fade:false},
+      {threshold:106,text:"%s%n%C%d",color:[1,0.6,0,1],fade:true},
+      {threshold:100,text:"%s%n%C%d",color:[1,0,0,1],fade:true},
+      {threshold:0,text:"%s%n%C%d",color:[0.5,0,0,1],fade:true}],
+    beforeCutAngleJudgments:[{threshold:70,text:"+"},{threshold:0,text:" "}],
+    accuracyJudgments:[{threshold:15,text:"<alpha=#00>"},{threshold:13,text:"<size=75%><color=#FFE14D>"},{threshold:10,text:"<size=100%><color=#FF9A1F>"},{threshold:0,text:"<size=125%><color=#FF3B3B>"}],
+    afterCutAngleJudgments:[{threshold:30,text:" +"},{threshold:0,text:" "}],
+    timeDependencyJudgments:null}},
+  {id:"hype", name:"Hype", desc:"Big gold perfects with words under every tier, plus custom miss and bad cut text.", cfg:{
+    majorVersion:3,minorVersion:3,patchVersion:3,isDefaultConfig:false,displayMode:"format",doIntermediateUpdates:true,timeDependencyDecimalPrecision:1,timeDependencyDecimalOffset:2,
+    judgments:[
+      {threshold:115,text:"<size=160%><b>%s</b></size>%n<size=55%>PERFECT</size>",color:[1,0.84,0.2,1],fade:false},
+      {threshold:113,text:"<size=125%>%s</size>%n<size=50%>AMAZING</size>",color:[0.2,0.95,1,1],fade:false},
+      {threshold:110,text:"%s%n<size=50%>GREAT</size>",color:[0.75,0.4,1,1],fade:false},
+      {threshold:105,text:"%s%n<size=50%>GOOD</size>",color:[0.3,1,0.45,1],fade:false},
+      {threshold:100,text:"%s%n<size=50%>OK</size>",color:[1,0.6,0.15,1],fade:false},
+      {threshold:0,text:"<size=80%>%s</size>",color:[1,0.25,0.25,1],fade:false}],
+    beforeCutAngleJudgments:[{threshold:70,text:""},{threshold:0,text:""}],
+    accuracyJudgments:[{threshold:15,text:""},{threshold:0,text:""}],
+    afterCutAngleJudgments:[{threshold:30,text:""},{threshold:0,text:""}],
+    timeDependencyJudgments:null,
+    badCutDisplays:[{text:"WRONG WAY",type:"WrongDirection",color:[1,0.55,0.1,1]},{text:"WRONG SABER",type:"WrongColor",color:[0.85,0.4,1,1]},{text:"BOOM",type:"Bomb",color:[1,0.2,0.2,1]}],
+    randomizeBadCutDisplays:false,
+    missDisplays:[{text:"<size=110%>MISS</size>",color:[1,0.3,0.3,1]},{text:"OOPS",color:[1,0.45,0.2,1]}],
+    randomizeMissDisplays:true}},
+  {id:"cvd", name:"Colorblind friendly", desc:"Blue, orange and white with size steps, so every tier stays clear for red-green and blue-yellow colorblind players.", cfg:{
+    majorVersion:3,minorVersion:3,patchVersion:3,isDefaultConfig:false,displayMode:"format",doIntermediateUpdates:true,timeDependencyDecimalPrecision:1,timeDependencyDecimalOffset:2,
+    judgments:[
+      {threshold:115,text:"<size=135%><b>%s</b></size>",color:W,fade:false},
+      {threshold:113,text:"<size=115%>%s</size>",color:[0.25,0.6,1,1],fade:false},
+      {threshold:110,text:"%s",color:[1,0.62,0.1,1],fade:false},
+      {threshold:105,text:"<size=90%>%s</size>",color:[0.62,0.62,0.66,1],fade:false},
+      {threshold:0,text:"<size=80%><i>%s</i></size>",color:[0.62,0.18,0.02,1],fade:false}],
+    beforeCutAngleJudgments:[{threshold:70,text:""},{threshold:0,text:""}],
+    accuracyJudgments:[{threshold:15,text:""},{threshold:0,text:""}],
+    afterCutAngleJudgments:[{threshold:30,text:""},{threshold:0,text:""}],
+    timeDependencyJudgments:null}}
+];
+function stripCss(cfg){
+  const stops=[];
+  const sorted=cfg.judgments.slice().sort((a,b)=>b.threshold-a.threshold);
+  for(let sc=0;sc<=115;sc+=5){
+    const c=effectiveColorFor(sc,cfg,sorted);
+    stops.push((c?rgbaCss(c):"#10161d")+" "+(sc/115*100).toFixed(1)+"%");
+  }
+  return "linear-gradient(90deg,"+stops.join(",")+")";
+}
+function renderTemplates(){
+  const g=byId("tplGrid"); g.innerHTML="";
+  TEMPLATES.forEach(t=>{
+    const norm=normalizeConfig(clone(t.cfg));
+    const b=document.createElement("button");
+    b.className="tpl-card"; b.type="button"; b.dataset.tpl=t.id;
+    b.innerHTML='<span class="tpl-n">'+escapeHtml(t.name)+'</span><span class="tpl-strip" style="background:'+stripCss(norm)+'"></span><span class="tpl-d">'+escapeHtml(t.desc)+'</span>';
+    b.addEventListener("click",()=>{
+      pushUndo();
+      importConfig(clone(t.cfg),{silent:true});
+      toast("Loaded the "+t.name+" template. Undo goes back.");
+      track("template-"+t.id);
+    });
+    g.appendChild(b);
+  });
+}
+
+/* ---------- Replay (.bsor) parsing and tier tuning ---------- */
+let replays=[];          // [{file, song, diff, cuts:[{pre,acc,post,timeDep}], chains, links, misses, bad:{...}}]
+function parseBsor(buf, fileName){
+  const dv=new DataView(buf), u8=new Uint8Array(buf), len=buf.byteLength;
+  let p=0;
+  const need=n=>{ if(p+n>len) throw new Error("the file ends early (incomplete replay)"); };
+  const i32=()=>{ need(4); const v=dv.getInt32(p,true); p+=4; return v; };
+  const f32=()=>{ need(4); const v=dv.getFloat32(p,true); p+=4; return v; };
+  const byte=()=>{ need(1); return dv.getUint8(p++); };
+  const dec=new TextDecoder();
+  const str=()=>{ const n=i32(); if(n<0||n>1e6) throw new Error("unreadable text field"); need(n); const s=dec.decode(u8.subarray(p,p+n)); p+=n; return s; };
+  if(len<16 || dv.getInt32(0,true)!==0x442d3d69) throw new Error("not a BeatLeader .bsor replay");
+  p=4; byte();
+  if(byte()!==0) throw new Error("unexpected replay layout");
+  const info={};
+  ["version","gameVersion","timestamp","playerID","playerName","platform","trackingSystem","hmd","controller","hash","songName","mapper","difficulty"].forEach(k=>{ info[k]=str(); });
+  info.score=i32(); info.mode=str(); info.environment=str(); info.modifiers=str();
+  need(21); p+=21;                          // jump distance, left handed, height, start, fail, speed
+  if(byte()!==1) throw new Error("frames section missing");
+  const nf=i32(); need(nf*92); p+=nf*92;
+  if(byte()!==2) throw new Error("notes section missing");
+  const nn=i32();
+  const out={file:fileName, song:info.songName, diff:info.difficulty, mapper:info.mapper, player:info.playerName, cuts:[], chains:0, links:0, misses:0, bad:{WrongDirection:0,WrongColor:0,Bomb:0,Other:0}};
+  for(let i=0;i<nn;i++){
+    const id=i32(); f32(); f32(); const et=i32();
+    if(et===2){ out.misses++; continue; }
+    if(et===3){ out.bad.Bomb++; continue; }
+    if(et!==0 && et!==1) continue;
+    const speedOK=byte(), dirOK=byte(), colorOK=byte(); byte();
+    f32(); f32(); f32(); f32(); i32(); f32(); f32();      // saber speed, dir xyz, type, time dev, cut dir dev
+    f32(); f32(); f32();                                  // cut point
+    f32(); f32(); const nz=f32();                         // cut normal (z = time dependence)
+    const dist=f32(); f32(); const before=f32(), after=f32();
+    if(et===1){ if(!colorOK) out.bad.WrongColor++; else if(!dirOK) out.bad.WrongDirection++; else out.bad.Other++; continue; }
+    const sc=Math.floor(id/10000);
+    let kind = (sc===0||sc===3||sc>10) ? "n" : sc===4 ? "ah" : sc===5 ? "at" : sc===8 ? "ab" : (sc===6||sc===9) ? "ch" : (sc===7||sc===10) ? "cl" : "skip";
+    if(kind==="skip") continue;
+    if(kind==="cl"){ out.links++; continue; }
+    let pre=Math.round(70*clamp01(before)), post=Math.round(30*clamp01(after));
+    const acc=Math.round(15*(1-clamp01(dist/0.3)));
+    if(kind==="ah"||kind==="ab") post=30;
+    if(kind==="at"||kind==="ab") pre=70;
+    if(kind==="ch"){ out.chains++; continue; }
+    out.cuts.push({pre,acc,post,timeDep:Math.abs(nz)});
+  }
+  return out;
+}
+function allCuts(){ const a=[]; replays.forEach(r=>r.cuts.forEach(c=>a.push(c))); return a; }
+async function loadReplayFiles(files){
+  const list=[...files].filter(f=>f && f.size);
+  if(!list.length) return;
+  let ok=0;
+  for(const f of list){
+    try{
+      if(f.size>60*1024*1024) throw new Error("file is over 60 MB");
+      const r=parseBsor(await f.arrayBuffer(), f.name);
+      if(!r.cuts.length) throw new Error("no scored cuts in this replay");
+      replays.push(r); ok++;
+    }catch(e){ toast(f.name+": "+((e&&e.message)||e),true); }
+  }
+  if(ok){ track("replay-analyze"); toast("Loaded "+ok+" replay"+(ok>1?"s":"")); }
+  renderReplay();
+}
+function tierShares(cuts, cfg){
+  const sorted=cfg.judgments.slice().sort((a,b)=>b.threshold-a.threshold);
+  const counts=sorted.map(()=>0); let below=0;
+  cuts.forEach(c=>{
+    const t=c.pre+c.acc+c.post;
+    let k=-1; for(let i=0;i<sorted.length;i++){ if(t>=sorted[i].threshold){ k=i; break; } }
+    if(k<0) below++; else counts[k]++;
+  });
+  return {sorted, counts, below};
+}
+function renderReplay(){
+  const outEl=byId("replayOut"), cuts=allCuts();
+  byId("btnReplayClear").disabled=!replays.length;
+  if(!replays.length){ outEl.hidden=true; byId("replaySuggest").innerHTML=""; return; }
+  outEl.hidden=false;
+  const n=cuts.length;
+  const tot=cuts.reduce((s,c)=>s+c.pre+c.acc+c.post,0);
+  const misses=replays.reduce((s,r)=>s+r.misses,0);
+  const bad=replays.reduce((s,r)=>s+r.bad.WrongDirection+r.bad.WrongColor+r.bad.Bomb+r.bad.Other,0);
+  const chains=replays.reduce((s,r)=>s+r.chains,0);
+  const names=replays.slice(0,3).map(r=>escapeHtml(r.song+(r.diff?" ("+r.diff+")":""))).join(", ")+(replays.length>3?" and "+(replays.length-3)+" more":"");
+  byId("replaySum").innerHTML="<b>"+n+"</b> cuts from "+names+"<br>Average cut <b>"+(tot/n).toFixed(1)+"</b> · misses <b>"+misses+"</b> · bad cuts <b>"+bad+"</b>"+
+    (chains?" · "+chains+" chain heads not counted (they use chain judgments)":"");
+  const {sorted,counts,below}=tierShares(cuts,state);
+  const max=Math.max(1,...counts,below);
+  let html="";
+  sorted.forEach((t,i)=>{
+    const c=rgbaCss(t.color), pct=counts[i]/n*100;
+    html+='<div class="rp-row"><span class="rp-t"><span class="rp-dot" style="background:'+c+'"></span>'+t.threshold+'+</span>'+
+      '<span><span class="rp-bar" style="display:block;width:'+(counts[i]/max*100).toFixed(1)+'%;background:'+c+'"></span></span>'+
+      '<span class="rp-n">'+pct.toFixed(0)+'%<small>'+counts[i]+'</small></span></div>';
+  });
+  if(below) html+='<div class="rp-row"><span class="rp-t" style="color:var(--warn)">none</span><span><span class="rp-bar" style="display:block;width:'+(below/max*100).toFixed(1)+'%;background:#5a6273"></span></span><span class="rp-n">'+(below/n*100).toFixed(0)+'%<small>'+below+'</small></span></div>';
+  byId("replayDist").innerHTML=html;
+  const pct=f=>(cuts.filter(f).length/n*100).toFixed(0)+"%";
+  byId("replaySubs").innerHTML=
+    '<span class="rp-chip">Full pre-swing <b>'+pct(c=>c.pre>=70)+'</b></span>'+
+    '<span class="rp-chip">15 accuracy <b>'+pct(c=>c.acc>=15)+'</b></span>'+
+    '<span class="rp-chip">Full follow-through <b>'+pct(c=>c.post>=30)+'</b></span>'+
+    '<span class="rp-chip">115s <b>'+pct(c=>c.pre+c.acc+c.post>=115)+'</b></span>';
+}
+function suggestThresholds(cuts, cfg){
+  const T=cfg.judgments.slice().sort((a,b)=>b.threshold-a.threshold);
+  const m=T.length;
+  if(m<2) return {error:"Add at least two tiers first."};
+  const thr=T.map(t=>t.threshold);
+  const fixedTop=thr[0]>=115, fixedBottom=thr[m-1]<=0;
+  const free=[]; for(let i=0;i<m;i++){ if(!(i===0&&fixedTop) && !(i===m-1&&fixedBottom)) free.push(i); }
+  if(!free.length) return {error:"Every tier is a fixed one (115 or 0), so there is nothing to move."};
+  const pool=cuts.map(c=>c.pre+c.acc+c.post).filter(v=>fixedTop ? v<thr[0] : true).sort((a,b)=>b-a);
+  if(!pool.length) return {error:"Every cut in these replays was a 115, so there is nothing to split."};
+  const buckets=free.length+(fixedBottom?1:0);
+  const out=thr.slice();
+  let prev=fixedTop?thr[0]:116;
+  for(let k=0;k<free.length;k++){
+    const idx=Math.min(pool.length-1, Math.max(0, Math.ceil((k+1)*pool.length/buckets)-1));
+    let t=Math.round(pool[idx]);
+    if(t>=prev) t=prev-1;
+    const floor=fixedBottom?thr[m-1]:-1;
+    if(t<=floor) return {error:"Your cuts don't have enough different scores to split "+free.length+" tiers. Load more replays or use fewer tiers."};
+    out[free[k]]=t; prev=t;
+  }
+  return {T, before:thr, after:out};
+}
+byId("btnEvenTiers").addEventListener("click",()=>{
+  const box=byId("replaySuggest"), cuts=allCuts();
+  const s=suggestThresholds(cuts,state);
+  if(s.error){ box.innerHTML='<div class="rp-sug">'+escapeHtml(s.error)+'</div>'; return; }
+  if(s.before.every((v,i)=>v===s.after[i])){ box.innerHTML='<div class="rp-sug">Your tiers already split these cuts about as evenly as they can.</div>'; return; }
+  const trial={judgments:s.T.map((t,i)=>({threshold:s.after[i],color:t.color,fade:t.fade}))};
+  const now=tierShares(cuts,state), next=tierShares(cuts,trial);
+  const n=cuts.length;
+  let rows="<tr><td>Now</td><td>Suggested</td><td>Share now → after</td></tr>";
+  s.T.forEach((t,i)=>{
+    rows+="<tr><td>"+s.before[i]+"+</td><td class='"+(s.before[i]!==s.after[i]?"chg":"")+"'>"+s.after[i]+"+</td><td>"+(now.counts[i]/n*100).toFixed(0)+"% → "+(next.counts[i]/n*100).toFixed(0)+"%</td></tr>";
+  });
+  box.innerHTML='<div class="rp-sug">Suggested thresholds so each tier gets a similar share of your cuts. A 115 tier and a 0 catch-all stay where they are.<table>'+rows+'</table><button class="primary tiny" id="btnApplyEven">✓ Apply thresholds</button></div>';
+  byId("btnApplyEven").addEventListener("click",()=>{
+    if(!s.T.every(t=>state.judgments.includes(t)) || s.T.length!==state.judgments.length){ box.innerHTML=""; toast("Your tiers changed. Press Even out tiers again.",true); return; }
+    pushUndo();
+    s.T.forEach((t,i)=>{ t.threshold=s.after[i]; });
+    state.judgments.sort((a,b)=>b.threshold-a.threshold);
+    renderJudgments(); refreshLive();
+    box.innerHTML="";
+    toast("Thresholds updated. Undo goes back.");
+    track("replay-even");
+  });
+});
+(function(){
+  const dz=byId("replayDrop"), fi=byId("replayFile");
+  fi.addEventListener("change",e=>{ loadReplayFiles(e.target.files); e.target.value=""; });
+  dz.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); fi.click(); } });
+  ["dragenter","dragover"].forEach(t=>dz.addEventListener(t,e=>{ e.preventDefault(); dz.classList.add("over"); }));
+  ["dragleave","drop"].forEach(t=>dz.addEventListener(t,()=>dz.classList.remove("over")));
+  dz.addEventListener("drop",e=>{ e.preventDefault(); if(e.dataTransfer && e.dataTransfer.files) loadReplayFiles(e.dataTransfer.files); });
+  byId("btnReplayClear").addEventListener("click",()=>{ replays=[]; renderReplay(); });
+  // A file dropped anywhere else would make the browser leave the page. Replays are loaded, anything else is ignored.
+  const hasFiles=e=>e.dataTransfer && [...(e.dataTransfer.types||[])].includes("Files");
+  window.addEventListener("dragover",e=>{ if(hasFiles(e)) e.preventDefault(); });
+  window.addEventListener("drop",e=>{
+    if(!hasFiles(e) || dz.contains(e.target)) return;
+    e.preventDefault();
+    const fl=[...e.dataTransfer.files].filter(f=>/\.bsor$/i.test(f.name));
+    if(fl.length){ loadReplayFiles(fl); byId("replayPanel").scrollIntoView({behavior:"smooth",block:"start"}); }
+  });
+})();
+
+/* ---------- Stream preview ---------- */
+let streamTimer=null, streamEnd=null;
+function randomCut(){
+  const r=Math.random;
+  return {pre:r()<0.8?70:55+Math.floor(r()*15), acc:15-Math.floor(Math.pow(r(),1.6)*9), post:r()<0.7?30:18+Math.floor(r()*12), timeDep:r()*0.3};
+}
+function nextStreamEvent(i){
+  const sides=Object.keys(SIDE_ARROW);
+  const side=sides[Math.floor(Math.random()*sides.length)];
+  if(Array.isArray(state.missDisplays) && state.missDisplays.length && Math.random()<0.08) return {event:"miss", evIndex:i};
+  if(Array.isArray(state.badCutDisplays) && state.badCutDisplays.length && Math.random()<0.06) return {event:"bad", badType:BAD_CYCLE[Math.floor(Math.random()*3)], evIndex:i};
+  const pool=allCuts();
+  const c=pool.length ? pool[Math.floor(Math.random()*pool.length)] : randomCut();
+  return {event:"cut", pre:c.pre, acc:c.acc, post:c.post, timeDep:c.timeDep||0, side};
+}
+function runStream(){
+  const stage=byId("stage");
+  clearInterval(streamTimer); clearTimeout(streamEnd);
+  stage.querySelectorAll(".hittext.sp").forEach(e=>e.remove());
+  byId("hittext").style.visibility="hidden";
+  const lanes=[[16,36],[62,54],[38,54],[84,36],[16,58],[62,34],[38,32],[84,56]], N=12;   // 8 slots, each reused only after its text has faded
+  let i=0;
+  streamTimer=setInterval(()=>{
+    if(i>=N){ clearInterval(streamTimer); streamTimer=null; streamEnd=setTimeout(()=>{ byId("hittext").style.visibility=""; },1300); return; }
+    const r=renderEvent(nextStreamEvent(i));
+    const el=document.createElement("div");
+    el.className="hittext sp live";
+    const slot=lanes[i%lanes.length];
+    el.style.left=slot[0]+"%"; el.style.top=slot[1]+"%";
+    el.style.color=r.color;
+    el.innerHTML=r.html;
+    el.addEventListener("animationend",()=>el.remove());
+    stage.appendChild(el);
+    i++;
+  },170);
+  track("stream");
+}
+byId("btnStream").addEventListener("click",runStream);
+
+/* ---------- Background and color-vision views ---------- */
+const VIEW_KEY="hsvGenerator.view.v1";
+function applyView(){
+  const bg=byId("viewBg").value, vis=byId("viewVision").value;
+  ["stage","stageA","stageB"].forEach(id=>{
+    const el=byId(id); if(!el) return;
+    el.classList.remove("bg-bright","bg-blue","bg-red");
+    if(bg!=="dark") el.classList.add("bg-"+bg);
+  });
+  ["stage","stageA","stageB","bandWrap"].forEach(id=>{
+    const el=byId(id); if(!el) return;
+    el.classList.remove("vis-protan","vis-deutan","vis-tritan","vis-gray");
+    if(vis!=="normal") el.classList.add("vis-"+vis);
+  });
+  document.querySelectorAll(".bandwrap.slim").forEach(el=>{
+    el.classList.remove("vis-protan","vis-deutan","vis-tritan","vis-gray");
+    if(vis!=="normal") el.classList.add("vis-"+vis);
+  });
+  storeSet(VIEW_KEY, JSON.stringify({bg,vis}));
+}
+(function(){
+  try{ const v=JSON.parse(storeGet(VIEW_KEY)||"null");
+    if(v){ if(["dark","bright","blue","red"].includes(v.bg)) byId("viewBg").value=v.bg; if(["normal","protan","deutan","tritan","gray"].includes(v.vis)) byId("viewVision").value=v.vis; } }catch(e){}
+  byId("viewBg").addEventListener("change",applyView);
+  byId("viewVision").addEventListener("change",()=>{ applyView(); if(byId("viewVision").value!=="normal") track("vision-"+byId("viewVision").value); });
+})();
+
+/* Colorblind check used by validation: OKLab distance between neighbouring tiers */
+const CVD_M={
+  protan:[0.152286,1.052583,-0.204868,0.114503,0.786281,0.099216,-0.003882,-0.048116,1.051998],
+  deutan:[0.367322,0.860646,-0.227968,0.280085,0.672501,0.047413,-0.011820,0.042940,0.968881],
+  tritan:[1.255528,-0.076749,-0.178779,-0.078411,0.930809,0.147602,0.004733,0.691367,0.303900]
+};
+function s2l(c){ return c<=0.04045 ? c/12.92 : Math.pow((c+0.055)/1.055,2.4); }
+function oklab(lin){
+  const [r,g,b]=lin;
+  const l=Math.cbrt(0.4122214708*r+0.5363325363*g+0.0514459929*b);
+  const m=Math.cbrt(0.2119034982*r+0.6806995451*g+0.1073969566*b);
+  const s=Math.cbrt(0.0883024619*r+0.2817188376*g+0.6299787005*b);
+  return [0.2104542553*l+0.7936177850*m-0.0040720468*s, 1.9779984951*l-2.4285922050*m+0.4505937099*s, 0.0259040371*l+0.7827717662*m-0.8086757660*s];
+}
+function visionLab(color, type){
+  let lin=[s2l(color[0]),s2l(color[1]),s2l(color[2])];
+  if(type && CVD_M[type]){ const M=CVD_M[type]; lin=[0,1,2].map(i=>clamp01(M[i*3]*lin[0]+M[i*3+1]*lin[1]+M[i*3+2]*lin[2])); }
+  return oklab(lin);
+}
+function labDist(a,b){ return Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2]); }
+function colorblindIssues(cfg){
+  const T=cfg.judgments.slice().sort((a,b)=>b.threshold-a.threshold);
+  const found={redgreen:[],tritan:[]};
+  for(let i=0;i+1<T.length;i++){
+    const a=T[i].color, b=T[i+1].color;
+    if(labDist(visionLab(a),visionLab(b))<0.10) continue;          // already look alike on purpose
+    const rg = labDist(visionLab(a,"protan"),visionLab(b,"protan"))<0.05 || labDist(visionLab(a,"deutan"),visionLab(b,"deutan"))<0.05;
+    if(rg) found.redgreen.push(T[i].threshold+" and "+T[i+1].threshold);
+    if(labDist(visionLab(a,"tritan"),visionLab(b,"tritan"))<0.05) found.tritan.push(T[i].threshold+" and "+T[i+1].threshold);
+  }
+  const items=[];
+  if(found.redgreen.length) items.push(["info","Tiers "+found.redgreen.join(", ")+" look almost the same to red-green colorblind players. Check with Vision in the preview, or try the Colorblind friendly template."]);
+  if(found.tritan.length) items.push(["info","Tiers "+found.tritan.join(", ")+" look almost the same to blue-yellow colorblind players. Check with Vision in the preview."]);
+  return items;
+}
+function eventValidation(cfg){
+  const items=[];
+  [["badCutDisplays","Bad cut text"],["missDisplays","Miss text"]].forEach(([k,lbl])=>{
+    (cfg[k]||[]).forEach((r,i)=>{
+      const where=lbl+" #"+(i+1);
+      if(!String(r.text||"").trim()) items.push(["warn",where+" is empty, so nothing shows for it in game."]);
+      if(k==="badCutDisplays" && r.type!==undefined && r.type!==null && BAD_TYPES.indexOf(r.type)===-1) items.push(["warn",where+" has type \""+r.type+"\". The mod only knows WrongDirection, WrongColor, Bomb and All."]);
+      const tok=String(r.text||"").replace(/<[^>]*>/g,"").match(/%[sBbCcAapTtdn]/g);
+      if(tok) items.push(["info",where+" uses "+[...new Set(tok)].join(" ")+". Tokens are not filled in for bad cut and miss text, so they show as typed."]);
+    });
+  });
+  return items;
+}
+
+/* ---------- Config diff (compare + push summary) ---------- */
+const DIFF_TOP={displayMode:"Display mode",doIntermediateUpdates:"Intermediate updates",isDefaultConfig:"Is default config",timeDependencyDecimalPrecision:"Time-dep precision",timeDependencyDecimalOffset:"Time-dep offset",majorVersion:"Major version",minorVersion:"Minor version",patchVersion:"Patch version",randomizeBadCutDisplays:"Randomize bad cut text",randomizeMissDisplays:"Randomize miss text"};
+const DIFF_SUB={beforeCutAngleJudgments:"%B before-cut text",accuracyJudgments:"%C accuracy text",afterCutAngleJudgments:"%A after-cut text",timeDependencyJudgments:"%T time-dep text",badCutDisplays:"Bad cut text",missDisplays:"Miss text"};
+function exportOf(obj){ return buildExportObject(normalizeConfig(obj)); }
+function diffConfigs(oldO,newO){
+  const L=[], e=v=>escapeHtml(v===undefined?"(not set)":v===null?"off":String(v));
+  const short=t=>{ t=String(t||""); return t.length>40 ? t.slice(0,39)+"…" : t; };
+  const hexA=c=>{ const h=rgbaToHex(c).toUpperCase(); const a=c[3]===undefined?1:c[3]; return a<1 ? h+" @ "+Math.round(a*100)+"%" : h; };
+  Object.keys(DIFF_TOP).forEach(k=>{
+    if(JSON.stringify(oldO[k])!==JSON.stringify(newO[k])) L.push("<b>"+DIFF_TOP[k]+"</b>: "+e(oldO[k])+" → "+e(newO[k]));
+  });
+  const oj=oldO.judgments||[], nj=newO.judgments||[];
+  const mo=new Map(), mn=new Map();
+  oj.forEach(j=>{ if(!mo.has(j.threshold)) mo.set(j.threshold,j); });
+  nj.forEach(j=>{ if(!mn.has(j.threshold)) mn.set(j.threshold,j); });
+  const cnt=arr=>{ const m=new Map(); arr.forEach(j=>m.set(j.threshold,(m.get(j.threshold)||0)+1)); return m; };
+  const co=cnt(oj), cn=cnt(nj);
+  co.forEach((n,t)=>{ for(let i=(cn.get(t)||0);i<n;i++) L.push("Removed tier <b>"+e(t)+"</b>"); });
+  cn.forEach((n,t)=>{ for(let i=(co.get(t)||0);i<n;i++) L.push("Added tier <b>"+e(t)+"</b>"+(co.has(t)?" (a second tier at "+e(t)+")":"")); });
+  [...mn.keys()].filter(t=>mo.has(t)).forEach(t=>{
+    const a=mo.get(t), b=mn.get(t);
+    if(JSON.stringify(a.color)!==JSON.stringify(b.color)) L.push("Tier <b>"+e(t)+"</b>: color "+e(hexA(a.color))+" → "+e(hexA(b.color)));
+    if((a.text||"")!==(b.text||"")) L.push("Tier <b>"+e(t)+"</b>: text <code>"+e(short(a.text))+"</code> → <code>"+e(short(b.text))+"</code>");
+    if(!!a.fade!==!!b.fade) L.push("Tier <b>"+e(t)+"</b>: fade turned "+(b.fade?"on":"off"));
+  });
+  const sameSet=oj.length===nj.length && [...co.keys()].every(t=>co.get(t)===cn.get(t));
+  if(sameSet && JSON.stringify(oj.map(j=>j.threshold))!==JSON.stringify(nj.map(j=>j.threshold))) L.push("Tier order changed");
+  Object.keys(DIFF_SUB).forEach(k=>{
+    const a=oldO[k], b=newO[k];
+    if(JSON.stringify(a===undefined?null:a)===JSON.stringify(b===undefined?null:b)) return;
+    const na=Array.isArray(a)?a.length:0, nb=Array.isArray(b)?b.length:0;
+    L.push("<b>"+DIFF_SUB[k]+"</b>: "+(na!==nb ? na+" → "+nb+" rows" : "rows edited"));
+  });
+  const known=new Set([...KNOWN_TOP_KEYS]);
+  const extra=new Set([...Object.keys(oldO),...Object.keys(newO)].filter(k=>!known.has(k)));
+  extra.forEach(k=>{
+    if(JSON.stringify(oldO[k])===JSON.stringify(newO[k])) return;
+    L.push("<b>"+e(k)+"</b> "+(oldO[k]===undefined?"added":newO[k]===undefined?"removed":"changed"));
+  });
+  return L;
+}
+function diffHtml(lines, max){
+  if(!lines.length) return '<li class="same">✓ No differences</li>';
+  const cut=lines.slice(0,max||40).map(l=>"<li>"+l+"</li>").join("");
+  return cut+(lines.length>(max||40)?"<li>…and "+(lines.length-(max||40))+" more</li>":"");
+}
+
+/* ---------- Compare ---------- */
+let cmpB=null;
+function setCompareB(cfg, name){
+  cmpB=cfg;
+  byId("cmpNameB").textContent=name;
+  byId("cmpBody").hidden=false; byId("cmpHint").hidden=true; byId("btnClearB").disabled=false;
+  applyView(); renderCompare();
+}
+function paintMini(id, r){ const el=byId(id); el.style.color=r.color; el.innerHTML=r.html; }
+function renderCompare(){
+  if(!cmpB) return;
+  paintMini("hittextA", renderEvent(sim,state));
+  paintMini("hittextB", renderEvent(sim,cmpB));
+  renderBand(byId("bandA"),state); renderBand(byId("bandB"),cmpB);
+  byId("cmpDiff").innerHTML=diffHtml(diffConfigs(buildExportObject(cmpB),buildExportObject()));
+}
+byId("btnPinB").addEventListener("click",()=>{
+  setCompareB(clone(state),new Date().toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}));
+  toast("Pinned. Keep editing to compare."); track("compare");
+});
+byId("btnLoadB").addEventListener("click",()=>byId("fileB").click());
+byId("fileB").addEventListener("change",e=>{
+  const f=e.target.files[0]; e.target.value=""; if(!f) return;
+  f.text().then(t=>{ setCompareB(normalizeConfig(parseConfigText(t)), f.name); track("compare"); })
+   .catch(err=>toast("Compare failed: "+((err&&err.message)||"invalid JSON"),true));
+});
+byId("btnClearB").addEventListener("click",()=>{
+  cmpB=null; byId("cmpBody").hidden=true; byId("cmpHint").hidden=false; byId("btnClearB").disabled=true;
+});
+
+/* ---------- Autosave ---------- */
+const DRAFT_KEY="hsvGenerator.draft.v1";
+let saveTimer=null, autosaveReady=false;
+function saveDraft(){ if(autosaveReady) storeSet(DRAFT_KEY, JSON.stringify(buildExportObject())); }
+function scheduleSave(){ if(!autosaveReady) return; clearTimeout(saveTimer); saveTimer=setTimeout(saveDraft,400); }
+function restoreDraft(){
+  const t=storeGet(DRAFT_KEY); if(!t) return false;
+  try{
+    const obj=JSON.parse(t);
+    if(!obj || !Array.isArray(obj.judgments) || !obj.judgments.length) return false;
+    if(JSON.stringify(exportOf(obj))===JSON.stringify(buildExportObject())) return false;   // same as what's loaded
+    importConfig(obj,{silent:true});
+    return true;
+  }catch(e){ return false; }
+}
+window.addEventListener("pagehide",()=>{ clearTimeout(saveTimer); saveDraft(); });
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden"){ clearTimeout(saveTimer); saveDraft(); } });
+
+/* ---------- Share links ---------- */
+const SHARE_BASE="https://spanky3651.github.io/HSV-Config-Generator/";
+function b64urlEncode(bytes){
+  let bin=""; for(let i=0;i<bytes.length;i+=0x8000) bin+=String.fromCharCode.apply(null, bytes.subarray(i,i+0x8000));
+  return btoa(bin).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function b64urlDecode(s){
+  s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4) s+="=";
+  const bin=atob(s), out=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) out[i]=bin.charCodeAt(i);
+  return out;
+}
+async function pipeBytes(bytes, stream){
+  return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer());
+}
+async function makeShareLink(){
+  const json=JSON.stringify(buildExportObject());
+  const raw=new TextEncoder().encode(json);
+  let code=null;
+  try{ if(window.CompressionStream) code="z"+b64urlEncode(await pipeBytes(raw,new CompressionStream("deflate-raw"))); }catch(e){ code=null; }
+  if(!code) code="j"+b64urlEncode(raw);
+  const base=/^https?:$/.test(location.protocol) ? location.origin+location.pathname : SHARE_BASE;
+  return base+"?utm_source=share&utm_campaign=config-link#cfg="+code;
+}
+async function readShareCode(code){
+  const kind=code[0], bytes=b64urlDecode(code.slice(1));
+  let txt;
+  if(kind==="z"){
+    if(!window.DecompressionStream) throw new Error("this browser can't open compressed links");
+    txt=new TextDecoder().decode(await pipeBytes(bytes,new DecompressionStream("deflate-raw")));
+  } else if(kind==="j"){ txt=new TextDecoder().decode(bytes); }
+  else throw new Error("unknown link format");
+  return parseConfigText(txt);
+}
+byId("btnShare").addEventListener("click",async()=>{
+  let link;
+  try{ link=await makeShareLink(); }catch(e){ toast("Couldn't build a link",true); return; }
+  track("share-link");
+  const fallback=()=>gConfirm({title:"Share link",html:'<p>Copy this link:</p><textarea class="json" style="min-height:110px" readonly onfocus="this.select()">'+escapeHtml(link)+'</textarea>',ok:"Done",hideCancel:true});
+  try{ await navigator.clipboard.writeText(link); toast("Share link copied ("+link.length+" characters)"); }
+  catch(e){ fallback(); }
+});
+function shareCodeFromUrl(){ const m=(location.hash||"").match(/[#&]cfg=([A-Za-z0-9_-]+)/); return m?m[1]:null; }
+function clearShareHash(){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} }
+window.addEventListener("hashchange",()=>{ if(shareCodeFromUrl()) checkShareOnLoad(); });
+async function checkShareOnLoad(){
+  const code=shareCodeFromUrl(); if(!code) return;
+  let obj;
+  try{ obj=await readShareCode(code); }
+  catch(e){ clearShareHash(); toast("That share link is damaged or incomplete",true); return; }
+  const n=Array.isArray(obj.judgments)?obj.judgments.length:0;
+  const ok=await gConfirm({title:"Open shared config?",html:"<p>This link contains a config with <b>"+n+" tier"+(n===1?"":"s")+"</b>. Loading it replaces what's in the editor. Undo brings yours back.</p>",ok:"Load it",cancel:"Keep mine"});
+  clearShareHash();
+  if(ok){ pushUndo(); importConfig(obj,{prefix:"Loaded shared config · "}); track("share-open"); }
+}
+
+/* ---------- What's New (one-time, gone for good once dismissed) ---------- */
+const WHATSNEW_KEY="hsvGenerator.whatsnew.v1";
+function showWhatsNew(){
+  let seen;
+  try{ seen=localStorage.getItem(WHATSNEW_KEY); }catch(e){ return; }   // no storage = could never dismiss it for good, so skip
+  if(seen) return;
+  const back=byId("whatsnewBack");
+  back.hidden=false; requestAnimationFrame(()=>back.classList.add("show"));
+}
+function closeWhatsNew(){
+  storeSet(WHATSNEW_KEY,"1");
+  const back=byId("whatsnewBack");
+  back.classList.remove("show"); setTimeout(()=>{ back.hidden=true; },200);
+}
+byId("whatsnewClose").addEventListener("click",closeWhatsNew);
+byId("whatsnewBack").addEventListener("click",e=>{ if(e.target.id==="whatsnewBack") closeWhatsNew(); });
+document.addEventListener("keydown",e=>{
+  if(e.key!=="Escape") return;
+  if(!byId("gModal").hidden) gClose(false);
+  else if(!byId("whatsnewBack").hidden) closeWhatsNew();
+});
+
+/* ---------- Quest: list, load, and summary before push ---------- */
+Q.files=[];
+function qDir(){ return Q.el.path.value.trim().replace(/\/+$/,""); }
+async function questListConfigs(){
+  const row=byId("qLoadRow"), sel=byId("qList");
+  if(!Q.adb){ row.hidden=true; return []; }
+  let names=[], failed=false;
+  try{
+    const sync=await Q.adb.sync();
+    try{
+      let ents;
+      if(sync.readdir) ents=await sync.readdir(qDir());
+      else { ents=[]; for await(const x of sync.opendir(qDir())) ents.push(x); }
+      names=ents.filter(x=>x && x.name && x.name!=="." && x.name!==".." && /\.json$/i.test(x.name) && x.type!==4).map(x=>x.name).sort((a,b)=>a.localeCompare(b));
+    } finally { try{ await sync.dispose?.(); }catch(e){} }
+  }catch(e){ qlog("Could not list the configs on the headset: "+((e&&e.message)||e),"warn"); failed=true; }
+  if(!Q.adb){ row.hidden=true; Q.files=[]; return null; }   // disconnected while listing
+  Q.files=names;
+  sel.innerHTML=names.length ? names.map(n=>'<option value="'+escapeAttr(n)+'">'+escapeHtml(n)+'</option>').join("") : '<option value="">(no .json files yet)</option>';
+  const cur=((Q.el.name.value||"").trim().split(/[\/\\]/).pop());
+  if(names.includes(cur)) sel.value=cur;
+  byId("btnQLoad").disabled=!names.length;
+  row.hidden=false;
+  return failed ? null : names;
+}
+async function questReadFile(path){
+  const sync=await Q.adb.sync();
+  try{
+    const reader=sync.read(path).getReader();
+    const chunks=[]; let total=0;
+    for(;;){
+      const {done,value}=await reader.read();
+      if(done) break;
+      chunks.push(value); total+=value.length;
+      if(total>2*1024*1024){ try{ await reader.cancel(); }catch(e){} throw new Error("file is larger than 2 MB"); }
+    }
+    const all=new Uint8Array(total); let o=0; chunks.forEach(c=>{ all.set(c,o); o+=c.length; });
+    return new TextDecoder().decode(all);
+  } finally { try{ await sync.dispose?.(); }catch(e){} }
+}
+byId("btnQRefresh").addEventListener("click",()=>questListConfigs());
+byId("btnQLoad").addEventListener("click",async()=>{
+  const name=byId("qList").value; if(!name || !Q.adb) return;
+  const btn=byId("btnQLoad"); btn.disabled=true;
+  try{
+    const path=qDir()+"/"+name;
+    qlog("Reading "+path+" …","dim");
+    const txt=await questReadFile(path);
+    const obj=parseConfigText(txt);
+    pushUndo();
+    importConfig(obj,{prefix:"Loaded "+name+" from Quest · "});
+    Q.el.name.value=name;
+    qlog("✓ Loaded "+name+". Push saves your changes back to it.","ok");
+    track("quest-load");
+  }catch(e){
+    const msg=(e&&e.message)||String(e);
+    qlog("Load failed: "+msg,"err"); toast("Load failed: "+msg,true);
+  }finally{ btn.disabled=!Q.files.length; }
+});
+async function questPushSummary(fullPath, fname){
+  let html="<p>Saving to <code>"+escapeHtml(fullPath)+"</code></p>";
+  let names=null;
+  try{ names=await questListConfigs(); }catch(e){ names=null; }
+  if(!names) return html+"<p>Couldn't check what's already on the headset, so changes can't be shown. If a file with this name exists, pushing replaces it.</p>";
+  const existing=names.find(n=>n.toLowerCase()===fname.toLowerCase());   // the Quest's storage ignores letter case
+  if(!existing) return html+"<p>This is a <b>new file</b> on the headset. Nothing gets overwritten.</p>";
+  if(existing!==fname) html+="<p>The headset already has <code>"+escapeHtml(existing)+"</code>. File names there ignore upper and lower case, so this replaces it.</p>";
+  let txt;
+  try{ txt=await questReadFile(fullPath.slice(0,fullPath.length-fname.length)+existing); }
+  catch(e){ return html+"<p>Couldn't read the copy on the headset ("+escapeHtml((e&&e.message)||String(e))+"), so changes can't be shown. Pushing replaces it.</p>"; }
+  let lines;
+  try{ lines=diffConfigs(exportOf(parseConfigText(txt)), buildExportObject()); }
+  catch(e){ return html+"<p>The file on the headset isn't a valid config, so changes can't be shown. Pushing replaces it.</p>"; }
+  if(!lines.length) return html+"<p>No changes: it already matches the copy on the headset.</p>";
+  return html+"<p>Changes compared with the copy on the headset:</p><ul class=\"difflist\">"+diffHtml(lines,25)+"</ul>";
+}
+
+/* =========================================================================
    INIT + QA-pass wiring
    ========================================================================= */
 document.getElementById("hittext").addEventListener("animationend",e=>{ e.target.classList.remove("live"); });
@@ -2205,16 +3291,30 @@ document.getElementById("bandWrap").addEventListener("click",e=>{
   const rect=e.currentTarget.getBoundingClientRect();
   setSimTotal((e.clientX-rect.left)/rect.width*115);
 });
-window.addEventListener("resize",()=>renderBand());
+window.addEventListener("resize",()=>{ renderBand(); if(typeof renderCompare==="function") renderCompare(); });
+/* Keep the sticky right column just below the header, even when the header wraps to two rows */
+(function(){
+  const hdr=document.querySelector("header.topbar"); if(!hdr) return;
+  const set=()=>document.documentElement.style.setProperty("--hdr",hdr.offsetHeight+"px");
+  set();
+  if(window.ResizeObserver) new ResizeObserver(set).observe(hdr); else window.addEventListener("resize",set);
+})();
 renderPresets();
+renderTemplates();
 renderAll();
+applyView();
 initQuestEnv();
+if(restoreDraft()) toast("Restored your last session. Load a template or HSV Default to start fresh.");
+autosaveReady=true;
+checkShareOnLoad().then(showWhatsNew, showWhatsNew);
 </script>
 <!-- ============================================================================
      USAGE ANALYTICS (GoatCounter) - privacy-friendly, no cookies.
      Dashboard: https://hsv-generator.goatcounter.com/  (log in there to view stats).
      Counts page views automatically; the app also sends custom feature events
-     (export, copy-json, import, apply-json, quest-connect, quest-push) via
+     (export, copy-json, import, apply-json, quest-connect, quest-push, quest-load,
+     template-<id>, replay-analyze, replay-even, stream, compare, share-link,
+     share-open, vision-<type>) via
      window.goatcounter.count(), so feature usage shows up too.
 ============================================================================ -->
 <script data-goatcounter="https://hsv-generator.goatcounter.com/count"
