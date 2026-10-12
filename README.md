@@ -41,7 +41,7 @@ This tool replaces that loop. You edit every part of the config visually, watch 
 - **Validation** - duplicate or unreachable thresholds, out-of-range sub-judgments, missing catch-alls, unclosed rich-text tags, tags the game will print as text, missing tokens
 - **Import / export with fidelity** - unknown keys from other tools' configs are preserved untouched; 0–255 color arrays are auto-normalized; BOM'd files import cleanly
 - **Share by link** - copy a link that opens your exact config (compressed into the link itself, nothing is uploaded)
-- **Quality of life** - autosave (your work survives a closed tab), 30-level undo, two-step deletes, an editable live JSON panel, Ctrl+S export, and an ⓘ explainer on every single control
+- **Quality of life** - fold any panel by clicking its header (remembered between visits), autosave (your work survives a closed tab), 30-level undo, two-step deletes, an editable live JSON panel, Ctrl+S export, and an ⓘ explainer on every single control
 
 ## How it works
 

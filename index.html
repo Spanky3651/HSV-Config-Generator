@@ -492,6 +492,17 @@
     .brand h1{font-size:15px;}
     .preset-row button{flex:1 1 auto;justify-content:center;}
   }
+  /* ---------- Collapsible panels ---------- */
+  .panel[id]:not([data-nofold]) > .panel-head{cursor:pointer;user-select:none;}
+  .panel[id]:not([data-nofold]) > .panel-head > h2{flex:1 1 auto;}
+  .panel > .panel-head:focus-visible{outline:2px solid var(--blue);outline-offset:-2px;}
+  .panel-caret{width:18px;height:18px;color:var(--muted-2);flex:none;transition:transform .22s ease;}
+  .panel-caret svg{width:100%;height:100%;display:block;}
+  .panel-head:hover .panel-caret{color:var(--blue);}
+  .panel.collapsed .panel-caret{transform:rotate(-90deg);}
+  .panel.collapsed > .panel-sub,.panel.collapsed > .panel-body{display:none;}
+  .panel.collapsed > .panel-head{border-bottom-color:transparent;}
+
   /* ---------- Starter templates ---------- */
   .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;}
   .tpl-card{display:flex;flex-direction:column;align-items:stretch;gap:7px;text-align:left;white-space:normal;padding:11px 12px;border-radius:var(--r-sm);background:linear-gradient(180deg,#0e131c,#0a0e15);border:1px solid var(--border-2);}
@@ -669,14 +680,14 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </section>
 
     <!-- Starter templates -->
-    <section class="panel" id="tplPanel">
+    <section class="panel" id="tplPanel" data-collapse-later>
       <div class="panel-head"><span class="dot"></span><h2>Starter Templates</h2><span class="count">click one to load it · Undo goes back</span></div>
       <div class="panel-sub">Not sure where to start? Load a ready-made config, then tweak it. Each card shows its colors from 0 to 115.</div>
       <div class="panel-body"><div class="tpl-grid" id="tplGrid"></div></div>
     </section>
 
     <!-- Global settings -->
-    <section class="panel">
+    <section class="panel" id="globalPanel" data-collapse-later>
       <div class="panel-head"><span class="dot"></span><h2>Global Settings</h2></div>
       <div class="panel-sub">Settings that apply to the whole config. <b>Display Mode</b> decides how the score is shown: <code>format</code> fills in your %-tokens (the normal choice) and <code>numeric</code> shows just the score. <code>textOnly</code>, <code>scoreOnTop</code> and <code>directions</code> show the template literally without filling tokens, so they suit plain label text. Leave the version fields as-is unless you know you need them.</div>
       <div class="panel-body">
@@ -722,7 +733,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </section>
 
     <!-- Judgment manager -->
-    <section class="panel">
+    <section class="panel" id="judgPanel">
       <div class="panel-head">
         <span class="dot"></span><h2>Judgment Manager</h2>
         <div class="head-actions">
@@ -744,7 +755,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </section>
 
     <!-- Replay tuning -->
-    <section class="panel" id="replayPanel">
+    <section class="panel" id="replayPanel" data-collapsed>
       <div class="panel-head"><span class="dot" style="background:var(--green);box-shadow:0 0 8px var(--green)"></span><h2>Tune From Your Replays</h2>
         <div class="head-actions"><button class="tiny ghost" id="btnReplayClear" disabled>✕ Clear</button></div>
       </div>
@@ -766,7 +777,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </section>
 
     <!-- Sub judgments -->
-    <section class="panel">
+    <section class="panel" id="subPanel">
       <div class="panel-head"><span class="dot"></span><h2>Swing / Accuracy Sub-Judgments</h2></div>
       <div class="panel-sub">Optional text swaps for the pieces of a swing, used by the <code>%B</code>, <code>%C</code>, <code>%A</code>, and <code>%T</code> tokens. Example: your attached config shows a blank space when your pre-swing is a perfect 70 and a <code>-</code> when it isn't - a quick visual cue that a swing was short. Each row is "if this part's score is at least <i>threshold</i>, substitute <i>text</i>."</div>
       <div class="panel-body">
@@ -801,8 +812,8 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </section>
 
     <!-- Bad cuts & misses -->
-    <section class="panel" id="eventPanel">
-      <div class="panel-head"><span class="dot" style="background:var(--red);box-shadow:0 0 8px var(--red)"></span><h2>Bad Cuts &amp; Misses</h2></div>
+    <section class="panel" id="eventPanel" data-collapsed>
+      <div class="panel-head"><span class="dot" style="background:var(--red);box-shadow:0 0 8px var(--red)"></span><h2>Bad Cuts &amp; Misses</h2><span class="count" id="evCount"></span></div>
       <div class="panel-sub">Optional text shown instead of the game's own when you <b>miss</b> a note or make a <b>bad cut</b> (wrong direction, wrong saber color, or a bomb). Leave a list empty to keep the game's default. Tokens like <code>%s</code> are not filled in here, but rich-text tags work. Preview them with the <b>Miss</b> and <b>Bad cut</b> buttons in the preview.</div>
       <div class="panel-body">
         <div class="subgrid">
@@ -823,7 +834,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </section>
 
     <!-- Token legend -->
-    <section class="panel">
+    <section class="panel" id="tokenPanel" data-collapsed>
       <div class="panel-head"><span class="dot"></span><h2>Text Token Reference</h2></div>
       <div class="panel-sub">Inside a tier's <b>text template</b>, these <code>%</code> tokens get replaced with live values when you cut a block. Hover any chip for its meaning. Lowercase = raw numbers; uppercase = the text swaps from the Sub-Judgments panel.</div>
       <div class="panel-body">
@@ -856,7 +867,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="sticky-col">
 
     <!-- Live sim -->
-    <section class="panel">
+    <section class="panel" id="previewPanel" data-nofold>
       <div class="panel-head">
         <span class="dot" style="background:var(--accent-2);box-shadow:0 0 8px var(--accent-2)"></span>
         <h2>In-Game Live Preview</h2>
@@ -892,7 +903,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </section>
 
     <!-- Compare -->
-    <section class="panel" id="comparePanel">
+    <section class="panel" id="comparePanel" data-collapsed>
       <div class="panel-head"><span class="dot" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></span><h2>Compare</h2>
         <div class="head-actions"><button class="tiny" id="btnPinB" title="Keep a copy of the current config to compare against">📌 Pin current</button><button class="tiny" id="btnLoadB" title="Compare against a config file">⇪ Load file</button><button class="tiny ghost" id="btnClearB" disabled>✕</button><input type="file" id="fileB" accept=".json,application/json" hidden></div>
       </div>
@@ -971,14 +982,14 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </section>
 
     <!-- Validation -->
-    <section class="panel">
+    <section class="panel" id="valPanel">
       <div class="panel-head"><span class="dot"></span><h2>Validation</h2><span class="count" id="valCount"></span></div>
       <div class="panel-sub">Live checks on your config. <span style="color:var(--danger)">Errors</span> mean the file won't behave as intended (e.g. a duplicate threshold that's unreachable); <span style="color:var(--warn)">warnings</span> are things worth a look. A clean config shows a single green check.</div>
       <div class="panel-body" id="valBody"></div>
     </section>
 
     <!-- Live JSON -->
-    <section class="panel">
+    <section class="panel" id="jsonPanel" data-collapsed>
       <div class="panel-head"><span class="dot"></span><h2>Live config.json</h2>
         <div class="head-actions"><button class="tiny" id="btnApplyJson" title="Parse this text and load it into the editor">▲ Apply edits</button><button class="tiny" id="btnCopy2">⧉ Copy</button></div>
       </div>
@@ -1009,7 +1020,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
     <div class="foot-more">More Beat Saber tools: <a href="https://spanky3651.github.io/Playlist-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">Playlist Studio</a><span class="sep">&middot;</span><a href="https://spanky3651.github.io/ReeSaber-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">ReeSaber Studio</a></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-12T14:11:00Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-12T14:55:00Z">Last updated recently</div>
   </div>
 </div>
 
@@ -1781,6 +1792,7 @@ function validate(){
     body.appendChild(d);
   });
   const errs=items.filter(i=>i[0]==="err").length, warns=items.filter(i=>i[0]==="warn").length;
+  if(errs && typeof openPanel==="function") openPanel("valPanel");   // never hide an error
   document.getElementById("valCount").textContent = errs? (errs+" error"+(errs>1?"s":"")) : (warns? warns+" warning"+(warns>1?"s":"") : "clean");
 }
 
@@ -2399,6 +2411,7 @@ document.getElementById("btnQPush").addEventListener("click",questPush);
 document.getElementById("btnQDisconnect").addEventListener("click",questDisconnect);
 document.getElementById("qPath").addEventListener("change",()=>{ if(Q.adb){ checkConfigsFolder().then(()=>questListConfigs()); } });
 document.getElementById("btnQuestTop").addEventListener("click",()=>{
+  openPanel("questPanel");
   Q.el.panel.scrollIntoView({behavior:"smooth",block:"center"});
   Q.el.panel.style.transition="box-shadow .3s";
   Q.el.panel.style.boxShadow="0 0 0 2px #c874ff, 0 0 24px #c874ff55";
@@ -2522,6 +2535,48 @@ function byId(id){ return document.getElementById(id); }
 function storeGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
 function storeSet(k,v){ try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } }
 
+/* ---------- Collapsible panels (click a header to fold it; the choice is remembered) ----------
+   data-collapsed       folded until the user opens it
+   data-collapse-later  open on the first visit, folded on later visits */
+const FOLD_KEY="hsvGenerator.collapsed.v1";
+let foldStore={};
+function foldSave(){ storeSet(FOLD_KEY, JSON.stringify(foldStore)); }
+function setFolded(panel, folded, quiet){
+  panel.classList.toggle("collapsed", folded);
+  const head=panel.querySelector(":scope > .panel-head");
+  if(head) head.setAttribute("aria-expanded", folded ? "false" : "true");
+  if(!folded && !quiet) window.dispatchEvent(new Event("resize"));   // canvases inside size themselves to the now-visible panel
+}
+function openPanel(id){
+  const panel=byId(id);
+  if(panel && panel.classList.contains("collapsed")) setFolded(panel,false);   // not remembered: the user's own choice still applies next visit
+}
+function initCollapsibles(){
+  try{ foldStore=JSON.parse(storeGet(FOLD_KEY)||"{}")||{}; }catch(e){ foldStore={}; }
+  const returning=!!foldStore._visited;
+  document.querySelectorAll(".panel[id]:not([data-nofold]) > .panel-head").forEach(head=>{
+    const panel=head.parentElement, key=panel.id, h2=head.querySelector("h2");
+    const caret=document.createElement("span");
+    caret.className="panel-caret"; caret.setAttribute("aria-hidden","true");
+    caret.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>';
+    head.appendChild(caret);
+    const folded = Object.prototype.hasOwnProperty.call(foldStore,key) ? !!foldStore[key]
+      : panel.hasAttribute("data-collapsed") || (returning && panel.hasAttribute("data-collapse-later"));
+    setFolded(panel, folded, true);
+    head.setAttribute("role","button"); head.tabIndex=0;
+    head.setAttribute("aria-label","Fold or unfold "+(h2?h2.textContent.trim():"panel"));
+    const toggle=()=>{ const f=!panel.classList.contains("collapsed"); setFolded(panel,f); foldStore[key]=f; foldSave(); };
+    head.addEventListener("click",e=>{ if(e.target.closest("input,select,button,label,a,textarea,.switch,.info")) return; toggle(); });
+    head.addEventListener("keydown",e=>{ if(e.target!==head) return; if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); } });
+  });
+  foldStore._visited=true; foldSave();
+}
+function updateEventCount(){
+  const el=byId("evCount"); if(!el) return;
+  const nb=(state.badCutDisplays||[]).length, nm=(state.missDisplays||[]).length;
+  el.textContent = nb||nm ? nb+" bad cut · "+nm+" miss" : "game default";
+}
+
 /* ---------- Generic confirm dialog ---------- */
 let _gResolve=null;
 function gConfirm(o){
@@ -2573,6 +2628,7 @@ function presetEvent(kind){
 
 /* ---------- Bad cut / miss editor ---------- */
 function renderEvents(){
+  updateEventCount();
   renderEventList("badCutDisplays", byId("badRows"), true);
   renderEventList("missDisplays", byId("missRows"), false);
   byId("randBad").checked=!!state.randomizeBadCutDisplays;
@@ -2807,7 +2863,7 @@ async function loadReplayFiles(files){
       replays.push(r); ok++;
     }catch(e){ toast(f.name+": "+((e&&e.message)||e),true); }
   }
-  if(ok){ track("replay-analyze"); toast("Loaded "+ok+" replay"+(ok>1?"s":"")); }
+  if(ok){ track("replay-analyze"); toast("Loaded "+ok+" replay"+(ok>1?"s":"")); openPanel("replayPanel"); }
   renderReplay();
 }
 function tierShares(cuts, cfg){
@@ -3083,6 +3139,7 @@ function diffHtml(lines, max){
 let cmpB=null;
 function setCompareB(cfg, name){
   cmpB=cfg;
+  openPanel("comparePanel");
   byId("cmpNameB").textContent=name;
   byId("cmpBody").hidden=false; byId("cmpHint").hidden=true; byId("btnClearB").disabled=false;
   applyView(); renderCompare();
@@ -3299,6 +3356,7 @@ window.addEventListener("resize",()=>{ renderBand(); if(typeof renderCompare==="
   set();
   if(window.ResizeObserver) new ResizeObserver(set).observe(hdr); else window.addEventListener("resize",set);
 })();
+initCollapsibles();
 renderPresets();
 renderTemplates();
 renderAll();
