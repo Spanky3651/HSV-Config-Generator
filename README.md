@@ -46,7 +46,8 @@ Templates mix literal text, TextMeshPro tags, and tokens:
 | `%s` | total cut score |
 | `%b` / `%c` / `%a` | raw pre-swing / accuracy / post-swing values |
 | `%B` / `%C` / `%A` | substituted text from the sub-judgment lists |
-| `%d` / `%T` | time-dependency value / text |
+| `%t` / `%T` | time-dependency value / text |
+| `%d` | arrow from your cut toward the note center (blank at 15 accuracy) |
 | `%n` | newline |
 | `%p` | percent of 115 |
 

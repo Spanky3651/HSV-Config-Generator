@@ -679,13 +679,13 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <span class="tokenchip c2" title="Accuracy text from Accuracy judgments">%C</span>
           <span class="tokenchip c2" title="Post-swing text from After-Cut judgments">%A</span>
           <span class="tokenchip" title="Time dependence value">%t</span>
-          <span class="tokenchip" title="Cut-direction arrow (bad cuts); blank on a clean cut">%d</span>
+          <span class="tokenchip" title="Arrow from your cut toward the note&#39;s center (set Cut side in the simulator); blank on a 15 accuracy cut">%d</span>
           <span class="tokenchip c2" title="Time dependence text">%T</span>
           <span class="tokenchip" title="Newline">%n</span>
           <span class="tokenchip" title="Literal percent sign">%%</span>
         </div>
         <div class="legend">
-          <b>Rich text (TextMeshPro):</b> &lt;size=200%&gt;…&lt;/size&gt; · &lt;color=#1e6bff&gt;…&lt;/color&gt; · &lt;b&gt; · &lt;i&gt; · &lt;u&gt;<br>
+          <b>Rich text (TextMeshPro):</b> &lt;size=200%&gt;…&lt;/size&gt; · &lt;color=#1e6bff&gt;…&lt;/color&gt; · &lt;b&gt; · &lt;i&gt; · &lt;u&gt; · &lt;alpha=#80&gt;<br>
           <b>Scoring model:</b> pre-swing max <b>70</b> + accuracy max <b>15</b> + post-swing max <b>30</b> = <b>115</b>.
         </div>
       </div>
@@ -718,7 +718,8 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <div class="simrow"><label>Pre-swing <span class="info" data-tip="Swing angle built up BEFORE hitting the block - a full 100-degree windup earns the maximum 70 points. This is most of the score, which is why underswinging costs so much.">i</span></label><input type="range" id="simPre" min="0" max="70" value="70"><span class="val" id="simPreV">70</span></div>
           <div class="simrow"><label>Accuracy <span class="info" data-tip="How close to the block's center the cut passed - dead center earns the full 15 points.">i</span></label><input type="range" id="simAcc" min="0" max="15" value="15"><span class="val" id="simAccV">15</span></div>
           <div class="simrow"><label>Post-swing <span class="info" data-tip="Follow-through AFTER contact - a full 60-degree follow-through earns the maximum 30 points.">i</span></label><input type="range" id="simPost" min="0" max="30" value="30"><span class="val" id="simPostV">30</span></div>
-          <div class="simrow"><label>Time-dep <span class="info" data-tip="Simulated time-dependency value (0-1) used by the %d and %T tokens in the preview. It does not change the score itself.">i</span></label><input type="range" id="simTime" min="0" max="100" value="0"><span class="val" id="simTimeV">0.0</span></div>
+          <div class="simrow"><label>Time-dep <span class="info" data-tip="Simulated time-dependency value (0-1) used by the %t and %T tokens in the preview. It does not change the score itself.">i</span></label><input type="range" id="simTime" min="0" max="100" value="0"><span class="val" id="simTimeV">0.0</span></div>
+          <div class="simrow"><label>Cut side <span class="info" data-tip="Which side of the note's center line your saber passed. The %d token draws an arrow from your cut toward the center (cut left of center shows →). There is no arrow on a perfect 15 accuracy cut, same as in game.">i</span></label><select id="simSide" style="flex:1"><option value="left">Left of center (→)</option><option value="right">Right of center (←)</option><option value="above">Above center (↓)</option><option value="below">Below center (↑)</option><option value="random">Random each replay</option></select></div>
           <div class="preset-row" id="presetRow"></div>
         </div>
         <div class="inline-note">Replay mimics the in-game decay - pop in, drift upward, fade out - then rests visible for editing. Colors include the Fade blend. Releasing a slider re-triggers the replay; clicking the spectrum bar jumps the sim to any score.</div>
@@ -822,7 +823,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
     <div class="foot-more">More Beat Saber tools: <a href="https://spanky3651.github.io/Playlist-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">Playlist Studio</a><span class="sep">&middot;</span><a href="https://spanky3651.github.io/ReeSaber-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">ReeSaber Studio</a></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-10T11:22:01Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-12T15:00:00Z">Last updated recently</div>
   </div>
 </div>
 
@@ -897,7 +898,13 @@ const SUB_RANGES = {
    STATE
    ========================================================================= */
 let state = clone(DEFAULT_HSV_CONFIG);
-let sim = {pre:70, acc:15, post:30, timeDep:0};
+let sim = {pre:70, acc:15, post:30, timeDep:0, side:"left"};
+const SIDE_ARROW = {left:"→", right:"←", above:"↓", below:"↑"};
+let simRandSide = "left";
+function simArrow(s){
+  if(s.acc>=15) return "";
+  return SIDE_ARROW[s.side==="random" ? simRandSide : s.side] || "";
+}
 
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 
@@ -974,7 +981,7 @@ function substituteTokens(text, s){
   out = out.replace(/%s/g, total);
   out = out.replace(/%p/g, (total/115*100).toFixed(2));
   out = out.replace(/%t/g, fmtTimeDep(s.timeDep));  // time dependence value (mod token is %t)
-  out = out.replace(/%d/g, s.dir||"");              // cut-direction arrow; empty on a clean cut
+  out = out.replace(/%d/g, simArrow(s));            // arrow toward the note center; empty at 15 accuracy
   out = out.replace(/%n/g, "\n");
   out = out.replace(//g, "%");
   return out;
@@ -1028,6 +1035,11 @@ function tmpToHtml(str){
       } else if(name==="b"){ style="font-weight:900;"; }
       else if(name==="i"){ style="font-style:italic;"; }
       else if(name==="u"){ style="text-decoration:underline;"; }
+      else if(name==="alpha" && val!==undefined){
+        const am=val.trim().match(/^#([0-9a-fA-F]{2})$/);
+        if(!am) continue;
+        style="opacity:"+(parseInt(am[1],16)/255).toFixed(3)+";";
+      }
       else { continue; } // unknown tag ignored (no span opened)
       html+='<span style="'+style+'">'; open++;
     } else {
@@ -1244,6 +1256,7 @@ function currentTier(){
   return pickJudgment(state.judgments, sim.pre+sim.acc+sim.post);
 }
 function renderPreview(triggerAnim){
+  if(triggerAnim){ const k=Object.keys(SIDE_ARROW); simRandSide=k[Math.floor(Math.random()*k.length)]; }
   const total = sim.pre+sim.acc+sim.post;
   const tier = currentTier();
   const stage = document.getElementById("hittext");
@@ -1278,7 +1291,7 @@ function renderPreview(triggerAnim){
   } else if(state.displayMode==="scoreOnTop"){
     rendered = total + "\n" + String(tier.text||"");         // score on top, then the raw template
   } else if(state.displayMode==="directions"){
-    rendered = String(tier.text||"") + "\n";                 // raw template, then cut direction (blank in sim)
+    rendered = String(tier.text||"") + "\n" + simArrow(sim);  // raw template, then the cut direction arrow
   } else {
     rendered = substituteTokens(tier.text||"", sim);
   }
@@ -1339,7 +1352,7 @@ function renderPresets(){
     const b=document.createElement("button"); b.className="tiny"; b.textContent=p.n;
     b.addEventListener("click",()=>{
       if(p.v){ sim.pre=p.v[0]; sim.acc=p.v[1]; sim.post=p.v[2]; }
-      else { sim.pre=Math.floor(Math.random()*71); sim.acc=Math.floor(Math.random()*16); sim.post=Math.floor(Math.random()*31); }
+      else { sim.pre=Math.floor(Math.random()*71); sim.acc=Math.floor(Math.random()*16); sim.post=Math.floor(Math.random()*31); sim.side="random"; }
       syncSimSliders(); renderPreview(true);
     });
     row.appendChild(b);
@@ -1349,6 +1362,7 @@ function syncSimSliders(){
   simPre.value=sim.pre; simAcc.value=sim.acc; simPost.value=sim.post;
   simPreV.textContent=sim.pre; simAccV.textContent=sim.acc; simPostV.textContent=sim.post;
   simTimeV.textContent=(sim.timeDep).toFixed(2);
+  simSide.value=sim.side;
 }
 
 /* =========================================================================
@@ -1570,11 +1584,13 @@ function renderAll(){
 const simPre=document.getElementById("simPre"), simAcc=document.getElementById("simAcc"),
       simPost=document.getElementById("simPost"), simTime=document.getElementById("simTime"),
       simPreV=document.getElementById("simPreV"), simAccV=document.getElementById("simAccV"),
-      simPostV=document.getElementById("simPostV"), simTimeV=document.getElementById("simTimeV");
+      simPostV=document.getElementById("simPostV"), simTimeV=document.getElementById("simTimeV"),
+      simSide=document.getElementById("simSide");
 
 simPre.addEventListener("input",()=>{ sim.pre=+simPre.value; simPreV.textContent=sim.pre; renderPreview(false); });
 simAcc.addEventListener("input",()=>{ sim.acc=+simAcc.value; simAccV.textContent=sim.acc; renderPreview(false); });
 simPost.addEventListener("input",()=>{ sim.post=+simPost.value; simPostV.textContent=sim.post; renderPreview(false); });
+simSide.addEventListener("change",()=>{ sim.side=simSide.value; renderPreview(true); });
 simTime.addEventListener("input",()=>{ sim.timeDep=(+simTime.value)/100; simTimeV.textContent=sim.timeDep.toFixed(2); renderPreview(false); });
 
 document.getElementById("btnReplay").addEventListener("click",()=>renderPreview(true));
