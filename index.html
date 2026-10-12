@@ -82,7 +82,7 @@
     min-height:100vh;
   }
   a{color:var(--blue);text-decoration:none;}
-  .hb a,.panel-sub a,.intro a,.steps a{color:#4d9bff;}
+  .hb a,.panel-sub a,.intro-body a,.steps a{color:#4d9bff;}
   a:hover{text-decoration:underline;}
   ::selection{background:var(--blue);color:#000;}
 
@@ -201,16 +201,10 @@
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--blue);cursor:pointer;box-shadow:0 0 8px var(--blue),0 0 0 3px #000;}
   input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;background:var(--blue);cursor:pointer;border:3px solid #000;}
 
-  /* ---------- Intro banner ---------- */
-  .intro{
-    background:linear-gradient(180deg,var(--panel),var(--panel-2));
-    border:1px solid var(--border);border-radius:var(--r);
-    padding:18px 20px;
-    box-shadow:0 2px 0 rgba(0,0,0,.4),inset 0 1px 0 #ffffff06;
-  }
-  .intro h2{margin:0 0 6px;font-size:18px;font-weight:800;letter-spacing:.3px;}
-  .intro p{margin:0 0 12px;color:var(--muted);font-size:14.5px;line-height:1.65;}
-  .intro p:last-child{margin-bottom:0;}
+  /* ---------- Intro ("What this tool does") panel body ---------- */
+  .intro-body p{margin:0 0 12px;color:var(--muted);font-size:14.5px;line-height:1.65;}
+  .intro-body p:first-child{margin-top:0;}
+  .intro-body p:last-child{margin-bottom:0;}
   .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0;}
   .flow .step{display:flex;align-items:center;gap:8px;background:var(--panel-3);border:1px solid var(--border-2);border-radius:var(--r-sm);padding:8px 13px;font-size:13.5px;font-weight:600;}
   .flow .step .num{width:21px;height:21px;border-radius:50%;background:rgba(47,140,255,.16);border:1px solid var(--blue);color:#cfe4ff;font-family:var(--mono);font-size:11.5px;display:grid;place-items:center;flex:none;}
@@ -336,14 +330,14 @@
   /* ---------- Validation ---------- */
   .valitem{display:flex;gap:10px;padding:10px 12px;border-radius:var(--r-sm);font-size:13.5px;margin-bottom:8px;border:1px solid transparent;font-family:var(--mono);line-height:1.5;align-items:flex-start;}
   .valitem .ico{flex:none;font-weight:700;}
-  .valitem.err{background:rgba(255,30,60,.08);border-color:rgba(255,77,109,.35);color:#ffc7d1;}
-  .valitem.err .ico{color:var(--danger);}
-  .valitem.warn{background:rgba(255,194,61,.07);border-color:rgba(255,194,61,.3);color:#ffe4ad;}
-  .valitem.warn .ico{color:var(--amber);}
-  .valitem.ok{background:rgba(34,224,161,.07);border-color:rgba(34,224,161,.28);color:#a9f2d8;}
-  .valitem.ok .ico{color:var(--green);}
-  .valitem.info{background:rgba(47,140,255,.07);border-color:rgba(47,140,255,.3);color:#cfe4ff;}
-  .valitem.info .ico{color:var(--blue);}
+  .valitem.v-err{background:rgba(255,30,60,.08);border-color:rgba(255,77,109,.35);color:#ffc7d1;}
+  .valitem.v-err .ico{color:var(--danger);}
+  .valitem.v-warn{background:rgba(255,194,61,.07);border-color:rgba(255,194,61,.3);color:#ffe4ad;}
+  .valitem.v-warn .ico{color:var(--amber);}
+  .valitem.v-ok{background:rgba(34,224,161,.07);border-color:rgba(34,224,161,.28);color:#a9f2d8;}
+  .valitem.v-ok .ico{color:var(--green);}
+  .valitem.v-info{background:rgba(47,140,255,.07);border-color:rgba(47,140,255,.3);color:#cfe4ff;}
+  .valitem.v-info .ico{color:var(--blue);}
 
   textarea.json{width:100%;min-height:280px;font-family:var(--mono);font-size:12.5px;line-height:1.55;background:#05080b;border:1px solid var(--border-2);border-radius:var(--r-sm);padding:12px;color:#cfe0f5;resize:vertical;white-space:pre;overflow:auto;}
 
@@ -451,8 +445,6 @@
     .topbar-actions::-webkit-scrollbar{display:none;}
     .topbar-actions button,.topbar-actions .status-pill{flex:none;}
 
-    .intro{padding:15px 16px;}
-    .intro h2{font-size:17px;}
     .flow{gap:6px;}
     .flow .step{padding:7px 11px;font-size:13px;}
     .flow .arrow{display:none;}
@@ -502,6 +494,15 @@
   .panel.collapsed .panel-caret{transform:rotate(-90deg);}
   .panel.collapsed > .panel-sub,.panel.collapsed > .panel-body{display:none;}
   .panel.collapsed > .panel-head{border-bottom-color:transparent;}
+
+  /* ---------- Full-page drop overlay ---------- */
+  #dropOverlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.84);backdrop-filter:blur(2px);padding:24px;}
+  #dropOverlay.show{display:flex;}
+  #dropOverlay .drop-card{border:2px dashed var(--blue);border-radius:16px;background:linear-gradient(180deg,#0e131c,#05080b);padding:38px 46px;text-align:center;max-width:460px;box-shadow:0 20px 60px rgba(0,0,0,.6);pointer-events:none;}
+  #dropOverlay .drop-ic{font-size:46px;line-height:1;color:var(--blue);margin-bottom:10px;}
+  #dropOverlay .drop-title{font-size:21px;font-weight:800;letter-spacing:.4px;margin-bottom:10px;color:#fff;}
+  #dropOverlay .drop-sub{font-size:15px;color:var(--muted);line-height:1.8;}
+  #dropOverlay .drop-sub b{color:#cfe4ff;font-family:var(--mono);}
 
   /* ---------- Starter templates ---------- */
   .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;}
@@ -664,8 +665,9 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="col-left">
 
     <!-- Intro / How it works -->
-    <section class="intro">
-      <h2>What this tool does</h2>
+    <section class="panel" id="introPanel" data-collapse-later>
+      <div class="panel-head"><span class="dot"></span><h2>What this tool does</h2><span class="count">click to fold once you know it</span></div>
+      <div class="panel-body intro-body">
       <p>Hit Score Visualizer (HSV) is a Beat Saber mod that draws the floating number you see each time you slice a block. That number's <b>size, color, wording, and thresholds</b> all come from a <code>config.json</code> file. This free HSV config generator and editor lets you edit every part of that file visually, preview exactly how a cut will look in-game, and then either download the file or push it straight to your Quest over USB.</p>
       <div class="flow">
         <div class="step"><span class="num">1</span> Edit tiers &amp; colors</div>
@@ -677,6 +679,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
         <div class="step"><span class="num">4</span> Export or ⚡ Push to Quest</div>
       </div>
       <div class="callout"><span class="ci">◈</span><span><b style="color:#fff">How a cut is scored:</b> every slice is worth up to <b style="color:#fff">115</b> points - up to <b style="color:#fff">70</b> for your pre-swing angle, <b style="color:#fff">15</b> for how close to center you cut, and <b style="color:#fff">30</b> for your follow-through. Each <b style="color:#fff">judgment tier</b> below says "if the total cut score is at least <i>this</i> threshold, draw the number using <i>this</i> text and color."</span></div>
+      </div>
     </section>
 
     <!-- Starter templates -->
@@ -1020,7 +1023,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
     <div class="foot-more">More Beat Saber tools: <a href="https://spanky3651.github.io/Playlist-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">Playlist Studio</a><span class="sep">&middot;</span><a href="https://spanky3651.github.io/ReeSaber-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">ReeSaber Studio</a></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-12T14:55:00Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-12T15:26:00Z">Last updated recently</div>
   </div>
 </div>
 
@@ -1086,6 +1089,13 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <filter id="cvd-gray" color-interpolation-filters="linearRGB"><feColorMatrix type="saturate" values="0"/></filter>
 </svg>
 
+<div id="dropOverlay" aria-hidden="true">
+  <div class="drop-card">
+    <div class="drop-ic">⇣</div>
+    <div class="drop-title">Drop to load</div>
+    <div class="drop-sub"><b>.bsor</b> replay → Tune From Your Replays<br><b>.json</b> config → Import</div>
+  </div>
+</div>
 <div id="tipbox"></div>
 <div class="toast" id="toast"></div>
 
@@ -1787,7 +1797,7 @@ function validate(){
   body.innerHTML="";
   const icons={err:"✕",warn:"▲",ok:"✓",info:"i"};
   items.forEach(([type,msg])=>{
-    const d=document.createElement("div"); d.className="valitem "+type;
+    const d=document.createElement("div"); d.className="valitem v-"+type;
     d.innerHTML='<span class="ico">'+icons[type]+'</span><span>'+escapeHtml(msg)+'</span>';
     body.appendChild(d);
   });
@@ -2040,21 +2050,24 @@ document.getElementById("tdEnable").addEventListener("change",e=>{
 
 // Import / export / copy / reset
 document.getElementById("btnImport").addEventListener("click",()=>document.getElementById("importFile").click());
-document.getElementById("importFile").addEventListener("change",e=>{
-  const file=e.target.files[0]; if(!file) return;
+function importJsonFile(file){
   const reader=new FileReader();
   reader.onload=ev=>{
     try{ const obj=parseConfigText(ev.target.result); pushUndo(); importConfig(obj); track("import"); }
     catch(err){ toast("Import failed: "+((err&&err.message)||"invalid JSON"),true); }
   };
   reader.readAsText(file);
+}
+document.getElementById("importFile").addEventListener("change",e=>{
+  const file=e.target.files[0]; if(!file) return;
+  importJsonFile(file);
   e.target.value="";
 });
 document.getElementById("btnExport").addEventListener("click",exportConfig);
 document.getElementById("btnReset").addEventListener("click",()=>{
   pushUndo();
   state=clone(DEFAULT_HSV_CONFIG);
-  renderAll(); toast("Loaded the official HSV default template");
+  renderAll(); toast("Loaded the official HSV default template"); track("reset");
 });
 function copyJson(){
   track("copy-json");
@@ -2565,7 +2578,7 @@ function initCollapsibles(){
     setFolded(panel, folded, true);
     head.setAttribute("role","button"); head.tabIndex=0;
     head.setAttribute("aria-label","Fold or unfold "+(h2?h2.textContent.trim():"panel"));
-    const toggle=()=>{ const f=!panel.classList.contains("collapsed"); setFolded(panel,f); foldStore[key]=f; foldSave(); };
+    const toggle=()=>{ const f=!panel.classList.contains("collapsed"); setFolded(panel,f); foldStore[key]=f; foldSave(); if(key==="introPanel") track(f?"intro-collapse":"intro-expand"); };
     head.addEventListener("click",e=>{ if(e.target.closest("input,select,button,label,a,textarea,.switch,.info")) return; toggle(); });
     head.addEventListener("keydown",e=>{ if(e.target!==head) return; if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); } });
   });
@@ -2962,14 +2975,26 @@ byId("btnEvenTiers").addEventListener("click",()=>{
   ["dragleave","drop"].forEach(t=>dz.addEventListener(t,()=>dz.classList.remove("over")));
   dz.addEventListener("drop",e=>{ e.preventDefault(); if(e.dataTransfer && e.dataTransfer.files) loadReplayFiles(e.dataTransfer.files); });
   byId("btnReplayClear").addEventListener("click",()=>{ replays=[]; renderReplay(); });
-  // A file dropped anywhere else would make the browser leave the page. Replays are loaded, anything else is ignored.
+  // Drop a file anywhere on the page: .bsor tunes from your replays, .json imports as a config. No buttons needed.
   const hasFiles=e=>e.dataTransfer && [...(e.dataTransfer.types||[])].includes("Files");
+  const overlay=byId("dropOverlay");
+  const inDz=t=>!!(t && t.nodeType===1 && dz.contains(t));
+  let dragDepth=0;
+  const showOverlay=s=>{ if(overlay) overlay.classList.toggle("show",s); };
+  window.addEventListener("dragenter",e=>{ if(!hasFiles(e)) return; dragDepth++; if(!inDz(e.target)) showOverlay(true); });
   window.addEventListener("dragover",e=>{ if(hasFiles(e)) e.preventDefault(); });
+  window.addEventListener("dragleave",e=>{ if(!hasFiles(e)) return; dragDepth=Math.max(0,dragDepth-1); if(dragDepth===0) showOverlay(false); });
   window.addEventListener("drop",e=>{
-    if(!hasFiles(e) || dz.contains(e.target)) return;
+    if(!hasFiles(e)) return;
+    dragDepth=0; showOverlay(false);
+    if(inDz(e.target)) return;   // the replay dropzone handles its own drop
     e.preventDefault();
-    const fl=[...e.dataTransfer.files].filter(f=>/\.bsor$/i.test(f.name));
-    if(fl.length){ loadReplayFiles(fl); byId("replayPanel").scrollIntoView({behavior:"smooth",block:"start"}); }
+    const files=[...e.dataTransfer.files];
+    const bsor=files.filter(f=>/\.bsor$/i.test(f.name));
+    const json=files.filter(f=>/\.json$/i.test(f.name));
+    if(bsor.length){ track("drop-replay"); loadReplayFiles(bsor); openPanel("replayPanel"); byId("replayPanel").scrollIntoView({behavior:"smooth",block:"start"}); }
+    else if(json.length){ track("drop-import"); if(json.length>1) toast("Only the first .json was imported."); importJsonFile(json[0]); }
+    else toast("Drop a .bsor replay or a .json config.",true);
   });
 })();
 
