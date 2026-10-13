@@ -6,7 +6,7 @@
 
 [![Live App](https://img.shields.io/badge/▶_live_app-spanky3651.github.io-1e6bff?style=flat-square&labelColor=0d1117)](https://spanky3651.github.io/HSV-Config-Generator/)
 [![Pages Deploy](https://github.com/Spanky3651/HSV-Config-Generator/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Spanky3651/HSV-Config-Generator/actions)
-[![No Dependencies](https://img.shields.io/badge/dependencies-none-ff1e3c?style=flat-square&labelColor=0d1117)](#how-it-works)
+[![No Install](https://img.shields.io/badge/install-none-ff1e3c?style=flat-square&labelColor=0d1117)](#running-locally)
 
 ### **[▶ Open the app](https://spanky3651.github.io/HSV-Config-Generator/)**
 
@@ -39,6 +39,7 @@ This tool replaces that loop. You edit every part of the config visually, watch 
 - **Load from Quest** - list the configs already on the headset, open one, edit it, and push it back. Every push first shows what will change compared with the copy on the headset
 - **USB conflict diagnostics** - detects the classic "interface claim failed" lock caused by SideQuest / Quest Link / Android Studio holding the ADB server, and walks you through fixing it with one-click-copyable kill commands
 - **Validation** - duplicate or unreachable thresholds, out-of-range sub-judgments, missing catch-alls, unclosed rich-text tags, tags the game will print as text, missing tokens
+- **Drop files anywhere** - drop a `.json` config onto the page to import it, or BeatLeader `.bsor` replays to tune your tiers
 - **Import / export with fidelity** - unknown keys from other tools' configs are preserved untouched; 0–255 color arrays are auto-normalized; BOM'd files import cleanly
 - **Share by link** - copy a link that opens your exact config (compressed into the link itself, nothing is uploaded)
 - **Quality of life** - fold any panel by clicking its header (remembered between visits), autosave (your work survives a closed tab), 30-level undo, two-step deletes, an editable live JSON panel, Ctrl+S export, and an ⓘ explainer on every single control
@@ -90,13 +91,13 @@ That said, **I'm happy to make updates** if something doesn't work for you:
 Other free, single-file Beat Saber tools by MSploit:
 
 - **[Playlist Studio](https://spanky3651.github.io/Playlist-Studio/?utm_source=github&utm_campaign=readme-hsv-generator)** - Build Beat Saber playlists from BeatLeader and BeatSaver, with your own scores on every map, PP math, and a ready-to-play `.bplist` export.
-- **[ReeSaber Studio](https://spanky3651.github.io/ReeSaber-Studio/?utm_source=github&utm_campaign=readme-hsv-generator)** - A visual preset editor for the ReeSabers mod, with a live 3D preview and `.json` / `.reesaber` export.
+- **[ReeSaber Studio](https://spanky3651.github.io/ReeSaber-Studio/?utm_source=github&utm_campaign=readme-hsv-generator)** - A visual preset editor for the ReeSabers mod, with curve and gradient editors, a live 3D swing-test preview, a preset gallery, and `.json` / `.reesaber` export.
 
 ---
 
 <div align="center">
 
-**Developed by [MSploit](https://beatleader.com/u/76561199153577883)** · [BeatLeader profile](https://beatleader.com/u/76561199153577883)
+**Developed by [MSploit](https://beatleader.com/u/msploit)** · [BeatLeader profile](https://beatleader.com/u/msploit)
 
 *Not affiliated with Beat Games or the HitScoreVisualizer maintainers.*
 
