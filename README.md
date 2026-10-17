@@ -62,7 +62,7 @@ Templates mix literal text, TextMeshPro tags, and tokens:
 | `%n` | newline |
 | `%p` | percent of 115 |
 
-The generator opens with the **official HSV default template** (taken from the mod's source, including its trick of opening a `<u>` tag via `%C` so underline only appears on max-accuracy cuts). Everything is a plain HTML file with inline CSS/JS - no frameworks, no build step, no server. Open it from disk or from the live URL; both work identically. The only feature that needs the network is Push to Quest, which loads the [ya-webadb](https://github.com/yume-chan/ya-webadb) ADB stack from a CDN on first use.
+The generator opens with the **official HSV default template** (taken from the mod's source, including its trick of opening a `<u>` tag via `%C` so underline only appears on max-accuracy cuts). Everything is a plain HTML file with inline CSS/JS - no frameworks, no build step, no server. Open it from disk or from the live URL; both work identically. Push to Quest uses the [ya-webadb](https://github.com/yume-chan/ya-webadb) ADB stack (MIT), bundled into the page as one matched release, so it needs no network either.
 
 ## Push to Quest
 
