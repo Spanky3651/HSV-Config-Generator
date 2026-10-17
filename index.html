@@ -133,6 +133,9 @@
   button.cyan{border-color:var(--red);color:#ffc2cf;background:linear-gradient(180deg,#2a0f18,#1a0810);}
   button.cyan:hover{box-shadow:0 0 16px rgba(255,45,85,.4);border-color:var(--red);}
   button.ghost{background:transparent;}
+  button.caution{background:transparent;border-color:rgba(255,194,61,.45);color:#ffe4ad;}
+  button.caution:hover{border-color:var(--amber);box-shadow:0 0 14px rgba(255,194,61,.3);color:#fff;}
+  button.tiny[aria-pressed="true"]{border-color:var(--blue);color:#cfe4ff;background:#0f1d30;}
   button.danger{color:var(--danger);border-color:#3a1a24;}
   button.danger:hover{border-color:var(--danger);box-shadow:0 0 12px rgba(255,77,109,.35);color:#fff;}
   button.violet{border-color:var(--magenta);color:#ecc4ff;background:linear-gradient(180deg,#1d1030,#120a1e);}
@@ -242,6 +245,9 @@
   .jgrow{flex:1;min-width:0;}
   .jcard textarea{min-height:40px;line-height:1.45;font-size:14px;font-family:var(--mono);}
   .jcard .jrow2{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;}
+  .jlist.compact .jcard{padding-top:8px;padding-bottom:8px;}
+  .jlist.compact .jcard .jrow1{margin-bottom:0;}
+  .jlist.compact .jcard .jrow2,.jlist.compact .jcard .jrow1 label.field{display:none;}
   .alpha-wrap{flex:1;min-width:140px;}
   .jcard-tools{display:flex;gap:5px;margin-left:auto;}
   .hexwrap{width:104px;flex:none;}
@@ -303,10 +309,19 @@
     0%{transform:translate(-50%,-36%) scale(.35);opacity:0;}
     10%{transform:translate(-50%,-53%) scale(1.12);opacity:1;}
     20%{transform:translate(-50%,-50%) scale(1);}
-    55%{transform:translate(-50%,-58%) scale(1);opacity:1;}
-    100%{transform:translate(-50%,-88%) scale(.9);opacity:0;}
+    55%{transform:translate(calc(-50% + var(--ox,0px)*.35),calc(-58% + var(--oy,0px)*.35)) scale(1);opacity:1;}
+    100%{transform:translate(calc(-50% + var(--ox,0px)),calc(-88% + var(--oy,0px))) scale(.9);opacity:0;}
+  }
+  /* fixedPosition: pops in where it is and stays put, no drift */
+  @keyframes hitfixed{
+    0%{transform:translate(-50%,-50%) scale(.35);opacity:0;}
+    10%{transform:translate(-50%,-50%) scale(1.12);opacity:1;}
+    20%{transform:translate(-50%,-50%) scale(1);}
+    80%{transform:translate(-50%,-50%) scale(1);opacity:1;}
+    100%{transform:translate(-50%,-50%) scale(1);opacity:0;}
   }
   .hittext.live{animation:hitlife 1.3s cubic-bezier(.18,.7,.35,1) both;}
+  .stage.pos-fixed .hittext.live{animation-name:hitfixed;}
   .stage .block{
     position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
     width:44px;height:44px;border-radius:8px;
@@ -342,6 +357,8 @@
   textarea.json{width:100%;min-height:280px;font-family:var(--mono);font-size:12.5px;line-height:1.55;background:#05080b;border:1px solid var(--border-2);border-radius:var(--r-sm);padding:12px;color:#cfe0f5;resize:vertical;white-space:pre;overflow:auto;}
 
   /* ---------- Token reference ---------- */
+  .tokenchip{cursor:pointer;transition:.12s;}
+  .tokenchip:hover,.tokenchip:focus{border-color:var(--blue);color:#fff;outline:none;}
   .tokenchip{display:inline-block;font-family:var(--mono);font-size:12.5px;background:rgba(47,140,255,.1);border:1px solid rgba(47,140,255,.35);color:#cfe4ff;padding:3px 9px;border-radius:20px;margin:2px 3px 2px 0;cursor:help;font-weight:600;}
   .tokenchip.c2{background:rgba(255,45,85,.1);border-color:rgba(255,45,85,.35);color:#ffc2cf;}
   .legend{font-size:13px;color:var(--muted);line-height:1.75;font-family:var(--mono);}
@@ -533,6 +550,22 @@
   .rp-sug table{border-collapse:collapse;font-family:var(--mono);font-size:13.5px;margin:8px 0 10px;}
   .rp-sug td{padding:3px 14px 3px 0;}
   .rp-sug td.chg{color:var(--green);font-weight:700;}
+  .rp-files{display:flex;flex-direction:column;gap:5px;margin:0 0 12px;}
+  .rp-file{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;font-family:var(--mono);font-size:13px;color:var(--muted);background:#070a0f;border:1px solid var(--border);border-radius:7px;padding:4px 6px 4px 10px;}
+  .rp-file .rp-fn{color:#dfe8f2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rp-skip{margin-top:10px;border:1px solid rgba(255,194,61,.4);background:rgba(255,194,61,.06);border-radius:var(--r-sm);padding:9px 11px;font-size:13px;color:#ffe4ad;}
+  .rp-skip[hidden]{display:none;}
+  .rp-skip-h{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;margin-bottom:4px;}
+  .rp-skip-row{font-family:var(--mono);font-size:12.5px;line-height:1.6;word-break:break-word;}
+  .rp-skip-row b{color:#fff;}
+  .rp-even{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:14px;}
+  .rp-opt{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);cursor:pointer;}
+  .rp-opt select{padding:4px 24px 4px 8px;font-size:13px;width:auto;}
+  .rp-opt input[type=checkbox]{width:15px;height:15px;margin:0;accent-color:var(--green);}
+  .rp-strips{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;margin:8px 0 10px;font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .rp-scale{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted-2);margin-top:-2px;}
+  .rp-chain-h{font-family:var(--mono);font-size:12px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.8px;margin:16px 0 4px;}
+  .rp-note{font-size:13px;color:var(--muted);margin-top:12px;}
 
   /* ---------- Bad cut / miss rows ---------- */
   .ev-row{display:grid;grid-template-columns:auto minmax(0,1fr) 34px 30px;gap:7px;align-items:center;margin-bottom:7px;}
@@ -542,6 +575,29 @@
   .ev-row .swatch{width:34px;height:34px;}
   .ev-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:4px;}
   .ev-empty{font-size:12.5px;color:var(--muted-2);font-family:var(--mono);margin-bottom:9px;}
+
+  /* ---------- Chains + popup position ---------- */
+  .ch-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+  .ch-row{display:grid;grid-template-columns:66px minmax(0,1fr) 34px auto auto;gap:7px;align-items:center;}
+  .ch-row input[type=number]{padding:8px 7px;}
+  .ch-row input[type=text]{font-family:var(--mono);font-size:14px;padding:8px 9px;min-width:0;}
+  .ch-row .swatch{width:34px;height:34px;}
+  .ch-row .fadebox{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted);font-family:var(--mono);cursor:pointer;user-select:none;}
+  .ch-row .fadebox input{width:15px;height:15px;margin:0;accent-color:var(--blue);}
+  .link-row{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:7px;align-items:center;}
+  .link-row input[type=text]{font-family:var(--mono);font-size:14px;padding:8px 9px;min-width:0;}
+  .link-row .swatch{width:34px;height:34px;}
+  .posgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;}
+  .poscard{border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 12px;background:#070a0f;}
+  .xyz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px;}
+  .xyz[hidden]{display:none;}
+  .xyz label{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12.5px;color:var(--muted);}
+  .xyz input{min-width:0;padding:7px 8px;}
+  @media (max-width:640px){
+    .posgrid{grid-template-columns:1fr;}
+    .ch-row{grid-template-columns:58px minmax(0,1fr) 34px;}
+    .ch-row .fadebox{grid-column:1 / 3;}
+  }
 
   /* ---------- Preview view controls, backgrounds, vision ---------- */
   .vrow{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:8px 10px;align-items:center;margin-top:10px;}
@@ -571,6 +627,14 @@
   .qload-row{display:flex;gap:8px;align-items:center;}
   .qload-row select{flex:1;min-width:0;}
 
+  /* ---------- Errors / backup notes inside dialogs ---------- */
+  .errlist{margin:6px 0 10px;padding:0 0 0 18px;color:#ffc7d1;font-size:13.5px;line-height:1.55;}
+  .errlist li{margin-bottom:4px;}
+  .errbox{border:1px solid rgba(255,77,109,.45);background:rgba(255,30,60,.07);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:12px;}
+  .errbox p{margin:0 0 4px;color:#ffc7d1;}
+  .errbox b{color:var(--danger);}
+  .bak-note{color:#a9f2d8;font-size:13px;}
+
   /* ---------- Generic confirm dialog ---------- */
   .gmodal{position:fixed;inset:0;z-index:320;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.78);backdrop-filter:blur(4px);padding:20px;}
   .gmodal[hidden]{display:none;}
@@ -592,6 +656,7 @@
   .wn-body{padding:4px 18px;overflow:auto;}
   .wn-item{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #12151d;}
   .wn-item:last-child{border-bottom:0;}
+  .wn-item[hidden]{display:none;}
   .wn-ic{width:32px;height:32px;flex:none;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#1e6bff14;border:1px solid #1e6bff33;color:#2f8cff;font-size:15px;}
   .wn-t{font-size:15px;font-weight:800;color:#fff;margin:0 0 2px;}
   .wn-d{font-size:13px;color:var(--muted);line-height:1.5;margin:0;}
@@ -643,7 +708,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     <div class="logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFwAAABcCAYAAADj79JYAAAGi0lEQVR42u3dW2wUVRgH8P93zlx2t8sWSsVSoIAiapGolIiooV4w0SAXHzQmgmLUSEBRDBpfTHyQYMQLJhgUjAngA4khgheIQgtCgiiCCgJppbXScBOpZXfbzuzMnONDKQFapC07072c/1ubdjbz69nvfN9Mpku4grBwbATzvHsBORGQNwB0LYAIgELkRv4loEkCNRL0K5diS8pp2wHA7e0Bqae/oPGiGHFrtgSeAFCBfAuhCZJWc8gP7VTrYd/ATYNHPTJehaQXAPSHigDkKhL0uuO2Hk0ruKEXTBMklwEYppw7JSmlXOg5bSsAyCsDv6rI5Gesdwh4XrleDpK+kp450/Wa4r0C13hRTHJrPQH3KM5uqx8UTJsi2uINPQLXeFEM3KoCMF4p9hj9iEfsHmkl67vs7LoqI5Jb6xV2LyNRxj1RbRqxkm6Bn63Zqoxc2Sof7sH9KtYvEu7ke/4XeqhgOiTeU2JpSakjqFh4ztddgpsGjwrJv8mhKTETMp4Y3yuFW9uppHhkvqL6bB+qC2PLogWhyAUrXONFMZC7FkBIEaU9ha5HjhDO9+dWOHFrthrXfd1EX+Ksf+E58LMXolT8S3/iztPtJSYcG8E8909l4v8U6tqtYxjz3PuURiADUbkWjo5hAG5XGgFFyAdZ+50alWBWuZzAABqpJALLTUxNloHmaob2m74qAQ1BDF1dolXxK0xhBxwtkBchwgPhQlQYBTCIMgqgTQpstxLYbiVyA7xcD2PtoFG40Qhn9Mrb0hrHzFOHcVq4vr4OaUZE+nXwEq5hd+lYlGh6Vrzd99otmHTsIGz4RuLvhvla4ZCswQaAcWYB5heW+Ltr+nnwqZHsa/FnRYuzF3yQZmQd+EjdzF7wOsfKOvCjTip7wT9NnMo68HWtTdkLvjxxEjsC6m/TkT9dG0vix7MX3JHAtBM1WNfSlPHYO6047j92CM2el719+PkZq0dQGe6HEq4jU2ZNCeBvz8FuuxW77ASCgAgMXCWAkqKiwBW4AldR4LmUQG5APDxjOl588XlUVFQgZJqBnZzneait/QMrVn6Cjz5eCdd1+xzc97Zw8eI3sfDlBX1+ot9s3IRHHn0MjtO36Jxx/Q2/Dj71oSn4YGlmPFAx+rrrYJgmqqq25u4K3/LdJlRWTsqY+mnZNkaMGIXTTX13qcHXTXPcuFszasMKmSbuuGNi7nYpQoiM6xI457kLXr11W0ZhCyGwZ+8vuQu+aNFbsO1UxoB/sX4DGhsbcxf8t3378NycuXAcp8+xfz9wAPPmze/7kuZnWwgA+/f/js2bt6C0tBRDhwyBruuBlpD6unosX74Czzw7B2fi8dwffFQCLCkqClyBK3AVBZ5L0YJ5GUJkyESEB1eAKH1toZdqRqJuE9zkcQXeET02HMOmrka41J//6CTcFE7tegv//PA2gMzvcH0dfLTwQIycWYVQcbl/7x3GES2rBHEDLUe25XcNHzjhZRix4YGcSPFtCxAadHN+g8dGzwhuZGYcA8Y+kd/gWnRwoCdjDBiV3+BO81+BnozTciK/wZsPfBboySRqv8xv8H9+XgbrRDB3WJIN1UjUbczzSdOz0fD5NCQbqn19mXjtBjRueDwr+vDArodHht6JSNkkMD19TyQL6wwSDVWwT/6aNZOmugGRUyVFpUtwoRgCi2AAEsohsCQZgBPKIbCcYQAOKIeAOhSgnknCLkURTCShhgH4VlEEtMKl3EkAoBnhgwDdqEh8jifK2vtwYp8qDb/rCX50PauRAYBI8U8ANCsVH8sJ0Rrg7EcSSNgW0/QwgLsVjS85zWE/5XkydW6018lZAsIRZeNHO0hL7ZSX7BjtAQBtltPCBL2geNJevBvCpny34yt+4Sbq1DDNGAz1sWBp05agmVZb66GOb3S6Whgx5AIAu5VVWnbKpV6qdeNF02bnmEasxJPuLhCGK7VeL+7Nbqp8CrDHuSw4AFAoeg2XYiskyhRej3fJn5iwJqcc0elK7CVvQEgrWS+YVgnCQSXYs5V9Kez/BQcA0RZvgBuaKEl+qSC7MUsSve+myqdcCvt/S8rFP6fpkWdBeBdAVNl2bv0kaN7FG2RX6fZz0EI4ezRmrJKEAQBu7sEfK6cnSAItDulilm21dav09gqNzIJrOcRcSHoSwMA8LB4/EtEaBmtVxwTZ/f30ysKZHrmLkZxMoFskcD2AYrR/cmEuvAOaASQJqJOEGpJyp/RktetZvX5+/D8UKico77wbLgAAAABJRU5ErkJggg==" alt="MSploit"></div>
     <div>
       <h1>Hit Score Visualizer <span>// Config Generator</span></h1>
-      <div class="sub">SCHEMA <b id="schemaVer">v3.3.3</b> &nbsp;·&nbsp; FORMAT MODE &nbsp;·&nbsp; INTERACTIVE BUILD</div>
+      <div class="sub">SCHEMA <b id="schemaVer">v3.3.3</b> &nbsp;·&nbsp; <span id="modeTag">FORMAT MODE</span> &nbsp;·&nbsp; INTERACTIVE BUILD</div>
     </div>
   </div>
   <div class="spacer"></div>
@@ -651,8 +716,9 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     <span class="status-pill off" id="linkBadge" title="WebUSB link state"><span class="led"></span><span id="linkBadgeText">DISCONNECTED</span></span>
     <input type="file" id="importFile" accept=".json,application/json" hidden />
     <button class="ghost" id="btnUndo" disabled title="Undo last structural change (Ctrl+Z)">↶ Undo</button>
-    <button class="cyan" id="btnImport">⇪ Import JSON</button>
-    <button class="ghost" id="btnReset">↺ HSV Default</button>
+    <button class="ghost" id="btnRedo" disabled title="Redo (Ctrl+Y or Ctrl+Shift+Z)">↷ Redo</button>
+    <button class="ghost" id="btnImport" title="Open a config.json (or drop one anywhere on the page)">⇪ Import JSON</button>
+    <button class="caution" id="btnReset" title="Replace your config with HSV's own default. Undo brings yours back.">↺ HSV Default</button>
     <button class="ghost" id="btnCopy">⧉ Copy</button>
     <button class="ghost" id="btnShare" title="Copy a link that opens this exact config">🔗 Share</button>
     <button class="primary" id="btnExport">⤓ Export config.json</button>
@@ -692,17 +758,18 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     <!-- Global settings -->
     <section class="panel" id="globalPanel" data-collapse-later>
       <div class="panel-head"><span class="dot"></span><h2>Global Settings</h2></div>
-      <div class="panel-sub">Settings that apply to the whole config. <b>Display Mode</b> decides how the score is shown: <code>format</code> fills in your %-tokens (the normal choice) and <code>numeric</code> shows just the score. <code>textOnly</code>, <code>scoreOnTop</code> and <code>directions</code> show the template literally without filling tokens, so they suit plain label text. Leave the version fields as-is unless you know you need them.</div>
+      <div class="panel-sub">Settings that apply to the whole config. <b>Display Mode</b> decides how the score is shown: <code>format</code> fills in your %-tokens (the normal choice) and <code>numeric</code> shows just the score. <code>textOnly</code>, <code>scoreOnTop</code> and <code>directions</code> show the template literally without filling tokens, so they suit plain label text. <code>default</code> is what HSV does when the file has no display mode at all: your label with the score under it. Leave the version fields as-is unless you know you need them.</div>
       <div class="panel-body">
         <div class="grid-3">
           <div>
-            <label class="field">Display Mode <span class="info" data-tip="How HSV draws the score popup. format = your templates with %-tokens filled in (normal choice). numeric = just the score number, text ignored. textOnly / scoreOnTop / directions show the template literally (tokens are NOT filled in), so those pair with plain label text like FANTASTIC: textOnly = label only, scoreOnTop = score above the label, directions = label then the cut-direction arrow.">i</span></label>
+            <label class="field">Display Mode <span class="info" data-tip="How HSV draws the score popup. format = your templates with %-tokens filled in (normal choice). numeric = just the score number, text ignored. textOnly / scoreOnTop / directions show the template literally (tokens are NOT filled in), so those pair with plain label text like FANTASTIC: textOnly = label only, scoreOnTop = score above the label, directions = label then the cut-direction arrow. default = HSV's own mode when the file has no displayMode key: your label, then the score under it. Older and shared configs often use it.">i</span></label>
             <select id="displayMode">
               <option value="format">format - full token substitution</option>
               <option value="numeric">numeric - just the score number</option>
               <option value="textOnly">textOnly - label text, tokens not replaced</option>
               <option value="scoreOnTop">scoreOnTop - score above your text</option>
               <option value="directions">directions - your text + cut arrow</option>
+              <option value="">default - your text above the score (key left out)</option>
             </select>
           </div>
           <div>
@@ -730,7 +797,18 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
         </div>
         <div style="display:flex;gap:24px;margin-top:16px;flex-wrap:wrap;">
           <label class="switch"><input type="checkbox" id="doInter" /><span class="track"></span>Intermediate updates <span class="info" data-tip="On: the popup appears at contact and updates live as your follow-through completes. Off: it appears once, only when the score is final. Most players leave this on.">i</span></label>
+          <label class="switch"><input type="checkbox" id="assumeMax" /><span class="track"></span>Assume max post-swing <span class="info" data-tip="On: right after contact the popup counts your follow-through as a full 30, then corrects it once the real follow-through is measured. Off: it starts from what you've earned so far. Press Replay in the preview to see the difference.">i</span></label>
           <label class="switch"><input type="checkbox" id="isDefault" /><span class="track"></span>Is default config <span class="info" data-tip="Marks this file as HSV's own built-in default. Keep it OFF for custom configs - the mod may overwrite or ignore files flagged as its default.">i</span></label>
+        </div>
+        <div class="posgrid">
+          <div class="poscard">
+            <label class="switch"><input type="checkbox" id="fixedOn" /><span class="track"></span>Fixed position <span class="info" data-tip="Every popup appears at this one spot and stays there instead of floating away, and each new one replaces the last. Values are in-game units (about a meter each). The mod doesn't document which way each axis points, so the starting values are the example from the mod's own README. Check the spot in game and adjust.">i</span></label>
+            <div class="xyz" data-vec="fixedPosition"></div>
+          </div>
+          <div class="poscard">
+            <label class="switch"><input type="checkbox" id="offsetOn" /><span class="track"></span>Target position offset <span class="info" data-tip="Shifts where every popup drifts to as it fades out. In-game units, about a meter each. Ignored while Fixed position is on.">i</span></label>
+            <div class="xyz" data-vec="targetPositionOffset"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -741,6 +819,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
         <span class="dot"></span><h2>Judgment Manager</h2>
         <div class="head-actions">
           <span class="count" id="jCount">0 tiers</span>
+          <button class="tiny ghost" id="btnCompact" aria-pressed="false" title="One line per tier. Turn it off to edit alpha, hex and Fade.">▤ Compact</button>
           <button class="tiny" id="btnSort">⇅ Sort desc</button>
           <button class="tiny primary" id="btnAddJudgment">+ Add tier</button>
         </div>
@@ -768,12 +847,19 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <input type="file" id="replayFile" accept=".bsor" multiple hidden>
           <span class="dz-ic">⇪</span><span><b>Drop .bsor replays here</b> or click to choose files</span>
         </label>
+        <div class="rp-skip" id="replaySkipped" hidden></div>
         <div id="replayOut" hidden>
           <div class="rp-sum" id="replaySum"></div>
+          <div class="rp-files" id="replayFiles"></div>
           <div class="rp-head"><span>Tier</span><span>Share of your cuts</span><span>Cuts</span></div>
           <div id="replayDist"></div>
           <div class="rp-subs" id="replaySubs"></div>
-          <div class="qbtns" style="margin-top:12px;"><button class="primary tiny" id="btnEvenTiers">⚖ Even out tiers</button></div>
+          <div id="replayChain"></div>
+          <div class="rp-even">
+            <button class="primary tiny" id="btnEvenTiers">⚖ Even out tiers</button>
+            <label class="rp-opt">Min gap <select id="evenGap"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="5">5</option></select> <span class="info" data-tip="The smallest step allowed between two suggested thresholds. One-point steps (113, 112, 111) are hard to tell apart at speed, so 2 or more is easier to read in game.">i</span></label>
+            <label class="rp-opt"><input type="checkbox" id="evenFloor" checked> Keep my lowest tier for rare bad cuts <span class="info" data-tip="On: your 0 catch-all tier is kept for your worst few cuts (about 2% of them), so its color still means a bad cut. Off: it gets an equal share like the others.">i</span></label>
+          </div>
           <div id="replaySuggest"></div>
         </div>
       </div>
@@ -836,10 +922,31 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
       </div>
     </section>
 
+    <!-- Chains (burst sliders) -->
+    <section class="panel" id="chainPanel" data-collapsed>
+      <div class="panel-head"><span class="dot" style="background:var(--magenta);box-shadow:0 0 8px var(--magenta)"></span><h2>Chains (Burst Sliders)</h2><span class="count" id="chainCount"></span></div>
+      <div class="panel-sub">A chain is an arrow block followed by a trail of small links. The <b>head</b> scores up to <b>85</b> (70 pre-swing + 15 accuracy, no follow-through) and every <b>link</b> is a flat 20. Leave both off and the game shows its normal chain scores. Preview them with the <b>Chain head</b> and <b>Chain link</b> buttons in the preview.</div>
+      <div class="panel-body">
+        <div class="subgrid">
+          <div class="subcard" style="grid-column:1 / -1;">
+            <h3>Chain head text <span class="info" data-tip="Works like the Judgment Manager, but for chain heads (0-85). Rows read top-down and the first threshold the head's score reaches wins. Tokens and colors work the same way. %a and %A always use 0 because a chain head has no follow-through.">i</span></h3>
+            <label class="switch" style="margin-bottom:10px;"><input type="checkbox" id="chainOn" /><span class="track"></span>Custom chain head text</label>
+            <div class="ch-rows" id="chainRows"></div>
+            <div class="ev-foot"><button class="tiny" id="btnAddChain">+ Add row</button><button class="tiny ghost" id="btnChainFromTiers" title="Rebuild these rows from your tiers: each threshold moves down 30 points, text and colors stay">⇣ Copy from my tiers</button></div>
+          </div>
+          <div class="subcard">
+            <h3>Chain link text <span class="info" data-tip="One text shown on every chain link you hit. Links always score 20, so score tokens don't change anything here. The mod's own example is a faint dot.">i</span></h3>
+            <label class="switch" style="margin-bottom:10px;"><input type="checkbox" id="linkOn" /><span class="track"></span>Custom chain link text</label>
+            <div id="linkRow"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Token legend -->
     <section class="panel" id="tokenPanel" data-collapsed>
       <div class="panel-head"><span class="dot"></span><h2>Text Token Reference</h2></div>
-      <div class="panel-sub">Inside a tier's <b>text template</b>, these <code>%</code> tokens get replaced with live values when you cut a block. Hover any chip for its meaning. Lowercase = raw numbers; uppercase = the text swaps from the Sub-Judgments panel.</div>
+      <div class="panel-sub">Inside a tier's <b>text template</b>, these <code>%</code> tokens get replaced with live values when you cut a block. <b>Click a chip</b> to insert it into the template you last clicked in. Hover any chip for its meaning. Lowercase = raw numbers; uppercase = the text swaps from the Sub-Judgments panel.</div>
       <div class="panel-body">
         <div style="margin-bottom:12px;">
           <span class="tokenchip" title="Total cut score">%s</span>
@@ -901,7 +1008,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <div class="simrow"><label>Cut side <span class="info" data-tip="Which side of the note's center line your saber passed. The %d token draws an arrow from your cut toward the center (cut left of center shows →). There is no arrow on a perfect 15 accuracy cut, same as in game.">i</span></label><select id="simSide" style="flex:1"><option value="left">Left of center (→)</option><option value="right">Right of center (←)</option><option value="above">Above center (↓)</option><option value="below">Below center (↑)</option><option value="random">Random each replay</option></select></div>
           <div class="preset-row" id="presetRow"></div>
         </div>
-        <div class="inline-note"><b>Stream</b> fires a quick burst of cuts (your replay cuts when one is loaded) to check that the text stays readable at speed. Replay mimics the in-game decay - pop in, drift upward, fade out - then rests visible for editing. Colors include the Fade blend. Releasing a slider re-triggers the replay; clicking the spectrum bar jumps the sim to any score.</div>
+        <div class="inline-note"><b>Stream</b> fires a quick burst of cuts (your replay cuts when one is loaded) to check that the text stays readable at speed. Replay mimics the in-game decay - pop in, drift upward, fade out - then rests visible for editing. It also plays the follow-through: the score starts without it and climbs (Intermediate updates on) or jumps once at the end (off), or starts from a full 30 with Assume max post-swing. Colors include the Fade blend. Releasing a slider re-triggers the replay; clicking the spectrum bar jumps the sim to any score.</div>
       </div>
     </section>
 
@@ -1023,7 +1130,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
     <div class="foot-more">More Beat Saber tools: <a href="https://spanky3651.github.io/Playlist-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">Playlist Studio</a><span class="sep">&middot;</span><a href="https://spanky3651.github.io/ReeSaber-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">ReeSaber Studio</a></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-12T15:26:00Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-17T11:23:00Z">Last updated recently</div>
   </div>
 </div>
 
@@ -1067,15 +1174,21 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
 
 <!-- What's New (shown until dismissed, then never again) -->
 <div class="wn-back" id="whatsnewBack" hidden>
-  <div class="wn-card" role="dialog" aria-modal="true" aria-label="What's new in HSV Config Generator">
-    <div class="wn-head"><span class="wn-star">★</span><h3>What's New</h3><span class="wn-chip">6 updates</span></div>
+  <div class="wn-card" role="dialog" aria-modal="true" aria-label="What's new in HSV Config Generator" id="wnCard">
+    <div class="wn-head"><span class="wn-star">★</span><h3 id="wnTitle">What's New</h3><span class="wn-chip" id="wnChip">updates</span></div>
     <div class="wn-body">
-      <div class="wn-item"><span class="wn-ic">⇪</span><div><p class="wn-t">Tune from your replays</p><p class="wn-d">Drop BeatLeader .bsor replays to see how often each tier really shows up for your cuts, then even out the thresholds in one click.</p></div></div>
-      <div class="wn-item"><span class="wn-ic">⇩</span><div><p class="wn-t">Load from your Quest</p><p class="wn-d">Open a config that's already on your headset, edit it, and push it back. You see what changed before anything is overwritten.</p></div></div>
-      <div class="wn-item"><span class="wn-ic">▦</span><div><p class="wn-t">Starter templates</p><p class="wn-d">Clean numbers, an accuracy trainer, aim arrows, a hype setup with words, and a colorblind-friendly set.</p></div></div>
-      <div class="wn-item"><span class="wn-ic">✕</span><div><p class="wn-t">Bad cut and miss text</p><p class="wn-d">Set your own text and colors for misses, wrong-direction cuts, wrong-saber cuts and bombs.</p></div></div>
-      <div class="wn-item"><span class="wn-ic">🔗</span><div><p class="wn-t">Share by link</p><p class="wn-d">Copy a link that opens your exact config. Great for Discord and Reddit.</p></div></div>
-      <div class="wn-item"><span class="wn-ic">≋</span><div><p class="wn-t">Better previews</p><p class="wn-d">A fast stream of cuts, bright and colored backgrounds, a colorblind view, side-by-side compare, and your work now saves automatically.</p></div></div>
+      <div class="wn-item" data-wn="drop" data-welcome><span class="wn-ic">⇣</span><div><p class="wn-t">Drop files anywhere</p><p class="wn-d">Drag a .bsor replay or a .json config onto the page. Replays go to the tuner and configs import. No buttons needed.</p></div></div>
+      <div class="wn-item" data-wn="chains" data-welcome><span class="wn-ic">⋯</span><div><p class="wn-t">Chains</p><p class="wn-d">Set your own text for chain heads and chain links, preview both, and see how the chain heads in your replays split.</p></div></div>
+      <div class="wn-item" data-wn="settings"><span class="wn-ic">◎</span><div><p class="wn-t">Every HSV setting</p><p class="wn-d">Fixed position, target offset, assume max post-swing, and the default display mode older configs use. Configs without a display mode now import untouched.</p></div></div>
+      <div class="wn-item" data-wn="safety"><span class="wn-ic">✓</span><div><p class="wn-t">Safer exports and pushes</p><p class="wn-d">Export and Push warn you about errors first, and a push keeps the headset's old copy as a .bak you can load back.</p></div></div>
+      <div class="wn-item" data-wn="tuning"><span class="wn-ic">⚖</span><div><p class="wn-t">Smarter tier tuning</p><p class="wn-d">Even out tiers keeps a minimum gap, saves your bad-cut color for real bad cuts, and lets you stream the result before applying it.</p></div></div>
+      <div class="wn-item" data-wn="editing"><span class="wn-ic">↷</span><div><p class="wn-t">Faster editing</p><p class="wn-d">Redo, click a token to insert it into a template, a compact tier list, and the preview now plays the follow-through like the game.</p></div></div>
+      <div class="wn-item" data-wn="replays" data-welcome><span class="wn-ic">⇪</span><div><p class="wn-t">Tune from your replays</p><p class="wn-d">Drop BeatLeader .bsor replays to see how often each tier really shows up for your cuts, then even out the thresholds in one click.</p></div></div>
+      <div class="wn-item" data-wn="quest-load" data-welcome><span class="wn-ic">⇩</span><div><p class="wn-t">Load from your Quest</p><p class="wn-d">Open a config that's already on your headset, edit it, and push it back. You see what changed before anything is overwritten.</p></div></div>
+      <div class="wn-item" data-wn="templates" data-welcome><span class="wn-ic">▦</span><div><p class="wn-t">Starter templates</p><p class="wn-d">Clean numbers, an accuracy trainer, aim arrows, a hype setup with words, and a colorblind-friendly set.</p></div></div>
+      <div class="wn-item" data-wn="events"><span class="wn-ic">✕</span><div><p class="wn-t">Bad cut and miss text</p><p class="wn-d">Set your own text and colors for misses, wrong-direction cuts, wrong-saber cuts and bombs.</p></div></div>
+      <div class="wn-item" data-wn="share" data-welcome><span class="wn-ic">🔗</span><div><p class="wn-t">Share by link</p><p class="wn-d">Copy a link that opens your exact config. Great for Discord and Reddit.</p></div></div>
+      <div class="wn-item" data-wn="previews" data-welcome><span class="wn-ic">≋</span><div><p class="wn-t">Better previews</p><p class="wn-d">A fast stream of cuts, bright and colored backgrounds, a colorblind view, side-by-side compare, and your work saves automatically.</p></div></div>
     </div>
     <div class="wn-foot"><button type="button" class="primary" id="whatsnewClose" style="width:100%;justify-content:center;">Got it</button></div>
   </div>
@@ -1361,7 +1474,8 @@ function tmpToHtml(str){
    RENDER: Global settings
    ========================================================================= */
 function renderGlobals(){
-  document.getElementById("displayMode").value = state.displayMode;
+  document.getElementById("displayMode").value = state.displayMode||"";
+  updateModeTag();
   document.getElementById("tdPrecision").value = state.timeDependencyDecimalPrecision;
   document.getElementById("tdOffset").value = state.timeDependencyDecimalOffset;
   document.getElementById("verMajor").value = state.majorVersion;
@@ -1369,8 +1483,35 @@ function renderGlobals(){
   document.getElementById("verPatch").value = state.patchVersion;
   document.getElementById("doInter").checked = !!state.doIntermediateUpdates;
   document.getElementById("isDefault").checked = !!state.isDefaultConfig;
+  document.getElementById("assumeMax").checked = !!state.assumeMaxPostSwing;
+  renderVec("fixedPosition","fixedOn");
+  renderVec("targetPositionOffset","offsetOn");
   document.getElementById("schemaVer").textContent = "v"+state.majorVersion+"."+state.minorVersion+"."+state.patchVersion;
 }
+/* Fixed position / target offset: an {x,y,z} in game units, or left out of the file */
+const VEC_SEED={fixedPosition:{x:0,y:3,z:-2}, targetPositionOffset:{x:0,y:0,z:0}};
+function renderVec(key, toggleId){
+  const v=state[key], on=!!v;
+  document.getElementById(toggleId).checked=on;
+  const box=document.querySelector('.xyz[data-vec="'+key+'"]');
+  box.hidden=!on;
+  if(!on){ box.innerHTML=""; return; }
+  box.innerHTML=["x","y","z"].map(a=>'<label>'+a.toUpperCase()+' <input type="number" step="0.1" data-axis="'+a+'" value="'+(Number(v[a])||0)+'"></label>').join("");
+  box.querySelectorAll("input").forEach(inp=>inp.addEventListener("input",()=>{
+    const n=parseFloat(inp.value); if(isNaN(n)) return;
+    state[key][inp.dataset.axis]=n; refreshLive();
+  }));
+}
+function toggleVec(key, on){
+  pushUndo();
+  claimKey(key);
+  if(on) state[key]=clone(VEC_SEED[key]);
+  else delete state[key];
+  renderGlobals(); refreshLive();
+  if(on) track(key==="fixedPosition"?"fixed-position":"position-offset");
+}
+const MODE_TAGS={format:"FORMAT MODE",numeric:"NUMERIC MODE",textOnly:"TEXT ONLY MODE",scoreOnTop:"SCORE ON TOP MODE",directions:"DIRECTIONS MODE","":"DEFAULT MODE"};
+function updateModeTag(){ const el=document.getElementById("modeTag"); if(el) el.textContent=MODE_TAGS[state.displayMode||""]||"CUSTOM MODE"; }
 
 /* =========================================================================
    RENDER: Judgment cards
@@ -1566,6 +1707,27 @@ function currentTier(){
    ev.event: "cut" (default), "miss" or "bad" (ev.badType: WrongDirection / WrongColor / Bomb). */
 function renderEvent(ev, cfg=state){
   const kind = ev.event||"cut";
+  if(kind==="chainLink"){
+    const d=cfg.chainLinkDisplay;
+    if(!d) return {kind, total:null, tier:null, color:"#e6edf3", chip:"GAME DEFAULT", stageTier:"CHAIN LINK",
+      html:'<span style="font-size:1.1em;font-weight:800">20</span><br><span style="font-size:11px;color:#8593a0;font-family:var(--mono);font-weight:400">no chain link text set - the game shows its own</span>'};
+    const c=colorOf(d.color);
+    return {kind, total:null, tier:null, color:rgbaCss(c), hex:rgbaToHex(c), chip:"CHAIN LINK TEXT", stageTier:"CHAIN LINK",
+      html: tmpToHtml(String(d.text||"")) || '<span style="opacity:.4">(empty)</span>'};
+  }
+  if(kind==="chainHead"){
+    const hv={pre:ev.pre, acc:ev.acc, post:0, timeDep:ev.timeDep||0, side:ev.side};   // no follow-through on a chain head
+    const total=hv.pre+hv.acc, list=cfg.chainHeadJudgments;
+    if(!Array.isArray(list) || !list.length) return {kind, total, tier:null, color:"#e6edf3", chip:"GAME DEFAULT", stageTier:"CHAIN HEAD · "+total,
+      html:'<span style="font-size:1.5em;font-weight:800">'+total+'</span><br><span style="font-size:11px;color:#8593a0;font-family:var(--mono);font-weight:400">no chain head text set - the game shows its own</span>'};
+    const tier=pickJudgment(list,total);
+    if(!tier) return {kind, total, tier:null, color:"#e6edf3", chip:"NO ROW", stageTier:"CHAIN HEAD · "+total,
+      html:'<span style="font-size:1.5em;font-weight:800">'+total+'</span><br><span style="font-size:11px;color:#8593a0;font-family:var(--mono);font-weight:400">below every chain head row - vanilla score shown</span>'};
+    const eff=effectiveColorFor(total,cfg,list)||tier.color, effHex=rgbaToHex(eff);
+    return {kind, total, tier, eff, hex:effHex, color:rgbaCss(eff), chip:"CHAIN "+tier.threshold+(tier.fade?" ⇡":""),
+      stageTier:"CHAIN HEAD · "+total+" · "+effHex.toUpperCase(),
+      html: tmpToHtml(modeText(cfg,tier,hv,total)) || '<span style="opacity:.4">(empty)</span>'};
+  }
   if(kind!=="cut"){
     const disp = pickEventDisplay(cfg, kind, ev.badType, ev.evIndex);
     const label = kind==="miss" ? "MISS" : "BAD CUT · "+BAD_TYPE_LABEL[ev.badType||"WrongDirection"].toUpperCase();
@@ -1585,22 +1747,22 @@ function renderEvent(ev, cfg=state){
   }
   const eff = effectiveColorFor(total, cfg) || tier.color;
   const effHex = rgbaToHex(eff);
-  let rendered;
-  if(cfg.displayMode==="numeric"){
-    rendered = String(total);
-  } else if(cfg.displayMode==="textOnly"){
-    rendered = String(tier.text||"");                        // mod shows the template literally (no token fill)
-  } else if(cfg.displayMode==="scoreOnTop"){
-    rendered = total + "\n" + String(tier.text||"");         // score on top, then the raw template
-  } else if(cfg.displayMode==="directions"){
-    rendered = String(tier.text||"") + "\n" + simArrow(ev);  // raw template, then the cut direction arrow
-  } else {
-    rendered = substituteTokens(tier.text||"", ev, cfg);
-  }
-  const inner = tmpToHtml(rendered);
+  const inner = tmpToHtml(modeText(cfg, tier, ev, total));
   return {kind, total, tier, eff, hex:effHex, color:rgbaCss(eff), chip:"TIER "+tier.threshold+(tier.fade?" ⇡":""),
     stageTier:tier.threshold+" · "+effHex.toUpperCase()+(tier.fade?" · FADE":""),
     html: inner || '<span style="opacity:.4">(empty)</span>'};
+}
+/* What the popup says for a tier, following the config's display mode */
+function modeText(cfg, tier, ev, total){
+  const t=String(tier.text||"");
+  switch(cfg.displayMode){
+    case "numeric":    return String(total);
+    case "textOnly":   return t;                          // mod shows the template literally (no token fill)
+    case "scoreOnTop": return total+"\n"+t;               // score on top, then the raw template
+    case "directions": return t+"\n"+simArrow(ev);        // raw template, then the cut direction arrow
+    case "format":     return substituteTokens(t, ev, cfg);
+    default:           return t+"\n"+total;               // HSV's default (no displayMode key): raw label, score under it
+  }
 }
 function renderPreview(triggerAnim){
   if(triggerAnim){ const k=Object.keys(SIDE_ARROW); simRandSide=k[Math.floor(Math.random()*k.length)]; }
@@ -1610,8 +1772,9 @@ function renderPreview(triggerAnim){
   const mk = document.getElementById("bandMarker");
   const r = renderEvent(sim);
 
-  document.getElementById("totVal").textContent = r.total===null ? (r.kind==="miss"?"MISS":"BAD") : r.total;
-  if(mk){ mk.style.display = r.total===null ? "none" : ""; if(r.total!==null) mk.style.left=(r.total/115*100)+"%"; }
+  document.getElementById("totVal").textContent = r.total===null ? ({miss:"MISS",chainLink:"LINK"}[r.kind]||"BAD") : r.total;
+  const onBand = r.total!==null && r.kind==="cut";   // the bar is the 0-115 tier scale; chain heads use their own 0-85 rows
+  if(mk){ mk.style.display = onBand ? "" : "none"; if(onBand) mk.style.left=(r.total/115*100)+"%"; }
 
   if(!r.tier){
     stage.style.color=r.color;
@@ -1627,8 +1790,40 @@ function renderPreview(triggerAnim){
     stage.style.color = r.color; // fade-blended color, alpha included
     stage.innerHTML = r.html;
   }
-  if(triggerAnim){ stage.classList.remove("live"); void stage.offsetWidth; stage.classList.add("live"); }
+  applyPositionView();
+  if(state.fixedPosition) stageTier.textContent+=" · FIXED";
+  if(triggerAnim){ stage.classList.remove("live"); void stage.offsetWidth; stage.classList.add("live"); playCutTimeline(sim); }
+  else stopClimb();
   if(typeof renderCompare==="function") renderCompare();
+}
+/* fixedPosition: no drift. targetPositionOffset: the drift ends somewhere else (about 40px per game unit; z is depth and isn't drawn) */
+function applyPositionView(){
+  const st=document.getElementById("stage"); if(!st) return;
+  st.classList.toggle("pos-fixed", !!state.fixedPosition);
+  const off=(!state.fixedPosition && state.targetPositionOffset) || null;
+  st.style.setProperty("--ox", off ? Math.max(-160,Math.min(160,(Number(off.x)||0)*40))+"px" : "0px");
+  st.style.setProperty("--oy", off ? Math.max(-160,Math.min(160,-(Number(off.y)||0)*40))+"px" : "0px");
+}
+/* In game the popup appears at contact, before the follow-through is measured.
+   It starts from 0 follow-through (or a full 30 with assumeMaxPostSwing). With intermediate
+   updates on it climbs as the swing finishes; with them off it changes once, at the end. */
+let climbTimers=[];
+function stopClimb(){ climbTimers.forEach(clearTimeout); climbTimers=[]; }
+function playCutTimeline(ev){
+  stopClimb();
+  if((ev.event||"cut")!=="cut") return;
+  const finalPost=ev.post, startPost=state.assumeMaxPostSwing ? 30 : 0;
+  if(startPost===finalPost) return;
+  const el=document.getElementById("hittext");
+  const paint=post=>{ const r=renderEvent(Object.assign({},ev,{post})); el.style.color=r.color; el.innerHTML=r.html; };
+  paint(startPost);
+  const steps=(state.doIntermediateUpdates && !state.assumeMaxPostSwing) ? 6 : 1, T=420;
+  for(let k=1;k<=steps;k++){
+    climbTimers.push(setTimeout(()=>{
+      paint(k===steps ? finalPost : Math.round(startPost+(finalPost-startPost)*k/steps));
+      if(k===steps) climbTimers=[];
+    }, 130+T*k/steps));
+  }
 }
 
 /* Score->color spectrum bar */
@@ -1677,7 +1872,9 @@ function renderPresets(){
     {n:"0",v:[0,0,0]},
     {n:"⚄ Random",v:null},
     {n:"Miss",ev:"miss"},
-    {n:"Bad cut",ev:"bad"}
+    {n:"Bad cut",ev:"bad"},
+    {n:"Chain head",ev:"chainHead"},
+    {n:"Chain link",ev:"chainLink"}
   ];
   const row=document.getElementById("presetRow");
   row.innerHTML="";
@@ -1703,6 +1900,8 @@ function syncSimSliders(){
 /* =========================================================================
    VALIDATION
    ========================================================================= */
+let lastValidation=[];   // what the panel shows right now; Export and Push check it before writing
+function validationErrors(){ return lastValidation.filter(i=>i[0]==="err").map(i=>i[1]); }
 function validate(){
   const items=[];
   const J=state.judgments;
@@ -1753,6 +1952,8 @@ function validate(){
   const noPrev=new Set();
   (state.badCutDisplays||[]).forEach((r,i)=>tagSources.push(["Bad cut text #"+(i+1),r.text]));
   (state.missDisplays||[]).forEach((r,i)=>tagSources.push(["Miss text #"+(i+1),r.text]));
+  (state.chainHeadJudgments||[]).forEach((r,i)=>tagSources.push(["Chain head row #"+(i+1),r.text]));
+  if(state.chainLinkDisplay) tagSources.push(["Chain link text",state.chainLinkDisplay.text]);
   tagSources.forEach(([where,t])=>{
     const unknown=new Set();
     (String(t||"").replace(/<noparse>[\s\S]*?(<\/noparse>|$)/gi,"").match(/<[^<>]*>/g)||[]).forEach(raw=>{
@@ -1783,12 +1984,13 @@ function validate(){
 
   // config-level sanity
   if(state.isDefaultConfig){ items.push(["warn","isDefaultConfig is true - HSV treats default configs as its own and may overwrite or ignore your edits. Keep it false for custom configs."]); }
-  const VALID_MODES=["format","numeric","textOnly","scoreOnTop","directions"];
-  if(VALID_MODES.indexOf(state.displayMode)===-1){ items.push(["err","displayMode \""+state.displayMode+"\" is not a valid HSV mode, so the config will not load. Use one of: "+VALID_MODES.join(" / ")+"."]); }
+  const VALID_MODES=["format","numeric","textOnly","scoreOnTop","directions",""];
+  if(VALID_MODES.indexOf(state.displayMode||"")===-1){ items.push(["err","displayMode \""+state.displayMode+"\" is not a valid HSV mode, so the config will not load. Use one of: format / numeric / textOnly / scoreOnTop / directions, or default (no key)."]); }
   const sortedJx=J.slice().sort((a,b)=>b.threshold-a.threshold);
   if(sortedJx.length && sortedJx[0].fade){ items.push(["err","The highest tier ("+sortedJx[0].threshold+") has Fade on. HSV rejects a config whose top judgment has fade=true - turn Fade off on the highest tier."]); }
 
   eventValidation(state).forEach(x=>items.push(x));
+  chainValidation(state).forEach(x=>items.push(x));
   colorblindIssues(state).forEach(x=>items.push(x));
 
   if(!items.some(i=>i[0]!=="info")){ items.push(["ok","Config is valid. No conflicts detected."]); }
@@ -1801,6 +2003,7 @@ function validate(){
     d.innerHTML='<span class="ico">'+icons[type]+'</span><span>'+escapeHtml(msg)+'</span>';
     body.appendChild(d);
   });
+  lastValidation=items;
   const errs=items.filter(i=>i[0]==="err").length, warns=items.filter(i=>i[0]==="warn").length;
   if(errs && typeof openPanel==="function") openPanel("valPanel");   // never hide an error
   document.getElementById("valCount").textContent = errs? (errs+" error"+(errs>1?"s":"")) : (warns? warns+" warning"+(warns>1?"s":"") : "clean");
@@ -1809,30 +2012,39 @@ function validate(){
 /* =========================================================================
    EXPORT / JSON view
    ========================================================================= */
+function exportJudgment(j){
+  return {
+    threshold:Number(j.threshold),
+    text:j.text||"",
+    color:[roundF(j.color[0]),roundF(j.color[1]),roundF(j.color[2]),roundF(j.color[3]===undefined?1:j.color[3])],
+    fade:!!j.fade,
+    ...(j._extra||{})
+  };
+}
+function exportVec(v){ return v ? {x:roundF(Number(v.x)||0), y:roundF(Number(v.y)||0), z:roundF(Number(v.z)||0), ...(v._extra||{})} : null; }
 function buildExportObject(cfg){
   const st=cfg||state;   // export the given config, or the editor state
+  // Optional keys are written only when the config uses them, so other configs export exactly as before
   const o={
     majorVersion:Number(st.majorVersion),
     minorVersion:Number(st.minorVersion),
     patchVersion:Number(st.patchVersion),
-    isDefaultConfig:!!st.isDefaultConfig,
-    displayMode:st.displayMode,
-    doIntermediateUpdates:!!st.doIntermediateUpdates,
-    timeDependencyDecimalPrecision:Number(st.timeDependencyDecimalPrecision),
-    timeDependencyDecimalOffset:Number(st.timeDependencyDecimalOffset),
-    judgments:st.judgments.map(j=>({
-      threshold:Number(j.threshold),
-      text:j.text||"",
-      color:[roundF(j.color[0]),roundF(j.color[1]),roundF(j.color[2]),roundF(j.color[3]===undefined?1:j.color[3])],
-      fade:!!j.fade,
-      ...(j._extra||{})
-    })),
-    beforeCutAngleJudgments:st.beforeCutAngleJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})),
-    accuracyJudgments:st.accuracyJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})),
-    afterCutAngleJudgments:st.afterCutAngleJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})),
-    timeDependencyJudgments:st.timeDependencyJudgments?st.timeDependencyJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})):null,
+    isDefaultConfig:!!st.isDefaultConfig
   };
-  // Bad cut / miss text: only written when the config uses them, so other configs export exactly as before
+  if(st.displayMode) o.displayMode=st.displayMode;   // left out = HSV's default mode (label above the score)
+  o.doIntermediateUpdates=!!st.doIntermediateUpdates;
+  if(st.assumeMaxPostSwing!==undefined) o.assumeMaxPostSwing=!!st.assumeMaxPostSwing;
+  o.timeDependencyDecimalPrecision=Number(st.timeDependencyDecimalPrecision);
+  o.timeDependencyDecimalOffset=Number(st.timeDependencyDecimalOffset);
+  if(st.fixedPosition!==undefined) o.fixedPosition=exportVec(st.fixedPosition);
+  if(st.targetPositionOffset!==undefined) o.targetPositionOffset=exportVec(st.targetPositionOffset);
+  o.judgments=st.judgments.map(exportJudgment);
+  if(Array.isArray(st.chainHeadJudgments)) o.chainHeadJudgments=st.chainHeadJudgments.map(exportJudgment);
+  if(st.chainLinkDisplay) o.chainLinkDisplay=exportDisplay(st.chainLinkDisplay);
+  o.beforeCutAngleJudgments=st.beforeCutAngleJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""}));
+  o.accuracyJudgments=st.accuracyJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""}));
+  o.afterCutAngleJudgments=st.afterCutAngleJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""}));
+  o.timeDependencyJudgments=st.timeDependencyJudgments?st.timeDependencyJudgments.map(r=>({threshold:Number(r.threshold),text:r.text||""})):null;
   if(Array.isArray(st.badCutDisplays)) o.badCutDisplays=st.badCutDisplays.map(exportDisplay);
   if(st.randomizeBadCutDisplays!==undefined) o.randomizeBadCutDisplays=!!st.randomizeBadCutDisplays;
   if(Array.isArray(st.missDisplays)) o.missDisplays=st.missDisplays.map(exportDisplay);
@@ -1845,7 +2057,21 @@ function updateJsonView(){
   if(document.activeElement===ta) return; // don't clobber manual edits mid-typing
   ta.value = JSON.stringify(buildExportObject(), null, 2);
 }
-function exportConfig(){
+/* Errors HSV would choke on, as a list for the Export and Push dialogs */
+function errorListHtml(errs){
+  const max=6;
+  return '<ul class="errlist">'+errs.slice(0,max).map(m=>"<li>"+escapeHtml(m)+"</li>").join("")+(errs.length>max?"<li>…and "+(errs.length-max)+" more in the Validation panel</li>":"")+"</ul>";
+}
+function showValidation(){ openPanel("valPanel"); byId("valPanel").scrollIntoView({behavior:"smooth",block:"start"}); }
+async function exportConfig(){
+  const errs=validationErrors();
+  if(errs.length){
+    const ok=await gConfirm({title:"Export with "+errs.length+" error"+(errs.length>1?"s":"")+"?",
+      html:"<p>HSV may refuse to load this file:</p>"+errorListHtml(errs)+"<p>Fix them first, or export anyway.</p>",
+      ok:"Export anyway", cancel:"Show me"});
+    if(!ok){ showValidation(); return; }
+    track("export-with-errors");
+  }
   const blob = new Blob([JSON.stringify(buildExportObject(),null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a"); a.href=url; a.download="config.json"; a.click();
@@ -1857,7 +2083,7 @@ function exportConfig(){
 /* =========================================================================
    IMPORT
    ========================================================================= */
-const KNOWN_TOP_KEYS=["badCutDisplays","randomizeBadCutDisplays","missDisplays","randomizeMissDisplays","majorVersion","minorVersion","patchVersion","isDefaultConfig","displayMode","doIntermediateUpdates","timeDependencyDecimalPrecision","timeDependencyDecimalOffset","judgments","beforeCutAngleJudgments","accuracyJudgments","afterCutAngleJudgments","timeDependencyJudgments"];
+const KNOWN_TOP_KEYS=["badCutDisplays","randomizeBadCutDisplays","missDisplays","randomizeMissDisplays","majorVersion","minorVersion","patchVersion","isDefaultConfig","displayMode","doIntermediateUpdates","assumeMaxPostSwing","timeDependencyDecimalPrecision","timeDependencyDecimalOffset","fixedPosition","targetPositionOffset","judgments","chainHeadJudgments","chainLinkDisplay","beforeCutAngleJudgments","accuracyJudgments","afterCutAngleJudgments","timeDependencyJudgments"];
 const KNOWN_J_KEYS=["threshold","text","color","fade"];
 let _colorsNormalized=0;
 
@@ -1878,23 +2104,11 @@ function normalizeConfig(obj){
     minorVersion:num(obj.minorVersion,d.minorVersion),
     patchVersion:num(obj.patchVersion,d.patchVersion),
     isDefaultConfig:!!obj.isDefaultConfig,
-    displayMode:obj.displayMode||"format",
+    displayMode:(obj.displayMode===undefined||obj.displayMode===null) ? "" : String(obj.displayMode),   // no key = HSV's default mode, kept as-is
     doIntermediateUpdates:obj.doIntermediateUpdates!==undefined?!!obj.doIntermediateUpdates:true,
     timeDependencyDecimalPrecision:num(obj.timeDependencyDecimalPrecision,0),
     timeDependencyDecimalOffset:num(obj.timeDependencyDecimalOffset,0),
-    judgments:(obj.judgments||[]).map(j=>{
-      j=j||{};
-      const jx={};
-      Object.keys(j).forEach(k=>{ if(KNOWN_J_KEYS.indexOf(k)===-1) jx[k]=clone(j[k]); });
-      const out={
-        threshold:Math.round(num(j.threshold,0)),
-        text:j.text!==undefined?String(j.text):"",
-        color:normColor(j.color),
-        fade:!!j.fade
-      };
-      if(Object.keys(jx).length) out._extra=jx;
-      return out;
-    }),
+    judgments:(obj.judgments||[]).map(normJudgment),
     beforeCutAngleJudgments:normSub(obj.beforeCutAngleJudgments,d.beforeCutAngleJudgments),
     accuracyJudgments:normSub(obj.accuracyJudgments,d.accuracyJudgments),
     afterCutAngleJudgments:normSub(obj.afterCutAngleJudgments,d.afterCutAngleJudgments),
@@ -1904,10 +2118,19 @@ function normalizeConfig(obj){
   if(obj.randomizeBadCutDisplays!==undefined) norm.randomizeBadCutDisplays=!!obj.randomizeBadCutDisplays;
   if(Array.isArray(obj.missDisplays)) norm.missDisplays=obj.missDisplays.map(normDisplay);
   if(obj.randomizeMissDisplays!==undefined) norm.randomizeMissDisplays=!!obj.randomizeMissDisplays;
+  if(obj.assumeMaxPostSwing!==undefined) norm.assumeMaxPostSwing=!!obj.assumeMaxPostSwing;
+  if(Array.isArray(obj.chainHeadJudgments)) norm.chainHeadJudgments=obj.chainHeadJudgments.map(normJudgment);
+  if(obj.chainLinkDisplay && typeof obj.chainLinkDisplay==="object" && !Array.isArray(obj.chainLinkDisplay)) norm.chainLinkDisplay=normDisplay(obj.chainLinkDisplay);
+  ["fixedPosition","targetPositionOffset"].forEach(k=>{
+    if(obj[k]===null) norm[k]=null;
+    else if(isVec(obj[k])) norm[k]=normVec(obj[k]);
+  });
   const extra={};
   Object.keys(obj).forEach(k=>{ if(KNOWN_TOP_KEYS.indexOf(k)===-1) extra[k]=clone(obj[k]); });
-  // a non-list badCutDisplays / missDisplays is kept untouched rather than dropped
-  ["badCutDisplays","missDisplays"].forEach(k=>{ if(obj[k]!==undefined && !Array.isArray(obj[k])) extra[k]=clone(obj[k]); });
+  // a value of the wrong shape is kept untouched rather than dropped
+  ["badCutDisplays","missDisplays","chainHeadJudgments"].forEach(k=>{ if(obj[k]!==undefined && !Array.isArray(obj[k])) extra[k]=clone(obj[k]); });
+  if(obj.chainLinkDisplay!==undefined && norm.chainLinkDisplay===undefined) extra.chainLinkDisplay=clone(obj.chainLinkDisplay);
+  ["fixedPosition","targetPositionOffset"].forEach(k=>{ if(obj[k]!==undefined && norm[k]===undefined) extra[k]=clone(obj[k]); });
   if(Object.keys(extra).length) norm._extra=extra;
   return norm;
 }
@@ -1923,6 +2146,26 @@ function importConfig(obj, opts){
   if(nExtra) msg+=" · preserved "+nExtra+" extra key"+(nExtra>1?"s":"");
   if(_colorsNormalized) msg+=" · normalized "+_colorsNormalized+" 0–255 color"+(_colorsNormalized>1?"s":"");
   toast(msg);
+}
+function normJudgment(j){
+  j=j||{};
+  const jx={};
+  Object.keys(j).forEach(k=>{ if(KNOWN_J_KEYS.indexOf(k)===-1) jx[k]=clone(j[k]); });
+  const out={
+    threshold:Math.round(num(j.threshold,0)),
+    text:j.text!==undefined?String(j.text):"",
+    color:normColor(j.color),
+    fade:!!j.fade
+  };
+  if(Object.keys(jx).length) out._extra=jx;
+  return out;
+}
+function isVec(v){ return !!v && typeof v==="object" && !Array.isArray(v) && ["x","y","z"].some(k=>k in v); }
+function normVec(v){
+  const out={x:num(v.x,0), y:num(v.y,0), z:num(v.z,0)};
+  const x={}; Object.keys(v).forEach(k=>{ if(["x","y","z"].indexOf(k)===-1) x[k]=clone(v[k]); });
+  if(Object.keys(x).length) out._extra=x;
+  return out;
 }
 function num(v,fb){ const n=Number(v); return isNaN(n)?fb:n; }
 function clamp01(v){ return Math.max(0,Math.min(1,v)); }
@@ -1978,6 +2221,7 @@ function renderAll(){
   renderJudgments();
   renderAllSub();
   renderEvents();
+  renderChains();
   syncSimSliders();
   renderPreview(true);
   renderBand();
@@ -2010,7 +2254,7 @@ simTime.addEventListener("input",()=>{ sim.event="cut"; sim.timeDep=(+simTime.va
 document.getElementById("btnReplay").addEventListener("click",()=>renderPreview(true));
 
 // Global settings
-document.getElementById("displayMode").addEventListener("change",e=>{ state.displayMode=e.target.value; refreshLive(); });
+document.getElementById("displayMode").addEventListener("change",e=>{ state.displayMode=e.target.value; updateModeTag(); refreshLive(); });
 document.getElementById("tdPrecision").addEventListener("input",e=>{ state.timeDependencyDecimalPrecision=clampInt(e.target.value,0,6); refreshLive(); });
 document.getElementById("tdOffset").addEventListener("input",e=>{ state.timeDependencyDecimalOffset=clampInt(e.target.value,0,6); refreshLive(); });
 document.getElementById("verMajor").addEventListener("input",e=>{ state.majorVersion=clampInt(e.target.value,0,99); refreshLive(); });
@@ -2018,6 +2262,12 @@ document.getElementById("verMinor").addEventListener("input",e=>{ state.minorVer
 document.getElementById("verPatch").addEventListener("input",e=>{ state.patchVersion=clampInt(e.target.value,0,99); refreshLive(); });
 document.getElementById("doInter").addEventListener("change",e=>{ state.doIntermediateUpdates=e.target.checked; refreshLive(); });
 document.getElementById("isDefault").addEventListener("change",e=>{ state.isDefaultConfig=e.target.checked; refreshLive(); });
+document.getElementById("assumeMax").addEventListener("change",e=>{
+  if(e.target.checked){ state.assumeMaxPostSwing=true; track("assume-max"); } else delete state.assumeMaxPostSwing;   // off is the mod's default, so the key is left out
+  refreshLive(); renderPreview(true);
+});
+document.getElementById("fixedOn").addEventListener("change",e=>toggleVec("fixedPosition",e.target.checked));
+document.getElementById("offsetOn").addEventListener("change",e=>toggleVec("targetPositionOffset",e.target.checked));
 
 // Judgment add / sort
 document.getElementById("btnAddJudgment").addEventListener("click",()=>{
@@ -2067,7 +2317,7 @@ document.getElementById("btnExport").addEventListener("click",exportConfig);
 document.getElementById("btnReset").addEventListener("click",()=>{
   pushUndo();
   state=clone(DEFAULT_HSV_CONFIG);
-  renderAll(); toast("Loaded the official HSV default template"); track("reset");
+  renderAll(); toast("Loaded the official HSV default. Undo brings yours back."); track("reset");
 });
 function copyJson(){
   track("copy-json");
@@ -2085,26 +2335,42 @@ document.getElementById("btnApplyJson").addEventListener("click",()=>{
 });
 
 /* Undo (structural changes) */
-const undoStack=[];
-function updateUndoBtn(){ const b=document.getElementById("btnUndo"); if(b) b.disabled=!undoStack.length; }
+const undoStack=[], redoStack=[];
+function updateUndoBtn(){
+  const b=document.getElementById("btnUndo"); if(b) b.disabled=!undoStack.length;
+  const r=document.getElementById("btnRedo"); if(r) r.disabled=!redoStack.length;
+}
 function pushUndo(){
   undoStack.push(JSON.stringify(state));
   if(undoStack.length>30) undoStack.shift();
+  redoStack.length=0;   // a new change starts a new branch
   updateUndoBtn();
 }
 function doUndo(){
   if(!undoStack.length){ toast("Nothing to undo",true); return; }
+  redoStack.push(JSON.stringify(state));
   state=JSON.parse(undoStack.pop());
   renderAll(); updateUndoBtn(); toast("Undone");
 }
+let redoTracked=false;
+function doRedo(){
+  if(!redoStack.length){ toast("Nothing to redo",true); return; }
+  undoStack.push(JSON.stringify(state));
+  if(undoStack.length>30) undoStack.shift();
+  state=JSON.parse(redoStack.pop());
+  renderAll(); updateUndoBtn(); toast("Redone");
+  if(!redoTracked){ track("redo"); redoTracked=true; }
+}
 document.getElementById("btnUndo").addEventListener("click",doUndo);
+document.getElementById("btnRedo").addEventListener("click",doRedo);
 document.addEventListener("keydown",e=>{
   const tag=((e.target&&e.target.tagName)||"").toLowerCase();
   const inField=(tag==="input"||tag==="textarea"||tag==="select");
   if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key&&e.key.toLowerCase()==="s"){ e.preventDefault(); exportConfig(); }
-  else if((e.ctrlKey||e.metaKey)&&e.key&&e.key.toLowerCase()==="z"&&!inField){
+  else if((e.ctrlKey||e.metaKey)&&e.key&&!inField&&(e.key.toLowerCase()==="z"||e.key.toLowerCase()==="y")){
     const dlg=document.getElementById("gModal"); if(dlg && !dlg.hidden) return;   // not behind an open dialog
-    e.preventDefault(); doUndo();
+    e.preventDefault();
+    if(e.key.toLowerCase()==="y" || e.shiftKey) doRedo(); else doUndo();
   }
 });
 document.getElementById("btnCopy").addEventListener("click",copyJson);
@@ -2357,40 +2623,51 @@ async function checkConfigsFolder(){
   }
 }
 
-async function questPush(){
-  if(!Q.adb){ qlog("Not connected.","err"); return; }
-  Q.el.push.disabled=true;
-  let go=false;
+async function questWriteText(path, text){
+  const bytes=new TextEncoder().encode(text);
+  const sync=await Q.adb.sync();
   try{
-    const dir0=Q.el.path.value.trim().replace(/\/+$/,"");
-    let fn0=((Q.el.name.value.trim().split(/[\/\\]/).pop())||"").replace(/^\.+/,"").trim()||"config.json";
-    if(!/\.json$/i.test(fn0)) fn0+=".json";
-    const html=await questPushSummary(dir0+"/"+fn0, fn0);
-    go=await gConfirm({title:"Push to Quest?",html,ok:"⚡ Push",cancel:"Cancel"});
-  }catch(e){ go=false; qlog("Could not prepare the push: "+((e&&e.message)||e),"err"); }
-  if(!go){ qlog("Push cancelled.","dim"); Q.el.push.disabled=!Q.adb; return; }
-  if(!Q.adb){ qlog("Not connected.","err"); Q.el.push.disabled=true; return; }
+    const file=new ReadableStream({ start(c){ c.enqueue(bytes); c.close(); } });
+    await sync.write({ filename:path, file, permission:0o644 });
+  } finally { try{ await sync.dispose?.(); }catch(e){} }
+  return bytes.length;
+}
+function questTarget(){
   const dir=Q.el.path.value.trim().replace(/\/+$/,"");
   // basename only, and no leading dots, so a filename cannot escape the destination folder
   let fname=((Q.el.name.value.trim().split(/[\/\\]/).pop())||"").replace(/^\.+/,"").trim()||"config.json";
   if(!/\.json$/i.test(fname)) fname+=".json";
-  const fullPath=dir+"/"+fname;
-  const json=JSON.stringify(buildExportObject(),null,2);
-  const bytes=new TextEncoder().encode(json);
+  return {dir, fname, fullPath:dir+"/"+fname};
+}
+async function questPush(){
+  if(!Q.adb){ qlog("Not connected.","err"); return; }
+  Q.el.push.disabled=true;
+  let go=false, sum=null;
+  const errs=validationErrors();
   try{
-    qlog("Pushing "+bytes.length+" bytes → "+fullPath,"dim");
-    const sync=await Q.adb.sync();
-    const file=new ReadableStream({
-      start(c){ c.enqueue(bytes); c.close(); }
-    });
-    await sync.write({
-      filename:fullPath,
-      file,
-      permission:0o644
-    });
-    await sync.dispose?.();
+    const t0=questTarget();
+    sum=await questPushSummary(t0.fullPath, t0.fname);
+    const errHtml = errs.length ? '<div class="errbox"><p><b>'+errs.length+' error'+(errs.length>1?"s":"")+'</b> - HSV may refuse to load this file:</p>'+errorListHtml(errs)+'</div>' : "";
+    go=await gConfirm({title:errs.length?"Push with errors?":"Push to Quest?", html:errHtml+sum.html, ok:errs.length?"⚡ Push anyway":"⚡ Push", cancel:"Cancel"});
+  }catch(e){ go=false; qlog("Could not prepare the push: "+((e&&e.message)||e),"err"); }
+  if(!go){ qlog("Push cancelled.","dim"); Q.el.push.disabled=!Q.adb; if(errs.length) showValidation(); return; }
+  if(!Q.adb){ qlog("Not connected.","err"); Q.el.push.disabled=true; return; }
+  const {dir, fullPath}=questTarget();
+  try{
+    // keep the headset's current copy as <name>.bak before replacing it
+    if(sum && sum.existing){
+      const oldPath=dir+"/"+sum.existing, bakPath=oldPath+".bak";
+      try{
+        const oldTxt=await questReadFile(oldPath);
+        await questWriteText(bakPath, oldTxt);
+        qlog("Saved the current copy as "+sum.existing+".bak","dim");
+      }catch(e){ qlog("Couldn't back up "+sum.existing+" ("+((e&&e.message)||e)+"). Pushing anyway.","warn"); }
+    }
+    const json=JSON.stringify(buildExportObject(),null,2);
+    qlog("Pushing "+new TextEncoder().encode(json).length+" bytes → "+fullPath,"dim");
+    await questWriteText(fullPath, json);
     qlog("✓ Pushed successfully. Select it in Beat Saber → Mods → HitScoreVisualizer.","ok");
-    track("quest-push");
+    track(errs.length?"quest-push-with-errors":"quest-push");
     toast("Pushed to Quest ✓");
     questListConfigs();
   }catch(e){
@@ -2460,6 +2737,37 @@ document.addEventListener("click",e=>{
 window.addEventListener("scroll",hideTip,true);
 // Promote token-chip titles to rich tooltips
 document.querySelectorAll(".tokenchip[title]").forEach(c=>{ c.setAttribute("data-tip",c.getAttribute("title")); c.removeAttribute("title"); });
+
+/* Click a token chip to insert it where the caret was in the last template you clicked in */
+const TPL_SEL='#jlist textarea[data-field="text"], .sub-rows input[data-k="text"], #chainRows input[data-ck="text"], #linkText, .ev-row input[data-ek="text"]';
+let lastTplField=null, tokenTracked=false;
+document.addEventListener("focusin",e=>{ if(e.target && e.target.matches && e.target.matches(TPL_SEL)) lastTplField=e.target; });
+function insertToken(tok){
+  const f=lastTplField;
+  if(!f || !f.isConnected){ toast("Click into a text template first, then click a token.",true); return; }
+  const a=(f.selectionStart!=null)?f.selectionStart:f.value.length, b=(f.selectionEnd!=null)?f.selectionEnd:a;
+  f.value=f.value.slice(0,a)+tok+f.value.slice(b);
+  try{ f.focus({preventScroll:true}); f.setSelectionRange(a+tok.length,a+tok.length); }catch(e){}
+  f.dispatchEvent(new Event("input",{bubbles:true}));
+  toast("Inserted "+tok);
+  if(!tokenTracked){ track("token-insert"); tokenTracked=true; }
+}
+document.querySelectorAll(".tokenchip").forEach(c=>{
+  c.setAttribute("role","button"); c.tabIndex=0;
+  c.addEventListener("mousedown",e=>e.preventDefault());   // keep the caret in the template
+  c.addEventListener("click",()=>insertToken(c.textContent.trim()));
+  c.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); insertToken(c.textContent.trim()); } });
+});
+
+/* Compact tier list (remembered) */
+const COMPACT_KEY="hsvGenerator.compact.v1";
+function setCompact(on, user){
+  byId("jlist").classList.toggle("compact",on);
+  const b=byId("btnCompact"); b.setAttribute("aria-pressed",on?"true":"false");
+  if(user){ storeSet(COMPACT_KEY,on?"1":"0"); if(on) track("compact-view"); }
+}
+setCompact(storeGet(COMPACT_KEY)==="1");
+byId("btnCompact").addEventListener("click",()=>setCompact(byId("btnCompact").getAttribute("aria-pressed")!=="true",true));
 
 /* Footer live usage counter - total visits from GoatCounter's public counter endpoint
    (needs "Allow adding visitor counts on your website" enabled in GoatCounter Site settings).
@@ -2625,6 +2933,7 @@ function pickEventDisplay(cfg, kind, badType, idx){
   return pool[Math.abs(idx||0) % pool.length];
 }
 function presetEvent(kind){
+  if(kind==="chainHead" || kind==="chainLink"){ sim.event=kind; renderPreview(true); return; }
   const rnd = kind==="miss" ? state.randomizeMissDisplays : state.randomizeBadCutDisplays;
   if(kind==="bad"){
     if(sim.event==="bad"){
@@ -2717,6 +3026,128 @@ byId("btnAddMiss").addEventListener("click",()=>{
 byId("randBad").addEventListener("change",e=>{ state.randomizeBadCutDisplays=e.target.checked; refreshLive(); });
 byId("randMiss").addEventListener("change",e=>{ state.randomizeMissDisplays=e.target.checked; refreshLive(); });
 
+/* ---------- Chains (burst sliders): chainHeadJudgments + chainLinkDisplay ---------- */
+const CHAIN_MAX=85;   // a chain head has no follow-through: 70 pre-swing + 15 accuracy
+const LINK_SEED={text:"<alpha=#66>•",color:[1,1,1,1]};   // the mod's own example
+function chainFromTiers(){
+  // same "points lost" meaning as each tier: a 110 tier (5 off perfect) becomes an 80 chain head row
+  // %a / %A are dropped: with no follow-through they'd always show the "short swing" text
+  const rows=state.judgments.slice().sort((a,b)=>b.threshold-a.threshold).map(j=>{
+    const r=clone(j); r.threshold=Math.max(0,Math.min(CHAIN_MAX,j.threshold-30)); r.text=String(r.text||"").replace(/%[aA]/g,""); return r;
+  });
+  const out=[]; rows.forEach(r=>{ if(!out.some(o=>o.threshold===r.threshold)) out.push(r); });   // tiers below 30 all land on 0; keep the first
+  if(out.length) out[0].fade=false;
+  return out.length ? out : [{threshold:0,text:"%s",color:[1,1,1,1],fade:false}];
+}
+function updateChainCount(){
+  const el=byId("chainCount"); if(!el) return;
+  const h=Array.isArray(state.chainHeadJudgments), l=!!state.chainLinkDisplay;
+  el.textContent = h||l ? (h?state.chainHeadJudgments.length+" head row"+(state.chainHeadJudgments.length===1?"":"s"):"head: game")+" · link: "+(l?"custom":"game") : "game default";
+}
+function renderChains(){
+  updateChainCount();
+  const on=Array.isArray(state.chainHeadJudgments);
+  byId("chainOn").checked=on;
+  byId("btnAddChain").disabled=!on; byId("btnChainFromTiers").disabled=!on;
+  const wrap=byId("chainRows"); wrap.innerHTML="";
+  if(!on){ wrap.innerHTML='<div class="ev-empty">Off - the game shows its own chain head score.</div>'; }
+  else (state.chainHeadJudgments.length ? state.chainHeadJudgments : []).forEach((r,idx)=>{
+    const c=colorOf(r.color), hex=rgbaToHex(c);
+    const row=document.createElement("div"); row.className="ch-row";
+    row.innerHTML='<input type="number" min="0" max="'+CHAIN_MAX+'" step="1" data-ck="threshold" value="'+r.threshold+'" title="Minimum chain head score (0-85)">'+
+      '<input type="text" data-ck="text" value="'+escapeAttr(r.text||"")+'" spellcheck="false" placeholder="%s">'+
+      '<div class="swatch" title="Pick color"><div class="fill" style="background:'+rgbaCss(c)+'"></div><input type="color" data-ck="color" value="'+hex+'"></div>'+
+      '<label class="fadebox" title="Blend toward the row above as the score climbs"><input type="checkbox" data-ck="fade"'+(r.fade?" checked":"")+'>Fade</label>'+
+      '<button class="tiny danger" data-ck="del" title="Delete">✕</button>';
+    row.querySelectorAll("[data-ck]").forEach(el=>{
+      const k=el.dataset.ck;
+      if(k==="del"){ el.addEventListener("click",()=>{ pushUndo(); state.chainHeadJudgments.splice(idx,1); renderChains(); refreshLive(); }); return; }
+      el.addEventListener(k==="fade"?"change":"input",()=>{
+        if(k==="threshold") r.threshold=clampInt(el.value,0,115);
+        else if(k==="text") r.text=el.value;
+        else if(k==="fade") r.fade=el.checked;
+        else if(k==="color"){
+          const rgb=hexToRgbFloats(el.value), a=r.color&&r.color[3]!==undefined?r.color[3]:1;
+          r.color=[roundF(rgb[0]),roundF(rgb[1]),roundF(rgb[2]),a];
+          el.parentElement.querySelector(".fill").style.background=rgbaCss(r.color);
+        }
+        if(sim.event==="chainHead") renderPreview(false);
+        refreshLive(); updateChainCount();
+      });
+    });
+    wrap.appendChild(row);
+  });
+  if(on && !state.chainHeadJudgments.length) wrap.innerHTML='<div class="ev-empty">No rows yet. Add one, or copy from your tiers.</div>';
+  const lOn=!!state.chainLinkDisplay;
+  byId("linkOn").checked=lOn;
+  const lw=byId("linkRow"); lw.innerHTML="";
+  if(!lOn){ lw.innerHTML='<div class="ev-empty">Off - the game shows its own link score.</div>'; return; }
+  const d=state.chainLinkDisplay, c=colorOf(d.color), hex=rgbaToHex(c);
+  lw.innerHTML='<div class="link-row"><input type="text" id="linkText" data-tplfield value="'+escapeAttr(d.text||"")+'" spellcheck="false" placeholder="•">'+
+    '<div class="swatch" title="Pick color"><div class="fill" style="background:'+rgbaCss(c)+'"></div><input type="color" id="linkColor" value="'+hex+'"></div></div>';
+  byId("linkText").addEventListener("input",e=>{ d.text=e.target.value; if(sim.event==="chainLink") renderPreview(false); refreshLive(); });
+  byId("linkColor").addEventListener("input",e=>{
+    const rgb=hexToRgbFloats(e.target.value), a=d.color&&d.color[3]!==undefined?d.color[3]:1;
+    d.color=[roundF(rgb[0]),roundF(rgb[1]),roundF(rgb[2]),a];
+    e.target.parentElement.querySelector(".fill").style.background=rgbaCss(d.color);
+    if(sim.event==="chainLink") renderPreview(false);
+    refreshLive();
+  });
+}
+byId("chainOn").addEventListener("change",e=>{
+  pushUndo(); claimKey("chainHeadJudgments");
+  if(e.target.checked){ state.chainHeadJudgments=chainFromTiers(); track("chains-on"); }
+  else delete state.chainHeadJudgments;
+  renderChains(); refreshLive();
+  if(e.target.checked){ sim.event="chainHead"; renderPreview(true); }
+});
+byId("linkOn").addEventListener("change",e=>{
+  pushUndo(); claimKey("chainLinkDisplay");
+  if(e.target.checked){ state.chainLinkDisplay=clone(LINK_SEED); track("chain-link-on"); }
+  else delete state.chainLinkDisplay;
+  renderChains(); refreshLive();
+  if(e.target.checked){ sim.event="chainLink"; renderPreview(true); }
+});
+byId("btnAddChain").addEventListener("click",()=>{
+  if(!Array.isArray(state.chainHeadJudgments)) return;
+  pushUndo();
+  const L=state.chainHeadJudgments, low=L.length?Math.max(0,L[L.length-1].threshold-5):CHAIN_MAX;
+  L.push({threshold:low,text:"%s",color:[0.5,0.9,1,1],fade:false});
+  renderChains(); refreshLive();
+});
+byId("btnChainFromTiers").addEventListener("click",()=>{
+  if(!Array.isArray(state.chainHeadJudgments)) return;
+  pushUndo(); state.chainHeadJudgments=chainFromTiers();
+  renderChains(); refreshLive(); toast("Chain head rows rebuilt from your tiers. Undo goes back.");
+});
+function chainValidation(cfg){
+  const items=[], L=cfg.chainHeadJudgments;
+  if(Array.isArray(L)){
+    if(!L.length) items.push(["warn","Custom chain head text is on but has no rows, so the game shows its own chain head score."]);
+    const usesA=[];
+    L.forEach((r,i)=>{
+      const w="Chain head row #"+(i+1);
+      if(r.threshold>CHAIN_MAX) items.push(["warn",w+" threshold "+r.threshold+" is above 85, the most a chain head can score, so it never shows."]);
+      if(r.threshold<0) items.push(["err",w+" has a negative threshold."]);
+      if(!String(r.text||"").trim()) items.push(["warn",w+" has empty text - nothing will display."]);
+      if(/%[aA]/.test(String(r.text||"").replace(/<[^>]*>/g,""))) usesA.push("#"+(i+1));
+    });
+    if(usesA.length) items.push(["info","Chain head row"+(usesA.length>1?"s ":" ")+usesA.join(", ")+" use"+(usesA.length>1?"":"s")+" %a or %A. A chain head has no follow-through, so those always use 0."]);
+    for(let i=1;i<L.length;i++){ if(L[i].threshold>=L[i-1].threshold){ items.push(["err","Chain head rows must go from highest to lowest with no repeated threshold (check row #"+(i+1)+"). Keep them in order like your tiers, or HSV may reject the config."]); break; } }
+    if(L.length && !L.some(r=>r.threshold<=0)) items.push(["warn","Chain head text has no 0 catch-all row, so low chain head cuts show the game's own score."]);
+    const top=L.slice().sort((a,b)=>b.threshold-a.threshold)[0];
+    if(top && top.fade) items.push(["warn","The highest chain head row has Fade on. HSV rejects that on the highest tier, so turn it off here too."]);
+  }
+  const d=cfg.chainLinkDisplay;
+  if(d){
+    if(!String(d.text||"").trim()) items.push(["warn","Chain link text is empty, so nothing shows when you hit a link."]);
+    const tok=String(d.text||"").replace(/<[^>]*>/g,"").match(/%[sBbCcAapTtdn]/g);
+    if(tok) items.push(["info","Chain link text uses "+[...new Set(tok)].join(" ")+". Links always score 20, so score tokens don't change anything there."]);
+  }
+  if(cfg.fixedPosition && cfg.targetPositionOffset) items.push(["info","Target position offset is ignored while Fixed position is on."]);
+  return items;
+}
+
 /* ---------- Starter templates ---------- */
 const W=[1,1,1,1];
 const TEMPLATES=[
@@ -2790,12 +3221,13 @@ const TEMPLATES=[
     afterCutAngleJudgments:[{threshold:30,text:""},{threshold:0,text:""}],
     timeDependencyJudgments:null}}
 ];
-function stripCss(cfg){
-  const stops=[];
+function stripCss(cfg, lo){
+  lo=Math.max(0,Math.min(110,Math.floor(lo||0)));   // optional zoom: show only scores from lo up to 115
+  const stops=[], span=115-lo, step=span>=60?5:1;
   const sorted=cfg.judgments.slice().sort((a,b)=>b.threshold-a.threshold);
-  for(let sc=0;sc<=115;sc+=5){
+  for(let sc=lo;sc<=115;sc+=step){
     const c=effectiveColorFor(sc,cfg,sorted);
-    stops.push((c?rgbaCss(c):"#10161d")+" "+(sc/115*100).toFixed(1)+"%");
+    stops.push((c?rgbaCss(c):"#10161d")+" "+((sc-lo)/span*100).toFixed(1)+"%");
   }
   return "linear-gradient(90deg,"+stops.join(",")+")";
 }
@@ -2838,7 +3270,7 @@ function parseBsor(buf, fileName){
   const nf=i32(); need(nf*92); p+=nf*92;
   if(byte()!==2) throw new Error("notes section missing");
   const nn=i32();
-  const out={file:fileName, song:info.songName, diff:info.difficulty, mapper:info.mapper, player:info.playerName, cuts:[], chains:0, links:0, misses:0, bad:{WrongDirection:0,WrongColor:0,Bomb:0,Other:0}};
+  const out={file:fileName, song:info.songName, diff:info.difficulty, mapper:info.mapper, player:info.playerName, cuts:[], chainCuts:[], chains:0, links:0, misses:0, bad:{WrongDirection:0,WrongColor:0,Bomb:0,Other:0}};
   for(let i=0;i<nn;i++){
     const id=i32(); f32(); f32(); const et=i32();
     if(et===2){ out.misses++; continue; }
@@ -2858,25 +3290,35 @@ function parseBsor(buf, fileName){
     const acc=Math.round(15*(1-clamp01(dist/0.3)));
     if(kind==="ah"||kind==="ab") post=30;
     if(kind==="at"||kind==="ab") pre=70;
-    if(kind==="ch"){ out.chains++; continue; }
+    if(kind==="ch"){ out.chains++; out.chainCuts.push({pre,acc,post:0,timeDep:Math.abs(nz)}); continue; }
     out.cuts.push({pre,acc,post,timeDep:Math.abs(nz)});
   }
   return out;
 }
 function allCuts(){ const a=[]; replays.forEach(r=>r.cuts.forEach(c=>a.push(c))); return a; }
+function allChainCuts(){ const a=[]; replays.forEach(r=>(r.chainCuts||[]).forEach(c=>a.push(c))); return a; }
+let replaySkipped=[];    // files from the last drop that couldn't be used, with the reason
 async function loadReplayFiles(files){
   const list=[...files].filter(f=>f && f.size);
   if(!list.length) return;
-  let ok=0;
+  let ok=0; const skipped=[];
   for(const f of list){
     try{
       if(f.size>60*1024*1024) throw new Error("file is over 60 MB");
+      if(replays.some(r=>r.file===f.name && r.size===f.size)) throw new Error("already loaded");
       const r=parseBsor(await f.arrayBuffer(), f.name);
       if(!r.cuts.length) throw new Error("no scored cuts in this replay");
+      r.size=f.size;
       replays.push(r); ok++;
-    }catch(e){ toast(f.name+": "+((e&&e.message)||e),true); }
+    }catch(e){ skipped.push({name:f.name, why:(e&&e.message)||String(e)}); }
   }
-  if(ok){ track("replay-analyze"); toast("Loaded "+ok+" replay"+(ok>1?"s":"")); openPanel("replayPanel"); }
+  replaySkipped=skipped;
+  if(ok) track("replay-analyze");
+  if(ok || skipped.length) openPanel("replayPanel");
+  // one message for the whole drop, so a skipped file is never hidden behind the success toast
+  if(ok && !skipped.length) toast("Loaded "+ok+" replay"+(ok>1?"s":""));
+  else if(ok) toast("Loaded "+ok+", skipped "+skipped.length+" (see Tune From Your Replays)",true);
+  else toast(skipped.length===1 ? skipped[0].name+": "+skipped[0].why : "Couldn't load any of the "+skipped.length+" files (see Tune From Your Replays)",true);
   renderReplay();
 }
 function tierShares(cuts, cfg){
@@ -2889,20 +3331,8 @@ function tierShares(cuts, cfg){
   });
   return {sorted, counts, below};
 }
-function renderReplay(){
-  const outEl=byId("replayOut"), cuts=allCuts();
-  byId("btnReplayClear").disabled=!replays.length;
-  if(!replays.length){ outEl.hidden=true; byId("replaySuggest").innerHTML=""; return; }
-  outEl.hidden=false;
-  const n=cuts.length;
-  const tot=cuts.reduce((s,c)=>s+c.pre+c.acc+c.post,0);
-  const misses=replays.reduce((s,r)=>s+r.misses,0);
-  const bad=replays.reduce((s,r)=>s+r.bad.WrongDirection+r.bad.WrongColor+r.bad.Bomb+r.bad.Other,0);
-  const chains=replays.reduce((s,r)=>s+r.chains,0);
-  const names=replays.slice(0,3).map(r=>escapeHtml(r.song+(r.diff?" ("+r.diff+")":""))).join(", ")+(replays.length>3?" and "+(replays.length-3)+" more":"");
-  byId("replaySum").innerHTML="<b>"+n+"</b> cuts from "+names+"<br>Average cut <b>"+(tot/n).toFixed(1)+"</b> · misses <b>"+misses+"</b> · bad cuts <b>"+bad+"</b>"+
-    (chains?" · "+chains+" chain heads not counted (they use chain judgments)":"");
-  const {sorted,counts,below}=tierShares(cuts,state);
+function distHtml(cuts, cfg){
+  const n=cuts.length, {sorted,counts,below}=tierShares(cuts,cfg);
   const max=Math.max(1,...counts,below);
   let html="";
   sorted.forEach((t,i)=>{
@@ -2912,15 +3342,52 @@ function renderReplay(){
       '<span class="rp-n">'+pct.toFixed(0)+'%<small>'+counts[i]+'</small></span></div>';
   });
   if(below) html+='<div class="rp-row"><span class="rp-t" style="color:var(--warn)">none</span><span><span class="rp-bar" style="display:block;width:'+(below/max*100).toFixed(1)+'%;background:#5a6273"></span></span><span class="rp-n">'+(below/n*100).toFixed(0)+'%<small>'+below+'</small></span></div>';
-  byId("replayDist").innerHTML=html;
+  return html;
+}
+function renderSkipped(){
+  const el=byId("replaySkipped");
+  if(!replaySkipped.length){ el.hidden=true; el.innerHTML=""; return; }
+  el.hidden=false;
+  el.innerHTML='<div class="rp-skip-h"><span>Skipped '+replaySkipped.length+' file'+(replaySkipped.length>1?"s":"")+'</span><button class="tiny ghost" id="btnSkipClose" title="Dismiss">✕</button></div>'+
+    replaySkipped.map(s=>'<div class="rp-skip-row"><b>'+escapeHtml(s.name)+'</b> · '+escapeHtml(s.why)+'</div>').join("");
+  byId("btnSkipClose").addEventListener("click",()=>{ replaySkipped=[]; renderSkipped(); });
+}
+function renderReplay(){
+  renderSkipped();
+  const outEl=byId("replayOut"), cuts=allCuts();
+  byId("btnReplayClear").disabled=!replays.length && !replaySkipped.length;
+  if(!replays.length){ outEl.hidden=true; byId("replaySuggest").innerHTML=""; return; }
+  outEl.hidden=false;
+  const n=cuts.length;
+  const tot=cuts.reduce((s,c)=>s+c.pre+c.acc+c.post,0);
+  const misses=replays.reduce((s,r)=>s+r.misses,0);
+  const bad=replays.reduce((s,r)=>s+r.bad.WrongDirection+r.bad.WrongColor+r.bad.Bomb+r.bad.Other,0);
+  const chainCuts=allChainCuts();
+  byId("replaySum").innerHTML="<b>"+n+"</b> cuts from <b>"+replays.length+"</b> replay"+(replays.length>1?"s":"")+"<br>Average cut <b>"+(tot/n).toFixed(1)+"</b> · misses <b>"+misses+"</b> · bad cuts <b>"+bad+"</b>"+
+    (chainCuts.length?" · chain heads <b>"+chainCuts.length+"</b>":"");
+  byId("replayFiles").innerHTML=replays.map((r,i)=>'<div class="rp-file"><span class="rp-fn" title="'+escapeAttr(r.file||"")+'">'+escapeHtml(r.song+(r.diff?" ("+r.diff+")":""))+'</span><span>'+r.cuts.length+' cuts</span><button class="tiny ghost" data-rprm="'+i+'" title="Remove this replay">✕</button></div>').join("");
+  byId("replayFiles").querySelectorAll("[data-rprm]").forEach(b=>b.addEventListener("click",()=>{ replays.splice(+b.dataset.rprm,1); renderReplay(); }));
+  byId("replayDist").innerHTML=distHtml(cuts,state);
   const pct=f=>(cuts.filter(f).length/n*100).toFixed(0)+"%";
   byId("replaySubs").innerHTML=
     '<span class="rp-chip">Full pre-swing <b>'+pct(c=>c.pre>=70)+'</b></span>'+
     '<span class="rp-chip">15 accuracy <b>'+pct(c=>c.acc>=15)+'</b></span>'+
     '<span class="rp-chip">Full follow-through <b>'+pct(c=>c.post>=30)+'</b></span>'+
     '<span class="rp-chip">115s <b>'+pct(c=>c.pre+c.acc+c.post>=115)+'</b></span>';
+  const ch=byId("replayChain");
+  if(!chainCuts.length) ch.innerHTML="";
+  else if(Array.isArray(state.chainHeadJudgments) && state.chainHeadJudgments.length)
+    ch.innerHTML='<div class="rp-chain-h">Chain heads (0-85) · '+chainCuts.length+' cuts</div>'+distHtml(chainCuts,{judgments:state.chainHeadJudgments});
+  else{
+    ch.innerHTML='<div class="rp-note">These replays have <b>'+chainCuts.length+'</b> chain head'+(chainCuts.length>1?"s":"")+'. Turn on custom chain head text in <a href="#" id="lnkChains">Chains</a> to see how they split.</div>';
+    byId("lnkChains").addEventListener("click",e=>{ e.preventDefault(); openPanel("chainPanel"); byId("chainPanel").scrollIntoView({behavior:"smooth",block:"start"}); });
+  }
 }
-function suggestThresholds(cuts, cfg){
+/* Thresholds that give each free tier a similar share of the cuts.
+   gap: smallest step between two thresholds. keepFloor: leave a 0 catch-all for cuts worse than any in the replays. */
+function suggestThresholds(cuts, cfg, opts){
+  opts=opts||{};
+  const gap=Math.max(1,Math.round(opts.gap||1)), keepFloor=!!opts.keepFloor;
   const T=cfg.judgments.slice().sort((a,b)=>b.threshold-a.threshold);
   const m=T.length;
   if(m<2) return {error:"Add at least two tiers first."};
@@ -2930,32 +3397,43 @@ function suggestThresholds(cuts, cfg){
   if(!free.length) return {error:"Every tier is a fixed one (115 or 0), so there is nothing to move."};
   const pool=cuts.map(c=>c.pre+c.acc+c.post).filter(v=>fixedTop ? v<thr[0] : true).sort((a,b)=>b-a);
   if(!pool.length) return {error:"Every cut in these replays was a 115, so there is nothing to split."};
-  const buckets=free.length+(fixedBottom?1:0);
+  const floorKept=fixedBottom && keepFloor;
+  const buckets=free.length+(floorKept?0:(fixedBottom?1:0));
+  const span=floorKept ? 0.98 : 1;   // the kept floor catches roughly your worst 2% of cuts
   const out=thr.slice();
-  let prev=fixedTop?thr[0]:116;
+  let prev=fixedTop?thr[0]:null;
+  const floor=fixedBottom?thr[m-1]:-1;
   for(let k=0;k<free.length;k++){
-    const idx=Math.min(pool.length-1, Math.max(0, Math.ceil((k+1)*pool.length/buckets)-1));
+    const idx=Math.min(pool.length-1, Math.max(0, Math.ceil((k+1)*pool.length*span/buckets)-1));
     let t=Math.round(pool[idx]);
-    if(t>=prev) t=prev-1;
-    const floor=fixedBottom?thr[m-1]:-1;
-    if(t<=floor) return {error:"Your cuts don't have enough different scores to split "+free.length+" tiers. Load more replays or use fewer tiers."};
+    if(prev===null) t=Math.min(t,115);
+    else if(t>prev-gap) t=prev-gap;
+    if(t<=floor) return {error:"Your cuts don't spread wide enough to fit "+free.length+" tiers "+gap+" point"+(gap>1?"s":"")+" apart. Lower the minimum gap, load more replays, or use fewer tiers."};
     out[free[k]]=t; prev=t;
   }
-  return {T, before:thr, after:out};
+  return {T, before:thr, after:out, gap, keepFloor};
 }
-byId("btnEvenTiers").addEventListener("click",()=>{
+function evenOpts(){ return {gap:+byId("evenGap").value||2, keepFloor:byId("evenFloor").checked}; }
+function showEvenSuggestion(){
   const box=byId("replaySuggest"), cuts=allCuts();
-  const s=suggestThresholds(cuts,state);
+  const s=suggestThresholds(cuts,state,evenOpts());
   if(s.error){ box.innerHTML='<div class="rp-sug">'+escapeHtml(s.error)+'</div>'; return; }
-  if(s.before.every((v,i)=>v===s.after[i])){ box.innerHTML='<div class="rp-sug">Your tiers already split these cuts about as evenly as they can.</div>'; return; }
-  const trial={judgments:s.T.map((t,i)=>({threshold:s.after[i],color:t.color,fade:t.fade}))};
+  if(s.before.every((v,i)=>v===s.after[i])){ box.innerHTML='<div class="rp-sug">Your tiers already split these cuts about as evenly as they can with these settings.</div>'; return; }
+  // the whole config with only the suggested thresholds changed, so the strip and Stream show the real result
+  const trial=clone(state);
+  trial.judgments=state.judgments.map(j=>{ const c=clone(j), i=s.T.indexOf(j); if(i>=0) c.threshold=s.after[i]; return c; });
   const now=tierShares(cuts,state), next=tierShares(cuts,trial);
   const n=cuts.length;
+  const asc=cuts.map(c=>c.pre+c.acc+c.post).sort((a,b)=>a-b);
+  const lo=Math.min(105, Math.max(0, asc[Math.floor(asc.length*0.02)]-3));   // zoom the strips to where 98% of the cuts are
   let rows="<tr><td>Now</td><td>Suggested</td><td>Share now → after</td></tr>";
   s.T.forEach((t,i)=>{
     rows+="<tr><td>"+s.before[i]+"+</td><td class='"+(s.before[i]!==s.after[i]?"chg":"")+"'>"+s.after[i]+"+</td><td>"+(now.counts[i]/n*100).toFixed(0)+"% → "+(next.counts[i]/n*100).toFixed(0)+"%</td></tr>";
   });
-  box.innerHTML='<div class="rp-sug">Suggested thresholds so each tier gets a similar share of your cuts. A 115 tier and a 0 catch-all stay where they are.<table>'+rows+'</table><button class="primary tiny" id="btnApplyEven">✓ Apply thresholds</button></div>';
+  box.innerHTML='<div class="rp-sug">Suggested thresholds so each tier gets a similar share of your cuts, at least '+s.gap+' point'+(s.gap>1?"s":"")+' apart. A 115 tier'+(s.keepFloor?" and your 0 catch-all":" and a 0 catch-all")+' stay where they are. Text, size and color stay with each tier, so check the result before applying.'+
+    '<div class="rp-strips"><span>Now</span><span class="tpl-strip" style="background:'+stripCss(state,lo)+'"></span><span>After</span><span class="tpl-strip" style="background:'+stripCss(trial,lo)+'"></span><span></span><span class="rp-scale"><span>'+lo+'</span><span>where your cuts land</span><span>115</span></span></div>'+
+    '<table>'+rows+'</table><div class="qbtns"><button class="tiny" id="btnStreamEven" title="Fire a burst of your own cuts with the suggested thresholds, without applying them">≋ Stream it</button><button class="primary tiny" id="btnApplyEven">✓ Apply thresholds</button></div></div>';
+  byId("btnStreamEven").addEventListener("click",()=>{ runStream(trial); track("replay-even-preview"); });
   byId("btnApplyEven").addEventListener("click",()=>{
     if(!s.T.every(t=>state.judgments.includes(t)) || s.T.length!==state.judgments.length){ box.innerHTML=""; toast("Your tiers changed. Press Even out tiers again.",true); return; }
     pushUndo();
@@ -2966,7 +3444,9 @@ byId("btnEvenTiers").addEventListener("click",()=>{
     toast("Thresholds updated. Undo goes back.");
     track("replay-even");
   });
-});
+}
+byId("btnEvenTiers").addEventListener("click",showEvenSuggestion);
+["evenGap","evenFloor"].forEach(id=>byId(id).addEventListener("change",()=>{ if(byId("replaySuggest").innerHTML) showEvenSuggestion(); }));
 (function(){
   const dz=byId("replayDrop"), fi=byId("replayFile");
   fi.addEventListener("change",e=>{ loadReplayFiles(e.target.files); e.target.value=""; });
@@ -2974,7 +3454,7 @@ byId("btnEvenTiers").addEventListener("click",()=>{
   ["dragenter","dragover"].forEach(t=>dz.addEventListener(t,e=>{ e.preventDefault(); dz.classList.add("over"); }));
   ["dragleave","drop"].forEach(t=>dz.addEventListener(t,()=>dz.classList.remove("over")));
   dz.addEventListener("drop",e=>{ e.preventDefault(); if(e.dataTransfer && e.dataTransfer.files) loadReplayFiles(e.dataTransfer.files); });
-  byId("btnReplayClear").addEventListener("click",()=>{ replays=[]; renderReplay(); });
+  byId("btnReplayClear").addEventListener("click",()=>{ replays=[]; replaySkipped=[]; renderReplay(); });
   // Drop a file anywhere on the page: .bsor tunes from your replays, .json imports as a config. No buttons needed.
   const hasFiles=e=>e.dataTransfer && [...(e.dataTransfer.types||[])].includes("Files");
   const overlay=byId("dropOverlay");
@@ -3009,23 +3489,31 @@ function nextStreamEvent(i){
   const side=sides[Math.floor(Math.random()*sides.length)];
   if(Array.isArray(state.missDisplays) && state.missDisplays.length && Math.random()<0.08) return {event:"miss", evIndex:i};
   if(Array.isArray(state.badCutDisplays) && state.badCutDisplays.length && Math.random()<0.06) return {event:"bad", badType:BAD_CYCLE[Math.floor(Math.random()*3)], evIndex:i};
+  if(Array.isArray(state.chainHeadJudgments) && state.chainHeadJudgments.length && Math.random()<0.08){
+    const ch=allChainCuts(), c=ch.length ? ch[Math.floor(Math.random()*ch.length)] : randomCut();
+    return {event:"chainHead", pre:c.pre, acc:c.acc, post:0, timeDep:c.timeDep||0, side};
+  }
+  if(state.chainLinkDisplay && Math.random()<0.06) return {event:"chainLink"};
   const pool=allCuts();
   const c=pool.length ? pool[Math.floor(Math.random()*pool.length)] : randomCut();
   return {event:"cut", pre:c.pre, acc:c.acc, post:c.post, timeDep:c.timeDep||0, side};
 }
-function runStream(){
+function runStream(cfg){
+  cfg=(cfg && cfg.judgments) ? cfg : state;   // a trial config (e.g. suggested thresholds) can be streamed without applying it
   const stage=byId("stage");
-  clearInterval(streamTimer); clearTimeout(streamEnd);
+  clearInterval(streamTimer); clearTimeout(streamEnd); stopClimb();
   stage.querySelectorAll(".hittext.sp").forEach(e=>e.remove());
   byId("hittext").style.visibility="hidden";
   const lanes=[[16,36],[62,54],[38,54],[84,36],[16,58],[62,34],[38,32],[84,56]], N=12;   // 8 slots, each reused only after its text has faded
+  const fixed=!!state.fixedPosition;   // with a fixed position every popup lands on one spot and replaces the last
   let i=0;
   streamTimer=setInterval(()=>{
     if(i>=N){ clearInterval(streamTimer); streamTimer=null; streamEnd=setTimeout(()=>{ byId("hittext").style.visibility=""; },1300); return; }
-    const r=renderEvent(nextStreamEvent(i));
+    const r=renderEvent(nextStreamEvent(i), cfg);
     const el=document.createElement("div");
     el.className="hittext sp live";
-    const slot=lanes[i%lanes.length];
+    if(fixed) stage.querySelectorAll(".hittext.sp").forEach(e=>e.remove());
+    const slot=fixed ? [50,46] : lanes[i%lanes.length];
     el.style.left=slot[0]+"%"; el.style.top=slot[1]+"%";
     el.style.color=r.color;
     el.innerHTML=r.html;
@@ -3035,7 +3523,7 @@ function runStream(){
   },170);
   track("stream");
 }
-byId("btnStream").addEventListener("click",runStream);
+byId("btnStream").addEventListener("click",()=>runStream());
 
 /* ---------- Background and color-vision views ---------- */
 const VIEW_KEY="hsvGenerator.view.v1";
@@ -3114,15 +3602,26 @@ function eventValidation(cfg){
 }
 
 /* ---------- Config diff (compare + push summary) ---------- */
-const DIFF_TOP={displayMode:"Display mode",doIntermediateUpdates:"Intermediate updates",isDefaultConfig:"Is default config",timeDependencyDecimalPrecision:"Time-dep precision",timeDependencyDecimalOffset:"Time-dep offset",majorVersion:"Major version",minorVersion:"Minor version",patchVersion:"Patch version",randomizeBadCutDisplays:"Randomize bad cut text",randomizeMissDisplays:"Randomize miss text"};
-const DIFF_SUB={beforeCutAngleJudgments:"%B before-cut text",accuracyJudgments:"%C accuracy text",afterCutAngleJudgments:"%A after-cut text",timeDependencyJudgments:"%T time-dep text",badCutDisplays:"Bad cut text",missDisplays:"Miss text"};
+const DIFF_TOP={displayMode:"Display mode",doIntermediateUpdates:"Intermediate updates",assumeMaxPostSwing:"Assume max post-swing",isDefaultConfig:"Is default config",timeDependencyDecimalPrecision:"Time-dep precision",timeDependencyDecimalOffset:"Time-dep offset",fixedPosition:"Fixed position",targetPositionOffset:"Target position offset",chainLinkDisplay:"Chain link text",majorVersion:"Major version",minorVersion:"Minor version",patchVersion:"Patch version",randomizeBadCutDisplays:"Randomize bad cut text",randomizeMissDisplays:"Randomize miss text"};
+const DIFF_SUB={chainHeadJudgments:"Chain head text",beforeCutAngleJudgments:"%B before-cut text",accuracyJudgments:"%C accuracy text",afterCutAngleJudgments:"%A after-cut text",timeDependencyJudgments:"%T time-dep text",badCutDisplays:"Bad cut text",missDisplays:"Miss text"};
 function exportOf(obj){ return buildExportObject(normalizeConfig(obj)); }
 function diffConfigs(oldO,newO){
-  const L=[], e=v=>escapeHtml(v===undefined?"(not set)":v===null?"off":String(v));
+  const L=[];
   const short=t=>{ t=String(t||""); return t.length>40 ? t.slice(0,39)+"…" : t; };
   const hexA=c=>{ const h=rgbaToHex(c).toUpperCase(); const a=c[3]===undefined?1:c[3]; return a<1 ? h+" @ "+Math.round(a*100)+"%" : h; };
+  const show=(v,k)=>{
+    if(v===undefined) return k==="displayMode" ? "default (not set)" : "(not set)";
+    if(v===null) return "off";
+    if(typeof v==="object"){
+      if(isVec(v)) return "("+[v.x,v.y,v.z].map(n=>Number(n)||0).join(", ")+")";
+      if("text" in v) return "\""+short(v.text)+"\""+(v.color?" "+hexA(colorOf(v.color)):"");
+      return JSON.stringify(v);
+    }
+    return String(v);
+  };
+  const e=(v,k)=>escapeHtml(show(v,k));
   Object.keys(DIFF_TOP).forEach(k=>{
-    if(JSON.stringify(oldO[k])!==JSON.stringify(newO[k])) L.push("<b>"+DIFF_TOP[k]+"</b>: "+e(oldO[k])+" → "+e(newO[k]));
+    if(JSON.stringify(oldO[k])!==JSON.stringify(newO[k])) L.push("<b>"+DIFF_TOP[k]+"</b>: "+e(oldO[k],k)+" → "+e(newO[k],k));
   });
   const oj=oldO.judgments||[], nj=newO.judgments||[];
   const mo=new Map(), mn=new Map();
@@ -3265,17 +3764,30 @@ async function checkShareOnLoad(){
   if(ok){ pushUndo(); importConfig(obj,{prefix:"Loaded shared config · "}); track("share-open"); }
 }
 
-/* ---------- What's New (one-time, gone for good once dismissed) ---------- */
-const WHATSNEW_KEY="hsvGenerator.whatsnew.v1";
+/* ---------- Welcome (first visit) / What's New (only items you haven't seen) ---------- */
+const WHATSNEW_KEY="hsvGenerator.whatsnew.v1";   // older builds: "1" means the first six items were seen
+const WN2_KEY="hsvGenerator.whatsnew.v2";        // ids of every item already shown
+const WN_LEGACY=["replays","quest-load","templates","events","share","previews"];
+const FIRST_VISIT=!storeGet(FOLD_KEY) && !storeGet(DRAFT_KEY) && !storeGet(VIEW_KEY) && !storeGet(WHATSNEW_KEY) && !storeGet(WN2_KEY);   // read before init writes anything
+function wnItems(){ return [...document.querySelectorAll("#whatsnewBack .wn-item")]; }
+function markAllSeen(){ storeSet(WN2_KEY, JSON.stringify(wnItems().map(i=>i.dataset.wn))); }
 function showWhatsNew(){
-  let seen;
-  try{ seen=localStorage.getItem(WHATSNEW_KEY); }catch(e){ return; }   // no storage = could never dismiss it for good, so skip
-  if(seen) return;
+  try{ localStorage.getItem(WN2_KEY); }catch(e){ return; }   // no storage = could never dismiss it for good, so skip
+  let seen=[];
+  try{ seen=JSON.parse(storeGet(WN2_KEY)||"[]")||[]; }catch(e){ seen=[]; }
+  if(storeGet(WHATSNEW_KEY)) seen=seen.concat(WN_LEGACY);
+  const items=wnItems();
+  const show = FIRST_VISIT ? items.filter(i=>i.hasAttribute("data-welcome")) : items.filter(i=>seen.indexOf(i.dataset.wn)===-1);
+  if(!show.length){ markAllSeen(); return; }
+  items.forEach(i=>{ i.hidden=show.indexOf(i)===-1; });
+  byId("wnTitle").textContent = FIRST_VISIT ? "Welcome" : "What's New";
+  byId("wnChip").textContent = FIRST_VISIT ? "Quick tour" : show.length+" update"+(show.length>1?"s":"");
+  byId("wnCard").setAttribute("aria-label", FIRST_VISIT ? "Welcome to HSV Config Generator" : "What's new in HSV Config Generator");
   const back=byId("whatsnewBack");
   back.hidden=false; requestAnimationFrame(()=>back.classList.add("show"));
 }
 function closeWhatsNew(){
-  storeSet(WHATSNEW_KEY,"1");
+  markAllSeen();
   const back=byId("whatsnewBack");
   back.classList.remove("show"); setTimeout(()=>{ back.hidden=true; },200);
 }
@@ -3300,12 +3812,12 @@ async function questListConfigs(){
       let ents;
       if(sync.readdir) ents=await sync.readdir(qDir());
       else { ents=[]; for await(const x of sync.opendir(qDir())) ents.push(x); }
-      names=ents.filter(x=>x && x.name && x.name!=="." && x.name!==".." && /\.json$/i.test(x.name) && x.type!==4).map(x=>x.name).sort((a,b)=>a.localeCompare(b));
+      names=ents.filter(x=>x && x.name && x.name!=="." && x.name!==".." && /\.json(\.bak)?$/i.test(x.name) && x.type!==4).map(x=>x.name).sort((a,b)=>a.localeCompare(b));
     } finally { try{ await sync.dispose?.(); }catch(e){} }
   }catch(e){ qlog("Could not list the configs on the headset: "+((e&&e.message)||e),"warn"); failed=true; }
   if(!Q.adb){ row.hidden=true; Q.files=[]; return null; }   // disconnected while listing
   Q.files=names;
-  sel.innerHTML=names.length ? names.map(n=>'<option value="'+escapeAttr(n)+'">'+escapeHtml(n)+'</option>').join("") : '<option value="">(no .json files yet)</option>';
+  sel.innerHTML=names.length ? names.map(n=>'<option value="'+escapeAttr(n)+'">'+escapeHtml(n)+(/\.bak$/i.test(n)?" (backup)":"")+'</option>').join("") : '<option value="">(no .json files yet)</option>';
   const cur=((Q.el.name.value||"").trim().split(/[\/\\]/).pop());
   if(names.includes(cur)) sel.value=cur;
   byId("btnQLoad").disabled=!names.length;
@@ -3338,8 +3850,9 @@ byId("btnQLoad").addEventListener("click",async()=>{
     const obj=parseConfigText(txt);
     pushUndo();
     importConfig(obj,{prefix:"Loaded "+name+" from Quest · "});
-    Q.el.name.value=name;
-    qlog("✓ Loaded "+name+". Push saves your changes back to it.","ok");
+    const isBak=/\.bak$/i.test(name);
+    Q.el.name.value=isBak ? name.replace(/\.bak$/i,"") : name;
+    qlog(isBak ? "✓ Loaded the backup "+name+". Push to put it back as "+Q.el.name.value+"." : "✓ Loaded "+name+". Push saves your changes back to it.","ok");
     track("quest-load");
   }catch(e){
     const msg=(e&&e.message)||String(e);
@@ -3350,18 +3863,19 @@ async function questPushSummary(fullPath, fname){
   let html="<p>Saving to <code>"+escapeHtml(fullPath)+"</code></p>";
   let names=null;
   try{ names=await questListConfigs(); }catch(e){ names=null; }
-  if(!names) return html+"<p>Couldn't check what's already on the headset, so changes can't be shown. If a file with this name exists, pushing replaces it.</p>";
-  const existing=names.find(n=>n.toLowerCase()===fname.toLowerCase());   // the Quest's storage ignores letter case
-  if(!existing) return html+"<p>This is a <b>new file</b> on the headset. Nothing gets overwritten.</p>";
+  if(!names) return {html:html+"<p>Couldn't check what's already on the headset, so changes can't be shown. If a file with this name exists, pushing replaces it.</p>", existing:null};
+  const existing=names.find(n=>n.toLowerCase()===fname.toLowerCase())||null;   // the Quest's storage ignores letter case
+  if(!existing) return {html:html+"<p>This is a <b>new file</b> on the headset. Nothing gets overwritten.</p>", existing:null};
   if(existing!==fname) html+="<p>The headset already has <code>"+escapeHtml(existing)+"</code>. File names there ignore upper and lower case, so this replaces it.</p>";
+  const bak="<p class=\"bak-note\">The current copy is saved as <code>"+escapeHtml(existing)+".bak</code> first. To get it back, pick it in <b>Load from Quest</b> and push it again.</p>";
   let txt;
   try{ txt=await questReadFile(fullPath.slice(0,fullPath.length-fname.length)+existing); }
-  catch(e){ return html+"<p>Couldn't read the copy on the headset ("+escapeHtml((e&&e.message)||String(e))+"), so changes can't be shown. Pushing replaces it.</p>"; }
+  catch(e){ return {html:html+"<p>Couldn't read the copy on the headset ("+escapeHtml((e&&e.message)||String(e))+"), so changes can't be shown. Pushing replaces it.</p>", existing}; }
   let lines;
   try{ lines=diffConfigs(exportOf(parseConfigText(txt)), buildExportObject()); }
-  catch(e){ return html+"<p>The file on the headset isn't a valid config, so changes can't be shown. Pushing replaces it.</p>"; }
-  if(!lines.length) return html+"<p>No changes: it already matches the copy on the headset.</p>";
-  return html+"<p>Changes compared with the copy on the headset:</p><ul class=\"difflist\">"+diffHtml(lines,25)+"</ul>";
+  catch(e){ return {html:html+"<p>The file on the headset isn't a valid config, so changes can't be shown. Pushing replaces it.</p>"+bak, existing}; }
+  if(!lines.length) return {html:html+"<p>No changes: it already matches the copy on the headset.</p>", existing};
+  return {html:html+"<p>Changes compared with the copy on the headset:</p><ul class=\"difflist\">"+diffHtml(lines,25)+"</ul>"+bak, existing};
 }
 
 /* =========================================================================
@@ -3395,9 +3909,12 @@ checkShareOnLoad().then(showWhatsNew, showWhatsNew);
      USAGE ANALYTICS (GoatCounter) - privacy-friendly, no cookies.
      Dashboard: https://hsv-generator.goatcounter.com/  (log in there to view stats).
      Counts page views automatically; the app also sends custom feature events
-     (export, copy-json, import, apply-json, quest-connect, quest-push, quest-load,
-     template-<id>, replay-analyze, replay-even, stream, compare, share-link,
-     share-open, vision-<type>) via
+     (export, export-with-errors, copy-json, import, apply-json, reset, quest-connect,
+     quest-push, quest-push-with-errors, quest-load, template-<id>, replay-analyze,
+     replay-even, replay-even-preview, stream, compare, share-link, share-open,
+     vision-<type>, drop-replay, drop-import, intro-collapse, intro-expand, chains-on,
+     chain-link-on, assume-max, fixed-position, position-offset, redo, token-insert,
+     compact-view) via
      window.goatcounter.count(), so feature usage shows up too.
 ============================================================================ -->
 <script data-goatcounter="https://hsv-generator.goatcounter.com/count"

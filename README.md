@@ -28,21 +28,23 @@ This tool replaces that loop. You edit every part of the config visually, watch 
 - **Live in-game preview** - a simulated cut renders your actual config, including the full set of TextMeshPro rich-text tags the game understands (`<size>`, `<color>`, `<alpha>`, `<mark>`, `<sup>`, `<rotate>`…). Tags the game does not know print as plain text, just like in game, with the float-up-and-fade decay animation from VR
 - **Score → color spectrum bar** - every score from 0–115 mapped to the exact color your config produces, including Fade blends; click anywhere to simulate that score
 - **Fade done right** - HSV's `fade` flag is a *color lerp* between adjacent tiers, not a fade-out; the preview and spectrum both model it
-- **Full simulator** - independent pre-swing / accuracy / post-swing / time-dependency sliders, a cut-side control for the `%d` arrow, preset buttons, one-click random cuts, and Miss / Bad cut previews
+- **Full simulator** - independent pre-swing / accuracy / post-swing / time-dependency sliders, a cut-side control for the `%d` arrow, preset buttons, one-click random cuts, and Miss / Bad cut / Chain head / Chain link previews. Replay plays the follow-through the way the game does, so Intermediate updates and Assume max post-swing are visible
 - **Stream preview** - fires a quick burst of cuts across the stage so you can check the text stays readable at speed (it uses your real cuts when a replay is loaded)
 - **Backgrounds and color vision** - preview on dark, bright, blue or red lighting, and see your colors the way protanopia, deuteranopia, tritanopia or grayscale vision sees them; validation flags neighbouring tiers that colorblind players can't tell apart
-- **Tune from your replays** - drop BeatLeader `.bsor` replays to see how often each tier really shows up for your cuts, then **Even out tiers** suggests thresholds that split your cuts evenly (115 and 0 tiers stay put). Replays never leave your browser
+- **Tune from your replays** - drop BeatLeader `.bsor` replays to see how often each tier really shows up for your cuts, then **Even out tiers** suggests thresholds that split your cuts evenly, with a minimum gap between tiers and your 0 tier kept for real bad cuts. See the before and after colors, or Stream your own cuts with the suggestion, before applying it. Chain heads get their own breakdown, and any file that can't be read is listed with the reason. Replays never leave your browser
 - **Starter templates** - Classic HSV, Clean numbers, Accuracy trainer, Aim arrows, Hype, and Colorblind friendly
 - **Bad cut and miss text** - your own text and colors for misses, wrong-direction cuts, wrong-saber cuts and bombs, with cycle or random order
+- **Chains** - text and colors for chain heads (scored 0-85) and chain links, with one click to copy your tiers over
+- **Every HSV setting** - display mode (including the default mode older configs use, which now imports untouched), intermediate updates, assume max post-swing, fixed position and target position offset
 - **Compare** - pin a version (or load another file) and see both side by side for the same cut, plus a list of what changed
 - **Push to Quest over WebUSB** - speaks ADB from the browser (the same approach as ModsBeforeFriday), with device info, config-folder detection, editable destination path and filename
-- **Load from Quest** - list the configs already on the headset, open one, edit it, and push it back. Every push first shows what will change compared with the copy on the headset
+- **Load from Quest** - list the configs already on the headset, open one, edit it, and push it back. Every push first shows what will change compared with the copy on the headset, and keeps the old copy as a `.bak` you can load back
 - **USB conflict diagnostics** - detects the classic "interface claim failed" lock caused by SideQuest / Quest Link / Android Studio holding the ADB server, and walks you through fixing it with one-click-copyable kill commands
-- **Validation** - duplicate or unreachable thresholds, out-of-range sub-judgments, missing catch-alls, unclosed rich-text tags, tags the game will print as text, missing tokens
+- **Validation** - duplicate or unreachable thresholds, out-of-range sub-judgments, missing catch-alls, unclosed rich-text tags, tags the game will print as text, missing tokens, chain head rows. Export and Push warn you before writing a config with errors
 - **Drop files anywhere** - drop a `.json` config onto the page to import it, or BeatLeader `.bsor` replays to tune your tiers
 - **Import / export with fidelity** - unknown keys from other tools' configs are preserved untouched; 0–255 color arrays are auto-normalized; BOM'd files import cleanly
 - **Share by link** - copy a link that opens your exact config (compressed into the link itself, nothing is uploaded)
-- **Quality of life** - fold any panel by clicking its header (remembered between visits), autosave (your work survives a closed tab), 30-level undo, two-step deletes, an editable live JSON panel, Ctrl+S export, and an ⓘ explainer on every single control
+- **Quality of life** - fold any panel by clicking its header (remembered between visits), autosave (your work survives a closed tab), 30-level undo and redo, click a token to insert it into a template, a compact tier list, two-step deletes, an editable live JSON panel, Ctrl+S export, and an ⓘ explainer on every single control
 
 ## How it works
 
