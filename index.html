@@ -1076,6 +1076,8 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <button class="ghost" id="btnQDisconnect" disabled>Disconnect</button>
         </div>
 
+        <div class="callout amber" id="qAuthHint" style="display:none;margin-bottom:10px;"><span class="ci">◉</span><span><b style="color:#fff">Put on your headset.</b> A box asks <b style="color:#fff">Allow USB debugging?</b> Tick <b style="color:#fff">Always allow from this computer</b>, then press <b style="color:#fff">Allow</b>. It can take a few seconds to appear once the headset is on. This site uses its own key, so you see this once even if SideQuest or MBF already connect.<br><span style="opacity:.8">No box? Press <b style="color:#fff">Cancel</b>, unplug and replug the cable, wake the headset, then Connect again.</span></span></div>
+
         <div class="qlog" id="qLog"><span class="l-dim">Log output appears here…</span></div>
 
         <details class="help">
@@ -1083,6 +1085,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
           <div class="hb">
             <b style="color:#cdd8e2">"Push to Quest" is greyed out or says WebUSB unavailable</b> - WebUSB needs desktop Chrome or Edge (Firefox and Safari don't support it), and the app must be in its own browser tab, not embedded inside another page. Open <a href="https://spanky3651.github.io/HSV-Config-Generator/" target="_blank" rel="noopener">the app directly</a> and try again.<br><br>
             <b style="color:#cdd8e2">Headset never appears in the picker</b> - the cable must carry data (some charge-only cables don't), Developer Mode must be on, and you must accept the USB-debugging prompt inside the headset. Make sure no other ADB tool (SideQuest, BMBF, a terminal <code>adb</code>) is holding the connection - only one can own it at a time.<br><br>
+            <b style="color:#cdd8e2">Stuck on "Authenticating" or "Approve in headset"</b> - the Quest is waiting for you to allow this browser. Put the headset on and look for <i>Allow USB debugging?</i> (press the Meta button if another window covers it), tick <i>Always allow from this computer</i> and press Allow. This site has its own key, so the prompt shows once even if SideQuest or MBF already work. If no prompt ever appears: press Cancel, unplug and replug the cable, wake the headset and connect again. Still nothing? Turn Developer Mode off and on in the Meta Horizon phone app, or restart the headset.<br><br>
             <b style="color:#cdd8e2">"HSV folder not found"</b> - launch Beat Saber once with HSV installed so the mod creates its folder, then try again. You can also point <i>Destination folder</i> anywhere you like.<br><br>
             <b style="color:#cdd8e2">In-game</b> - after pushing, open Beat Saber → Mods → HitScoreVisualizer and select the config (or reload) to apply it.
           </div>
@@ -1130,7 +1133,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
     <div class="foot-more">More Beat Saber tools: <a href="https://spanky3651.github.io/Playlist-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">Playlist Studio</a><span class="sep">&middot;</span><a href="https://spanky3651.github.io/ReeSaber-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">ReeSaber Studio</a></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-17T11:23:00Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-17T12:21:00Z">Last updated recently</div>
   </div>
 </div>
 
@@ -2538,11 +2541,11 @@ async function questConnect(){
     const CredCtor=credMod.AdbWebCredentialStore||credMod.default;
     const credentialStore=new CredCtor("HSV Config Generator");
 
-    const transport=await AdbDaemonTransport.authenticate({
+    const transport=await waitForQuestAuth(AdbDaemonTransport.authenticate({
       serial:device.serial,
       connection,
       credentialStore
-    });
+    }), device);
     Q.transport=transport;
     const adb=new Adb(transport);
     Q.adb=adb;
@@ -2569,6 +2572,7 @@ async function questConnect(){
 
     Q.el.push.disabled=false;
     Q.el.disconnect.disabled=false;
+    Q.el.disconnect.textContent="Disconnect";
     Q.el.connect.disabled=false;
     Q.el.connect.textContent="🔌 Reconnect";
     toast("Quest connected");
@@ -2576,8 +2580,16 @@ async function questConnect(){
     const msg=((e&&e.name)?e.name+": ":"")+((e&&e.message)||String(e));
     Q.lastErr=msg;
     qlog("Connection failed: "+msg,"err");
-    const kind=classifyUsbError(e);
-    if(kind==="locked"){
+    if(!Q.adb){ await questReleaseUsb(); Q.device=null; }   // free the interface so the next Connect can claim it
+    const kind=(e&&e.name==="AuthCancelled")?"auth-cancel":(e&&e.name==="AuthTimeout")?"auth-timeout":classifyUsbError(e);
+    if(kind==="auth-cancel"){
+      qStatus("off","Disconnected");
+      qlog("Cancelled. Unplug and replug the cable if the headset prompt never showed, then Connect again.","dim");
+    } else if(kind==="auth-timeout"){
+      qStatus("err","Not approved");
+      qlog("The headset didn't allow this browser within 2 minutes. Put it on and look for \"Allow USB debugging?\" (press the Meta button if another window covers it). If it never appears: unplug and replug the cable, wake the headset, and Connect again. Still nothing? Turn Developer Mode off and on in the Meta Horizon phone app, or restart the headset.","warn");
+      toast("Headset didn't approve the connection",true);
+    } else if(kind==="locked"){
       qStatus("busy","Busy / Locked");
       qlog("Interface claim failed - another ADB server (SideQuest, Meta Quest Link, Android Studio, a terminal adb) is holding the device. Opening the conflict helper…","warn");
       openUsbModal(msg);
@@ -2594,9 +2606,41 @@ async function questConnect(){
       toast("Connect failed",true);
     }
     Q.el.connect.disabled=false;
+    Q.el.disconnect.textContent="Disconnect";
+    Q.el.disconnect.disabled=!Q.adb;
   }finally{
     Q.connecting=false;
+    showAuthHint(false);
   }
+}
+/* The ADB handshake waits until the headset allows this browser's key, which needs the
+   player to accept a prompt inside the headset. Show how after a few seconds, let them
+   cancel, and give up after 2 minutes instead of hanging with every button disabled. */
+function showAuthHint(on){ const h=byId("qAuthHint"); if(h) h.style.display=on?"flex":"none"; }
+async function questReleaseUsb(){ try{ await Q.device?.raw?.close(); }catch(e){} }
+function waitForQuestAuth(authPromise, device){
+  return new Promise((resolve,reject)=>{
+    let done=false;
+    const fail=(name,msg)=>{ const e=new Error(msg); e.name=name; finish(e); };
+    const finish=(err,val)=>{
+      if(done) return; done=true;
+      clearTimeout(hintT); clearTimeout(giveUpT); Q.cancelAuth=null;
+      showAuthHint(false);
+      if(err) reject(err); else resolve(val);
+    };
+    const hintT=setTimeout(()=>{
+      if(done) return;
+      qStatus("connecting","Approve in headset");
+      showAuthHint(true);
+      qlog("Waiting for the headset. Put it on and allow USB debugging (tick \"Always allow from this computer\").","warn");
+      track("quest-auth-wait");
+    },4000);
+    const giveUpT=setTimeout(()=>fail("AuthTimeout","The headset did not allow USB debugging in time."),120000);
+    Q.cancelAuth=()=>fail("AuthCancelled","Cancelled while waiting for the headset.");
+    Q.el.disconnect.textContent="✕ Cancel";
+    Q.el.disconnect.disabled=false;
+    authPromise.then(t=>finish(null,t), e=>finish(e));
+  });
 }
 
 async function checkConfigsFolder(){
@@ -2683,11 +2727,14 @@ async function questPush(){
 }
 
 async function questDisconnect(){
+  if(Q.cancelAuth){ Q.cancelAuth(); return; }   // still waiting for the headset: this button is Cancel
   try{ await Q.transport?.close?.(); }catch(e){}
   try{ await Q.adb?.close?.(); }catch(e){}
+  await questReleaseUsb();
   Q.adb=null; Q.transport=null; Q.device=null;
   Q.el.push.disabled=true;
   Q.el.disconnect.disabled=true;
+  Q.el.disconnect.textContent="Disconnect";
   Q.el.connect.disabled=false;
   Q.el.connect.textContent="🔌 Connect";
   Q.el.devInfo.style.display="none";
@@ -3914,7 +3961,7 @@ checkShareOnLoad().then(showWhatsNew, showWhatsNew);
      replay-even, replay-even-preview, stream, compare, share-link, share-open,
      vision-<type>, drop-replay, drop-import, intro-collapse, intro-expand, chains-on,
      chain-link-on, assume-max, fixed-position, position-offset, redo, token-insert,
-     compact-view) via
+     compact-view, quest-auth-wait) via
      window.goatcounter.count(), so feature usage shows up too.
 ============================================================================ -->
 <script data-goatcounter="https://hsv-generator.goatcounter.com/count"
