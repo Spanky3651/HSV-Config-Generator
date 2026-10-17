@@ -365,6 +365,8 @@
   .legend b{color:#cdd8e6;}
 
   /* ---------- Quest / WebUSB ---------- */
+  .no-quest-usb [data-needs-usb]{display:none!important;}
+  html:not(.no-quest-usb) [data-no-usb]{display:none!important;}
   .quest-head .dot{background:var(--magenta);box-shadow:0 0 8px var(--magenta);}
   .status-pill{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;padding:7px 13px;border-radius:20px;border:1px solid var(--border-2);background:var(--panel-2);color:var(--muted);}
   .status-pill .led{width:9px;height:9px;border-radius:50%;background:var(--muted-2);flex:none;transition:.2s;}
@@ -702,6 +704,8 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
 </script>
 <style>.foot-more{width:100%;text-align:center;font-family:var(--mono);font-size:12.5px;color:var(--muted-2);letter-spacing:.3px;margin-top:6px;}.foot-more a{color:var(--blue);text-decoration:none;}.foot-more a:hover{color:#fff;text-decoration:underline;}.foot-more .sep{color:var(--muted-2);margin:0 6px;}</style><style>.footlinks a.src-badge{font-family:system-ui,'Segoe UI',Arial,sans-serif;font-size:14px;font-weight:800;letter-spacing:.2px;padding:9px 16px;border-radius:11px;}</style></head>
 <body>
+<script>/* Quest over USB needs WebUSB on a computer. Hide it on phones, in the Quest's own browser and where WebUSB is missing. */
+(function(){var n=navigator,u=n.userAgent||"",ok=!!n.usb&&!/OculusBrowser|Quest/i.test(u)&&!(n.userAgentData&&n.userAgentData.mobile)&&!/Android.+Mobile|iPhone|iPad|iPod/i.test(u);window.QUEST_USB=ok;if(!ok)document.documentElement.classList.add("no-quest-usb");})();</script>
 
 <header class="topbar">
   <div class="brand">
@@ -713,7 +717,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   </div>
   <div class="spacer"></div>
   <div class="topbar-actions">
-    <span class="status-pill off" id="linkBadge" title="WebUSB link state"><span class="led"></span><span id="linkBadgeText">DISCONNECTED</span></span>
+    <span class="status-pill off" id="linkBadge" data-needs-usb title="WebUSB link state"><span class="led"></span><span id="linkBadgeText">DISCONNECTED</span></span>
     <input type="file" id="importFile" accept=".json,application/json" hidden />
     <button class="ghost" id="btnUndo" disabled title="Undo last structural change (Ctrl+Z)">↶ Undo</button>
     <button class="ghost" id="btnRedo" disabled title="Redo (Ctrl+Y or Ctrl+Shift+Z)">↷ Redo</button>
@@ -722,7 +726,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     <button class="ghost" id="btnCopy">⧉ Copy</button>
     <button class="ghost" id="btnShare" title="Copy a link that opens this exact config">🔗 Share</button>
     <button class="primary" id="btnExport">⤓ Export config.json</button>
-    <button class="violet primary" id="btnQuestTop">⚡ Push to Quest</button>
+    <button class="violet primary" id="btnQuestTop" data-needs-usb>⚡ Push to Quest</button>
   </div>
 </header>
 
@@ -734,7 +738,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     <section class="panel" id="introPanel" data-collapse-later>
       <div class="panel-head"><span class="dot"></span><h2>What this tool does</h2><span class="count">click to fold once you know it</span></div>
       <div class="panel-body intro-body">
-      <p>Hit Score Visualizer (HSV) is a Beat Saber mod that draws the floating number you see each time you slice a block. That number's <b>size, color, wording, and thresholds</b> all come from a <code>config.json</code> file. This free HSV config generator and editor lets you edit every part of that file visually, preview exactly how a cut will look in-game, and then either download the file or push it straight to your Quest over USB.</p>
+      <p>Hit Score Visualizer (HSV) is a Beat Saber mod that draws the floating number you see each time you slice a block. That number's <b>size, color, wording, and thresholds</b> all come from a <code>config.json</code> file. This free HSV config generator and editor lets you edit every part of that file visually, preview exactly how a cut will look in-game, and then download the file<span data-needs-usb> or push it straight to your Quest over USB</span>.</p>
       <div class="flow">
         <div class="step"><span class="num">1</span> Edit tiers &amp; colors</div>
         <span class="arrow">→</span>
@@ -742,7 +746,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
         <span class="arrow">→</span>
         <div class="step"><span class="num">3</span> Fix any validation flags</div>
         <span class="arrow">→</span>
-        <div class="step"><span class="num">4</span> Export or ⚡ Push to Quest</div>
+        <div class="step"><span class="num">4</span> Export<span data-needs-usb> or ⚡ Push to Quest</span></div>
       </div>
       <div class="callout"><span class="ci">◈</span><span><b style="color:#fff">How a cut is scored:</b> every slice is worth up to <b style="color:#fff">115</b> points - up to <b style="color:#fff">70</b> for your pre-swing angle, <b style="color:#fff">15</b> for how close to center you cut, and <b style="color:#fff">30</b> for your follow-through. Each <b style="color:#fff">judgment tier</b> below says "if the total cut score is at least <i>this</i> threshold, draw the number using <i>this</i> text and color."</span></div>
       </div>
@@ -1029,7 +1033,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </section>
 
     <!-- Send to Quest (WebUSB) -->
-    <section class="panel" id="questPanel">
+    <section class="panel" id="questPanel" data-needs-usb>
       <div class="panel-head quest-head"><span class="dot"></span><h2>Send to Quest</h2>
         <div class="head-actions"><button class="tiny ghost" id="btnUsbDiag" title="USB / ADB conflict help">⚠ Diagnostics</button><span class="status-pill off" id="qStatus"><span class="led"></span><span id="qStatusText">Disconnected</span></span></div>
       </div>
@@ -1136,7 +1140,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
     <div class="foot-more">More Beat Saber tools: <a href="https://spanky3651.github.io/Playlist-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">Playlist Studio</a><span class="sep">&middot;</span><a href="https://spanky3651.github.io/ReeSaber-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">ReeSaber Studio</a></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-17T12:34:00Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-17T13:45:00Z">Last updated recently</div>
   </div>
 </div>
 
@@ -1190,7 +1194,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
       <div class="wn-item" data-wn="tuning"><span class="wn-ic">⚖</span><div><p class="wn-t">Smarter tier tuning</p><p class="wn-d">Even out tiers keeps a minimum gap, saves your bad-cut color for real bad cuts, and lets you stream the result before applying it.</p></div></div>
       <div class="wn-item" data-wn="editing"><span class="wn-ic">↷</span><div><p class="wn-t">Faster editing</p><p class="wn-d">Redo, click a token to insert it into a template, a compact tier list, and the preview now plays the follow-through like the game.</p></div></div>
       <div class="wn-item" data-wn="replays" data-welcome><span class="wn-ic">⇪</span><div><p class="wn-t">Tune from your replays</p><p class="wn-d">Drop BeatLeader .bsor replays to see how often each tier really shows up for your cuts, then even out the thresholds in one click.</p></div></div>
-      <div class="wn-item" data-wn="quest-load" data-welcome><span class="wn-ic">⇩</span><div><p class="wn-t">Load from your Quest</p><p class="wn-d">Open a config that's already on your headset, edit it, and push it back. You see what changed before anything is overwritten.</p></div></div>
+      <div class="wn-item" data-wn="quest-load" data-welcome data-needs-usb><span class="wn-ic">⇩</span><div><p class="wn-t">Load from your Quest</p><p class="wn-d">Open a config that's already on your headset, edit it, and push it back. You see what changed before anything is overwritten.</p></div></div>
       <div class="wn-item" data-wn="templates" data-welcome><span class="wn-ic">▦</span><div><p class="wn-t">Starter templates</p><p class="wn-d">Clean numbers, an accuracy trainer, aim arrows, a hype setup with words, and a colorblind-friendly set.</p></div></div>
       <div class="wn-item" data-wn="events"><span class="wn-ic">✕</span><div><p class="wn-t">Bad cut and miss text</p><p class="wn-d">Set your own text and colors for misses, wrong-direction cuts, wrong-saber cuts and bombs.</p></div></div>
       <div class="wn-item" data-wn="share" data-welcome><span class="wn-ic">🔗</span><div><p class="wn-t">Share by link</p><p class="wn-d">Copy a link that opens your exact config. Great for Discord and Reddit.</p></div></div>
@@ -3844,7 +3848,7 @@ const WHATSNEW_KEY="hsvGenerator.whatsnew.v1";   // older builds: "1" means the 
 const WN2_KEY="hsvGenerator.whatsnew.v2";        // ids of every item already shown
 const WN_LEGACY=["replays","quest-load","templates","events","share","previews"];
 const FIRST_VISIT=!storeGet(FOLD_KEY) && !storeGet(DRAFT_KEY) && !storeGet(VIEW_KEY) && !storeGet(WHATSNEW_KEY) && !storeGet(WN2_KEY);   // read before init writes anything
-function wnItems(){ return [...document.querySelectorAll("#whatsnewBack .wn-item")]; }
+function wnItems(){ return [...document.querySelectorAll("#whatsnewBack .wn-item")].filter(i=>window.QUEST_USB||!i.hasAttribute("data-needs-usb")); }   // no Quest over USB on phones
 function markAllSeen(){ storeSet(WN2_KEY, JSON.stringify(wnItems().map(i=>i.dataset.wn))); }
 function showWhatsNew(){
   try{ localStorage.getItem(WN2_KEY); }catch(e){ return; }   // no storage = could never dismiss it for good, so skip
