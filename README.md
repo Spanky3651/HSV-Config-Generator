@@ -24,6 +24,8 @@ This tool replaces that loop. You edit every part of the config visually, watch 
 
 ## Features
 
+- **Made for first-timers** - a three-step welcome (pick a template, change colors, get it into the game), simple Size / Bold / swing-mark / word buttons on each tier (the raw template is one click away in Code view), advanced settings folded until you need them, and a reminder that the HitScoreVisualizer mod must be installed, with links to BSManager and MBF
+- **Export that tells you what's next** - name your file, then get the exact steps: the `Beat Saber\UserData\HitScoreVisualizer` folder and the in-game Select button on PC, Push to Quest or a `.hsv` download for MBF on Quest, plus a picture of what a perfect 115 should look like so you know it worked
 - **Judgment tier manager** - add, reorder (drag or nudge), duplicate, and delete score bands, with color pickers, typeable hex fields, and per-tier alpha sliders
 - **Live in-game preview** - a simulated cut renders your actual config, including the full set of TextMeshPro rich-text tags the game understands (`<size>`, `<color>`, `<alpha>`, `<mark>`, `<sup>`, `<rotate>`…). Tags the game does not know print as plain text, just like in game, with the float-up-and-fade decay animation from VR
 - **Score → color spectrum bar** - every score from 0–115 mapped to the exact color your config produces, including Fade blends; click anywhere to simulate that score
