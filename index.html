@@ -1140,7 +1140,7 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
     <div class="foot-more">More Beat Saber tools: <a href="https://spanky3651.github.io/Playlist-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">Playlist Studio</a><span class="sep">&middot;</span><a href="https://spanky3651.github.io/ReeSaber-Studio/?utm_source=hsv-generator&amp;utm_campaign=cross-link">ReeSaber Studio</a></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-17T13:45:00Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-18T00:00:00Z">Last updated recently</div>
   </div>
 </div>
 
@@ -2505,7 +2505,7 @@ document.querySelectorAll("#usbModal [data-cmd]").forEach(b=>b.addEventListener(
 document.getElementById("btnRetryUsb").addEventListener("click",()=>{ closeUsbModal(); questConnect(); });
 document.getElementById("btnCloseUsb").addEventListener("click",closeUsbModal);
 document.getElementById("usbModal").addEventListener("click",e=>{ if(e.target.id==="usbModal") closeUsbModal(); });
-document.getElementById("btnUsbDiag").addEventListener("click",()=>openUsbModal(Q.lastErr||""));
+document.getElementById("btnUsbDiag").addEventListener("click",()=>{ track("quest-diag"); openUsbModal(Q.lastErr||""); });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeUsbModal(); });
 
 /* Dynamically load ya-webadb from CDN. Try a pinned version, fall back to latest. */
@@ -2534,7 +2534,7 @@ async function questConnect(){
 
     qlog("Opening device picker - choose your Quest…","dim");
     const device=await Manager.requestDevice();
-    if(!device){ qlog("No device selected.","warn"); qStatus("off","Disconnected"); Q.el.connect.disabled=false; Q.connecting=false; return; }
+    if(!device){ track("quest-picker-cancel"); qlog("No device selected.","warn"); qStatus("off","Disconnected"); Q.el.connect.disabled=false; Q.connecting=false; return; }
     Q.device=device;
     qlog("Selected: "+(device.name||device.serial||"device"),"ok");
 
@@ -2594,6 +2594,7 @@ async function questConnect(){
     qlog("Connection failed: "+msg,"err");
     if(!Q.adb){ await questReleaseUsb(); Q.device=null; }   // free the interface so the next Connect can claim it
     const kind=(e&&e.name==="AuthCancelled")?"auth-cancel":(e&&e.name==="AuthTimeout")?"auth-timeout":classifyUsbError(e);
+    track(kind==="auth-cancel"?"quest-cancel":kind==="auth-timeout"?(/never answered/.test(msg)?"quest-error-no-answer":"quest-error-not-approved"):kind==="locked"?"quest-error-busy":kind==="security"?"quest-error-blocked":kind==="cancelled"?"quest-picker-cancel":"quest-error-connect");
     if(kind==="auth-cancel"){
       qStatus("off","Disconnected");
       qlog("Cancelled. Unplug and replug the cable if the headset prompt never showed, then Connect again.","dim");
@@ -2683,14 +2684,14 @@ async function checkConfigsFolder(){
     // stat needs the stat_v2 protocol; fall back to lstat, then to listing the folder
     try{ exists=isDir(await sync.stat(dir)); }catch(e){
       try{ exists=isDir(await sync.lstat(dir)); }catch(e2){
-        try{ await sync.readdir(dir); exists=true; }catch(e3){ exists=false; }
+        try{ exists=(await sync.readdir(dir)).length>0; }catch(e3){ exists=false; }   // a missing folder lists nothing, a real one at least "." and ".."
       }
     }
     await sync.dispose?.();
     Q.el.configs.textContent = exists ? "found ✓" : "not found";
     Q.el.configs.style.color = exists ? "var(--accent)" : "var(--warn)";
     if(exists) qlog("HSV folder found on headset.","ok");
-    else qlog("HSV folder not found - launch Beat Saber once with HSV installed, or change the destination path.","warn");
+    else { qlog("HSV folder not found - launch Beat Saber once with HSV installed, or change the destination path.","warn"); track("quest-error-no-folder"); }
     return exists;
   }catch(e){
     qlog("Could not stat the destination folder: "+((e&&e.message)||e),"warn");
@@ -2748,6 +2749,7 @@ async function questPush(){
     questListConfigs();
   }catch(e){
     const msg=(e&&e.message)||String(e);
+    track("quest-error-push");
     qlog("Push failed: "+msg,"err");
     if(/No such file|ENOENT|not a directory/i.test(msg)){
       qlog("The destination folder probably doesn't exist yet. Launch Beat Saber once with HSV installed, or edit the destination path.","warn");
@@ -2780,6 +2782,7 @@ document.getElementById("btnQPush").addEventListener("click",questPush);
 document.getElementById("btnQDisconnect").addEventListener("click",questDisconnect);
 document.getElementById("qPath").addEventListener("change",()=>{ if(Q.adb){ checkConfigsFolder().then(()=>questListConfigs()); } });
 document.getElementById("btnQuestTop").addEventListener("click",()=>{
+  track("quest-open");
   openPanel("questPanel");
   Q.el.panel.scrollIntoView({behavior:"smooth",block:"center"});
   Q.el.panel.style.transition="box-shadow .3s";
@@ -3935,6 +3938,7 @@ byId("btnQLoad").addEventListener("click",async()=>{
     track("quest-load");
   }catch(e){
     const msg=(e&&e.message)||String(e);
+    track("quest-error-load");
     qlog("Load failed: "+msg,"err"); toast("Load failed: "+msg,true);
   }finally{ btn.disabled=!Q.files.length; }
 });
@@ -3993,7 +3997,9 @@ checkShareOnLoad().then(showWhatsNew, showWhatsNew);
      replay-even, replay-even-preview, stream, compare, share-link, share-open,
      vision-<type>, drop-replay, drop-import, intro-collapse, intro-expand, chains-on,
      chain-link-on, assume-max, fixed-position, position-offset, redo, token-insert,
-     compact-view, quest-auth-wait, quest-no-answer) via
+     compact-view, quest-open, quest-auth-wait, quest-no-answer, quest-cancel, quest-diag,
+     quest-picker-cancel, quest-error-<not-approved|no-answer|busy|blocked|connect|no-folder|
+     load|push>) via
      window.goatcounter.count(), so feature usage shows up too.
 ============================================================================ -->
 <script data-goatcounter="https://hsv-generator.goatcounter.com/count"
