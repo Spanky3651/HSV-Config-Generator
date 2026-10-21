@@ -4,6 +4,22 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>HSV Config Generator &amp; Editor // HitScoreVisualizer</title>
+<script>
+/* GoatCounter helpers (no cookies): a click on any [data-gc] element counts as an event (used for links that
+   leave the site), and the first script error from this page per visit counts as js-error (or js-error-promise).
+   Errors from browser extensions and other sites are skipped. No error text is sent, only the event name. Events wait for count.js, which loads at the end of the page. */
+(function(){
+  var q=[],t=null,sent={},here=location.origin+location.pathname;
+  function send(n){try{window.goatcounter.count({path:'app/'+n,title:n,event:true});}catch(e){}}
+  function gc(n){if(!n)return;if(window.goatcounter&&window.goatcounter.count){send(n);return;}if(q.length<20)q.push(n);
+    if(!t){var k=0;t=setInterval(function(){if(window.goatcounter&&window.goatcounter.count){while(q.length)send(q.shift());clearInterval(t);t=null;}else if(++k>60){clearInterval(t);t=null;q=[];}},500);}}
+  function once(n){if(sent[n])return;sent[n]=1;gc(n);}
+  window.addEventListener('error',function(e){if(!e||(e.target&&e.target!==window))return;var f=String(e.filename||''),m=String(e.message||'');
+    if(f&&f.indexOf(here)!==0)return;if(!f&&/^Script error\.?$/.test(m))return;once('js-error');});
+  window.addEventListener('unhandledrejection',function(){once('js-error-promise');});
+  document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('[data-gc]');if(a)gc(a.getAttribute('data-gc'));},true);
+})();
+</script>
 <link rel="canonical" href="https://spanky3651.github.io/HSV-Config-Generator/" />
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <meta name="color-scheme" content="dark" />
@@ -1174,13 +1190,13 @@ a.kofi-support:hover{transform:translateY(-2px);border-color:#ff2740;box-shadow:
     </span>
   </a>
   <div class="footlinks">
-    <a class="src-badge" href="https://github.com/Spanky3651/HSV-Config-Generator" target="_blank" rel="noopener" title="Source code on GitHub"><svg viewBox="0 0 24 24" width="15" height="15" fill="#fff" style="vertical-align:-2px;margin-right:6px;flex:none"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.575.106.785-.25.785-.556 0-.274-.01-1-.015-1.965-3.196.695-3.87-1.54-3.87-1.54-.523-1.33-1.277-1.684-1.277-1.684-1.044-.714.08-.699.08-.699 1.155.081 1.763 1.186 1.763 1.186 1.026 1.758 2.693 1.25 3.35.955.104-.744.402-1.25.73-1.538-2.552-.29-5.235-1.276-5.235-5.68 0-1.255.448-2.28 1.183-3.084-.119-.29-.513-1.46.112-3.043 0 0 .965-.309 3.163 1.178a10.98 10.98 0 0 1 2.88-.387c.977.004 1.96.132 2.88.387 2.196-1.487 3.16-1.178 3.16-1.178.626 1.583.232 2.753.114 3.043.737.804 1.182 1.829 1.182 3.084 0 4.415-2.687 5.386-5.247 5.67.413.355.78 1.056.78 2.13 0 1.538-.014 2.778-.014 3.157 0 .308.207.667.79.554A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>Source</a>
-        <a class="kofi-support" href="https://ko-fi.com/msploit21?utm_source=hsv-generator&amp;utm_medium=support-button" target="_blank" rel="noopener" title="Support MSploit on Ko-fi"><span class="kofi-heart">❤️</span>Support me</a>
+    <a class="src-badge" data-gc="github-click" href="https://github.com/Spanky3651/HSV-Config-Generator" target="_blank" rel="noopener" title="Source code on GitHub"><svg viewBox="0 0 24 24" width="15" height="15" fill="#fff" style="vertical-align:-2px;margin-right:6px;flex:none"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.575.106.785-.25.785-.556 0-.274-.01-1-.015-1.965-3.196.695-3.87-1.54-3.87-1.54-.523-1.33-1.277-1.684-1.277-1.684-1.044-.714.08-.699.08-.699 1.155.081 1.763 1.186 1.763 1.186 1.026 1.758 2.693 1.25 3.35.955.104-.744.402-1.25.73-1.538-2.552-.29-5.235-1.276-5.235-5.68 0-1.255.448-2.28 1.183-3.084-.119-.29-.513-1.46.112-3.043 0 0 .965-.309 3.163 1.178a10.98 10.98 0 0 1 2.88-.387c.977.004 1.96.132 2.88.387 2.196-1.487 3.16-1.178 3.16-1.178.626 1.583.232 2.753.114 3.043.737.804 1.182 1.829 1.182 3.084 0 4.415-2.687 5.386-5.247 5.67.413.355.78 1.056.78 2.13 0 1.538-.014 2.778-.014 3.157 0 .308.207.667.79.554A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>Source</a>
+        <a class="kofi-support" data-gc="kofi-click" href="https://ko-fi.com/msploit21?utm_source=hsv-generator&amp;utm_medium=support-button" target="_blank" rel="noopener" title="Support MSploit on Ko-fi"><span class="kofi-heart">❤️</span>Support me</a>
   </div>
   <div class="foot-meta">
     <div class="foot-count" id="footCount" hidden></div>
     <div class="foot-more">More Beat Saber tools: <a href="https://spanky3651.github.io/Playlist-Studio/?utm_source=hsv-generator&amp;utm_campaign=footer-hsv-generator">Playlist Studio</a><span class="sep">&middot;</span><a href="https://spanky3651.github.io/ReeSaber-Studio/?utm_source=hsv-generator&amp;utm_campaign=footer-hsv-generator">ReeSaber Studio</a></div>
-    <div class="foot-updated" id="footUpdated" data-updated="2026-10-21T00:43:00Z">Last updated recently</div>
+    <div class="foot-updated" id="footUpdated" data-updated="2026-10-21T00:54:00Z">Last updated recently</div>
   </div>
 </div>
 
@@ -4041,7 +4057,7 @@ async function makeShareLink(){
   try{ if(window.CompressionStream) code="z"+b64urlEncode(await pipeBytes(raw,new CompressionStream("deflate-raw"))); }catch(e){ code=null; }
   if(!code) code="j"+b64urlEncode(raw);
   const base=/^https?:$/.test(location.protocol) ? location.origin+location.pathname : SHARE_BASE;
-  return base+"?utm_source=share&utm_campaign=config-link#cfg="+code;
+  return base+"?utm_source=share-link&utm_campaign=config-share#cfg="+code;
 }
 async function readShareCode(code){
   const kind=code[0], bytes=b64urlDecode(code.slice(1));
@@ -4251,6 +4267,7 @@ checkShareOnLoad().then(showWhatsNew, showWhatsNew);
      (export, export-with-errors, copy-json, import, apply-json, reset, quest-connect,
      quest-push, quest-push-with-errors, quest-load, template-<id>, replay-analyze,
      replay-even, replay-even-preview, stream, compare, share-link, share-open,
+     github-click, kofi-click, js-error, js-error-promise (GoatCounter helpers in <head>),
      vision-<type>, drop-replay, drop-import, intro-collapse, intro-expand, chains-on,
      chain-link-on, assume-max, fixed-position, position-offset, redo, token-insert,
      compact-view, quest-open, quest-auth-wait, quest-no-answer, quest-cancel, quest-diag,
