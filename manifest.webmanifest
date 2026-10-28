@@ -1,5 +1,5 @@
 {
-  "id": "./",
+  "id": "/HSV-Config-Generator/",
   "name": "HSV Config Generator",
   "short_name": "HSV Config",
   "description": "Design Beat Saber HitScoreVisualizer configs with a live in-game preview, tune them from your replays, and push them to your Quest.",
