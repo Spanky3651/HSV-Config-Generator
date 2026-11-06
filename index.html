@@ -644,6 +644,13 @@
   .stage.bg-red{background:radial-gradient(ellipse at 50% 30%,#ff2a4a,#3f0812 70%);}
   .vis-protan{filter:url(#cvd-protan);} .vis-deutan{filter:url(#cvd-deutan);} .vis-tritan{filter:url(#cvd-tritan);} .vis-gray{filter:url(#cvd-gray);}
   .hittext.sp{top:44%;}
+  /* 3D view: the three.js canvas sits under the vignette, the scanlines and the hit text */
+  .stage .stage3d{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;}
+  .stage .stage3d[hidden]{display:none;}
+  .stage.s3d{background:#000;}
+  .stage.s3d::before{z-index:1;}
+  .stage.s3d .block{display:none;}
+  .stage.s3d .hittext{z-index:2;}
 
   /* ---------- Compare ---------- */
   .cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -1133,6 +1140,8 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
           <div class="hittext" id="hittext"></div>
         </div>
         <div class="vrow">
+          <label class="field" for="viewMode">View <span class="info" data-tip="3D flies a note down the track and cuts it where your accuracy puts the saber, with the swing streak sized by your pre-swing and follow-through, so the text pops where it would in game. Flat is the simple 2D preview and uses less battery.">i</span></label>
+          <select id="viewMode"><option value="3d">3D</option><option value="flat">Flat</option></select>
           <label class="field" for="viewBg">Background <span class="info" data-tip="Check that your colors stay readable in bright maps and colored lighting, not just on black.">i</span></label>
           <select id="viewBg"><option value="dark">Dark</option><option value="bright">Bright</option><option value="blue">Blue lights</option><option value="red">Red lights</option></select>
           <label class="field" for="viewVision">Vision <span class="info" data-tip="Shows the preview and the color bar the way a colorblind player sees them. About 1 in 12 men has some red-green colorblindness.">i</span></label>
@@ -1150,7 +1159,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
           <div class="simrow"><label>Cut side <span class="info" data-tip="Which side of the note's center line your saber passed. The %d token draws an arrow from your cut toward the center (cut left of center shows →). There is no arrow on a perfect 15 accuracy cut, same as in game.">i</span></label><select id="simSide" style="flex:1"><option value="left">Left of center (→)</option><option value="right">Right of center (←)</option><option value="above">Above center (↓)</option><option value="below">Below center (↑)</option><option value="random">Random each replay</option></select></div>
           <div class="preset-row" id="presetRow"></div>
         </div>
-        <div class="inline-note"><b>Stream</b> fires a quick burst of cuts (your replay cuts when one is loaded) to check that the text stays readable at speed. Replay mimics the in-game decay - pop in, drift upward, fade out - then rests visible for editing. It also plays the follow-through: the score starts without it and climbs (Intermediate updates on) or jumps once at the end (off), or starts from a full 30 with Assume max post-swing. Colors include the Fade blend. Releasing a slider re-triggers the replay; clicking the spectrum bar jumps the sim to any score.</div>
+        <div class="inline-note"><b>3D</b> flies a note down the track and cuts it where your accuracy puts the saber (a perfect 15 splits it down the middle), with the swing streak sized by your pre-swing and follow-through. <b>Stream</b> fires a quick burst of cuts (your replay cuts when one is loaded) to check that the text stays readable at speed. Replay mimics the in-game decay - pop in, drift upward, fade out - then rests visible for editing. It also plays the follow-through: the score starts without it and climbs (Intermediate updates on) or jumps once at the end (off), or starts from a full 30 with Assume max post-swing. Colors include the Fade blend. Releasing a slider re-triggers the replay; clicking the spectrum bar jumps the sim to any score.</div>
       </div>
     </section>
 
@@ -1270,7 +1279,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
     </a>
   </div>
   <div class="nf-strip">
-    <div class="nf-sl"><a href="#" data-howto class="nf-how">How to install it in game</a><span class="nf-dot">&middot;</span><span class="nf-upd" id="footUpdated" data-updated="2026-11-03T16:00Z">Updated recently</span></div>
+    <div class="nf-sl"><a href="#" data-howto class="nf-how">How to install it in game</a><span class="nf-dot">&middot;</span><span class="nf-upd" id="footUpdated" data-updated="2026-11-06T02:30Z">Updated recently</span></div>
     <div class="nf-sr"><div class="foot-count" id="footCount" hidden></div><span class="nf-btns"><a class="src-badge nf-btn nf-src" data-gc="github-click" href="https://github.com/Spanky3651/HSV-Config-Generator" target="_blank" rel="noopener" title="Source code on GitHub"><svg viewBox="0 0 24 24" width="15" height="15" fill="#fff"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.575.106.785-.25.785-.556 0-.274-.01-1-.015-1.965-3.196.695-3.87-1.54-3.87-1.54-.523-1.33-1.277-1.684-1.277-1.684-1.044-.714.08-.699.08-.699 1.155.081 1.763 1.186 1.763 1.186 1.026 1.758 2.693 1.25 3.35.955.104-.744.402-1.25.73-1.538-2.552-.29-5.235-1.276-5.235-5.68 0-1.255.448-2.28 1.183-3.084-.119-.29-.513-1.46.112-3.043 0 0 .965-.309 3.163 1.178a10.98 10.98 0 0 1 2.88-.387c.977.004 1.96.132 2.88.387 2.196-1.487 3.16-1.178 3.16-1.178.626 1.583.232 2.753.114 3.043.737.804 1.182 1.829 1.182 3.084 0 4.415-2.687 5.386-5.247 5.67.413.355.78 1.056.78 2.13 0 1.538-.014 2.778-.014 3.157 0 .308.207.667.79.554A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>Source</a> <a class="kofi-support nf-btn nf-kofi" data-gc="kofi-click" href="https://ko-fi.com/msploit21?utm_source=hsv-generator&amp;utm_medium=support-button" target="_blank" rel="noopener" title="Support MSploit on Ko-fi"><span class="kofi-heart">❤️</span>Support me</a></span><span class="nf-vr"></span><button type="button" class="fxsw" id="blocksSw" role="switch" aria-checked="false"><span class="fxsw-track"><span class="fxsw-knob"><svg viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" rx="5" class="k-body"/><path d="M3.3 3.3h13.4v1.9L10 8.3 3.3 5.2z" class="k-arrow"/></svg></span></span><span>Falling blocks</span></button></div>
   </div>
 </footer>
@@ -2062,9 +2071,14 @@ function renderPreview(triggerAnim){
     stage.style.color = r.color; // fade-blended color, alpha included
     stage.innerHTML = r.html;
   }
-  applyPositionView();
+  applyPositionView(); placeHitText();
   if(state.fixedPosition) stageTier.textContent+=" · FIXED";
-  if(triggerAnim){ stage.classList.remove("live"); void stage.offsetWidth; stage.classList.add("live"); playCutTimeline(sim); }
+  if(triggerAnim){
+    const d=(view3d && s3d) ? CUT_DELAY : 0;   // in 3D the text waits for the note to reach the saber
+    stage.style.animationDelay=d ? d+"ms" : "";
+    stage.classList.remove("live"); void stage.offsetWidth; stage.classList.add("live"); playCutTimeline(sim,d);
+    if(d) s3d.cut(sim);
+  }
   else stopClimb();
   if(typeof renderCompare==="function") renderCompare();
 }
@@ -2081,7 +2095,7 @@ function applyPositionView(){
    updates on it climbs as the swing finishes; with them off it changes once, at the end. */
 let climbTimers=[];
 function stopClimb(){ climbTimers.forEach(clearTimeout); climbTimers=[]; }
-function playCutTimeline(ev){
+function playCutTimeline(ev,delay){
   stopClimb();
   if((ev.event||"cut")!=="cut") return;
   const finalPost=ev.post, startPost=state.assumeMaxPostSwing ? 30 : 0;
@@ -2094,7 +2108,7 @@ function playCutTimeline(ev){
     climbTimers.push(setTimeout(()=>{
       paint(k===steps ? finalPost : Math.round(startPost+(finalPost-startPost)*k/steps));
       if(k===steps) climbTimers=[];
-    }, 130+T*k/steps));
+    }, (delay||0)+130+T*k/steps));
   }
 }
 
@@ -3909,14 +3923,20 @@ function runStream(cfg){
   byId("hittext").style.visibility="hidden";
   const lanes=[[16,36],[62,54],[38,54],[84,36],[16,58],[62,34],[38,32],[84,56]], N=12;   // 8 slots, each reused only after its text has faded
   const fixed=!!state.fixedPosition;   // with a fixed position every popup lands on one spot and replaces the last
+  const d3=!!(view3d && s3d), wait=d3 ? CUT_DELAY : 0;   // 3D: each text waits for its note to be cut
   let i=0;
   streamTimer=setInterval(()=>{
-    if(i>=N){ clearInterval(streamTimer); streamTimer=null; streamEnd=setTimeout(()=>{ byId("hittext").style.visibility=""; },1300); return; }
-    const r=renderEvent(nextStreamEvent(i), cfg);
+    if(i>=N){ clearInterval(streamTimer); streamTimer=null; streamEnd=setTimeout(()=>{ byId("hittext").style.visibility=""; },1300+wait); return; }
+    const ev=nextStreamEvent(i), r=renderEvent(ev, cfg);
     const el=document.createElement("div");
     el.className="hittext sp live";
-    if(fixed) stage.querySelectorAll(".hittext.sp").forEach(e=>e.remove());
-    const slot=fixed ? [50,46] : lanes[i%lanes.length];
+    const clearOld=()=>stage.querySelectorAll(".hittext.sp").forEach(e=>{ if(e!==el) e.remove(); });
+    if(fixed){ if(wait) setTimeout(clearOld,wait); else clearOld(); }
+    let slot=fixed ? [50,46] : lanes[i%lanes.length];
+    if(d3){
+      const p=s3d.cut(ev,{pos:s3d.lanePos(lanes[i%lanes.length])}), a=fixed ? s3d.anchor() : p;
+      slot=[a.x,a.y]; el.style.animationDelay=wait+"ms";
+    }
     el.style.left=slot[0]+"%"; el.style.top=slot[1]+"%";
     el.style.color=r.color;
     el.innerHTML=r.html;
@@ -3946,13 +3966,273 @@ function applyView(){
     el.classList.remove("vis-protan","vis-deutan","vis-tritan","vis-gray");
     if(vis!=="normal") el.classList.add("vis-"+vis);
   });
-  storeSet(VIEW_KEY, JSON.stringify({bg,vis}));
+  if(s3d) s3d.setBg(bg);
+  storeSet(VIEW_KEY, JSON.stringify({bg,vis,mode:(byId("viewMode")||{}).value||"3d"}));
 }
 (function(){
   try{ const v=JSON.parse(storeGet(VIEW_KEY)||"null");
     if(v){ if(["dark","bright","blue","red"].includes(v.bg)) byId("viewBg").value=v.bg; if(["normal","protan","deutan","tritan","gray"].includes(v.vis)) byId("viewVision").value=v.vis; } }catch(e){}
   byId("viewBg").addEventListener("change",applyView);
   byId("viewVision").addEventListener("change",()=>{ applyView(); if(byId("viewVision").value!=="normal") track("vision-"+byId("viewVision").value); });
+})();
+
+/* ---------- 3D live preview (three.js) ----------
+   A note flies down the track and the saber cuts it where your accuracy puts it (a perfect 15 splits it down
+   the middle), with the swing streak sized by your pre-swing and follow-through. The hit text pops at the cut.
+   three.js loads only when the 3D view is on: from this site, or from jsDelivr when index.html runs as a
+   downloaded file. Flat (the 2D preview) is the fallback when WebGL or the download is not available. */
+var THREE_LOCAL="three-hsv.min.js", THREE_CDN="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js";
+var CUT_DELAY=430;   // ms from a note appearing to the cut; the hit text waits for it
+var s3d=null, s3dLoad=null, view3d=false;   // var: renderPreview can run before this block does
+function threeLib(){
+  return s3dLoad || (s3dLoad=import("./"+THREE_LOCAL).catch(()=>import(THREE_CDN)));
+}
+function cutSideOf(ev){ const s=ev.side||sim.side; return s==="random" ? simRandSide : (s||"left"); }
+function build3d(T, host){
+  const canvas=document.createElement("canvas");
+  canvas.className="stage3d"; canvas.setAttribute("aria-hidden","true");
+  let renderer;
+  try{ renderer=new T.WebGLRenderer({canvas, antialias:true, powerPreference:"low-power"}); }catch(e){ return null; }
+  if(!renderer.getContext()) return null;
+  host.insertBefore(canvas, host.firstChild);
+  renderer.outputColorSpace=T.SRGBColorSpace;
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio||1));
+  const scene=new T.Scene(), camera=new T.PerspectiveCamera(56,2,.05,90);
+  const CUT_Z=-.6, NOTE=.5, FAR_Z=-26, LANE_X=[-.9,-.3,.3,.9], ROW_Y=[.85,1.45], MID={x:0,y:1.1};
+  const RED=0xff2238, BLUE=0x2a7dff;
+  const fog=new T.Fog(0x000000,7,46); scene.fog=fog;
+  const hemi=new T.HemisphereLight(0xbfd4ff,0x101018,1.2); scene.add(hemi);
+  const sun=new T.DirectionalLight(0xffffff,2.2); sun.position.set(.6,3,4); scene.add(sun);
+
+  /* the environment: floor, a lit runway into the distance, square rings and four lasers */
+  const env={};
+  const floorMat=new T.MeshStandardMaterial({color:0x06080d, roughness:.95});
+  const floor=new T.Mesh(new T.PlaneGeometry(60,120), floorMat); floor.rotation.x=-Math.PI/2; floor.position.z=-50; scene.add(floor);
+  const trackMat=new T.MeshStandardMaterial({color:0x0b0f18, roughness:.7, metalness:.2});
+  const track=new T.Mesh(new T.PlaneGeometry(2.7,90), trackMat); track.rotation.x=-Math.PI/2; track.position.set(0,.005,-44); scene.add(track);
+  const glowTex=(()=>{ const c=document.createElement("canvas"); c.width=64; c.height=8; const g=c.getContext("2d");
+    const gr=g.createLinearGradient(0,0,64,0); gr.addColorStop(0,"rgba(255,255,255,0)"); gr.addColorStop(.5,"rgba(255,255,255,1)"); gr.addColorStop(1,"rgba(255,255,255,0)");
+    g.fillStyle=gr; g.fillRect(0,0,64,8); const t=new T.CanvasTexture(c); t.colorSpace=T.SRGBColorSpace; return t; })();
+  const addMat=(color,op)=>new T.MeshBasicMaterial({color, map:glowTex, transparent:true, opacity:op, blending:T.AdditiveBlending, depthWrite:false, fog:true});
+  env.strips=[]; env.glows=[];
+  [-1,1].forEach(s=>{
+    const core=new T.Mesh(new T.BoxGeometry(.035,.02,90), new T.MeshBasicMaterial({color:s<0?RED:BLUE, fog:true}));
+    core.position.set(s*1.35,.012,-44); scene.add(core); env.strips.push(core);
+    const glow=new T.Mesh(new T.PlaneGeometry(.7,90), addMat(s<0?RED:BLUE,.55)); glow.rotation.x=-Math.PI/2; glow.position.set(s*1.35,.015,-44); scene.add(glow); env.glows.push(glow);
+  });
+  const ringMat=new T.MeshBasicMaterial({color:0x1a2a44, fog:true});
+  for(let k=0;k<8;k++){
+    const z=-7-k*6, w=7.4, h=5.2, t=.09, g=new T.Group();
+    [[0,h,w,t],[0,0,w,t],[-w/2,h/2,t,h],[w/2,h/2,t,h]].forEach(p=>{ const m=new T.Mesh(new T.BoxGeometry(p[2],p[3],t), ringMat); m.position.set(p[0],p[1],0); g.add(m); });
+    g.position.z=z; g.rotation.z=(k%2?1:-1)*.04; scene.add(g);
+  }
+  env.lasers=[];
+  [[-1,.5],[-1,.9],[1,.5],[1,.9]].forEach(([s,a],i)=>{
+    const m=new T.Mesh(new T.CylinderGeometry(.025,.025,44,6,1,true), new T.MeshBasicMaterial({color:s<0?RED:BLUE, transparent:true, opacity:.75, blending:T.AdditiveBlending, depthWrite:false, fog:true}));
+    m.position.set(s*(6+i%2*2),0,-30-i%2*6); m.rotation.z=s*a; scene.add(m); env.lasers.push(m);
+  });
+
+  /* textures: the arrow on a note face (glows white), the dot on a chain link, and the swing streak */
+  const faceTex=(kind)=>{ const c=document.createElement("canvas"); c.width=c.height=128; const g=c.getContext("2d");
+    g.fillStyle="#000"; g.fillRect(0,0,128,128); g.fillStyle="#fff";
+    if(kind==="dot"){ g.beginPath(); g.arc(64,64,17,0,Math.PI*2); g.fill(); }
+    else { g.beginPath(); if(kind==="up"){ g.moveTo(22,58); g.lineTo(106,58); g.lineTo(64,22); } else { g.moveTo(22,70); g.lineTo(106,70); g.lineTo(64,106); } g.closePath(); g.fill(); }
+    const t=new T.CanvasTexture(c); t.colorSpace=T.SRGBColorSpace; return t; };
+  const TEX={down:faceTex("down"), up:faceTex("up"), dot:faceTex("dot")};
+  const streakTex=(()=>{ const c=document.createElement("canvas"); c.width=32; c.height=128; const g=c.getContext("2d");
+    const h=g.createLinearGradient(0,0,32,0); h.addColorStop(0,"rgba(255,255,255,0)"); h.addColorStop(.5,"rgba(255,255,255,1)"); h.addColorStop(1,"rgba(255,255,255,0)");
+    g.fillStyle=h; g.fillRect(0,0,32,128);
+    g.globalCompositeOperation="destination-in"; const v=g.createLinearGradient(0,0,0,128); v.addColorStop(0,"rgba(0,0,0,0)"); v.addColorStop(.75,"rgba(0,0,0,1)"); v.addColorStop(1,"rgba(0,0,0,1)");
+    g.fillStyle=v; g.fillRect(0,0,32,128); const t=new T.CanvasTexture(c); t.colorSpace=T.SRGBColorSpace; return t; })();
+
+  /* one half of a note: a box from x0 to x1 (note-local), with the front face's arrow mapped so the two halves line up */
+  function halfMesh(x0,x1,h,color,face,cutSide){
+    const w=Math.max(.001,x1-x0), geo=new T.BoxGeometry(w,h,NOTE);
+    geo.translate((x0+x1)/2,0,0);
+    const uv=geo.attributes.uv, u0=(x0+NOTE/2)/NOTE, u1=(x1+NOTE/2)/NOTE;
+    for(let i=16;i<20;i++) uv.setX(i, u0+uv.getX(i)*(u1-u0));
+    uv.needsUpdate=true;
+    const body=new T.MeshStandardMaterial({color, roughness:.38, metalness:.1, transparent:true});
+    const front=new T.MeshStandardMaterial({color, roughness:.38, metalness:.1, emissive:0xffffff, emissiveMap:TEX[face], emissiveIntensity:1.15, transparent:true});
+    const cut=new T.MeshBasicMaterial({color:new T.Color(color).lerp(new T.Color(0xffffff),.55), transparent:true});
+    const mats=[body,body,body,body,front,body]; mats[cutSide]=cut;
+    const m=new T.Mesh(geo,mats); m.userData.mats=[body,front,cut]; return m;
+  }
+  function bombMesh(){
+    const g=new T.Group(), mat=new T.MeshStandardMaterial({color:0x3a3f4a, roughness:.3, metalness:.55, emissive:0x220a0e, transparent:true});
+    g.add(new T.Mesh(new T.IcosahedronGeometry(.2,1),mat));
+    const cg=new T.ConeGeometry(.045,.16,6); cg.translate(0,.25,0);
+    const up=new T.Vector3(0,1,0);
+    [[1,1,1],[-1,1,-1],[1,-1,-1],[-1,-1,1],[0,1,0],[0,-1,0],[1,0,0],[-1,0,0],[0,0,1],[0,0,-1]].forEach(d=>{ const s=new T.Mesh(cg,mat); s.quaternion.setFromUnitVectors(up,new T.Vector3(d[0],d[1],d[2]).normalize()); g.add(s); });
+    const fl=new T.Mesh(new T.IcosahedronGeometry(.24,2), new T.MeshBasicMaterial({color:0xffc080, transparent:true, opacity:0, blending:T.AdditiveBlending, depthWrite:false}));
+    g.add(fl); g.userData.mats=[mat]; g.userData.flash=fl.material; return g;
+  }
+  function streakMesh(len,color,up){
+    const geo=new T.PlaneGeometry(.11,len); geo.translate(0,len/2,0);
+    const mat=new T.MeshBasicMaterial({color, map:streakTex, transparent:true, opacity:0, blending:T.AdditiveBlending, depthWrite:false, side:T.DoubleSide});
+    const m=new T.Mesh(geo,mat); if(!up) m.rotation.z=Math.PI;
+    const core=new T.Mesh(new T.PlaneGeometry(.022,len).translate(0,len/2,.001), new T.MeshBasicMaterial({color:0xffffff, map:streakTex, transparent:true, opacity:0, blending:T.AdditiveBlending, depthWrite:false, side:T.DoubleSide}));
+    m.add(core); m.userData.core=core.material; return m;
+  }
+
+  const live=[]; let flash=0, raf=0, last=0, bg="dark";
+  const BG={
+    dark:{clear:0x000000, fog:0x02040a, floor:0x06080d, track:0x0b0f18, ring:0x1a2a44, hemi:1.2, left:RED, right:BLUE},
+    bright:{clear:0xdfe5ee, fog:0xdfe5ee, floor:0xc4ccd8, track:0xaab4c3, ring:0x8392a8, hemi:2.2, left:RED, right:BLUE},
+    blue:{clear:0x08205f, fog:0x0a2a7a, floor:0x061235, track:0x0b1b4a, ring:0x3a64c8, hemi:1.5, left:0x5aa0ff, right:0x5aa0ff},
+    red:{clear:0x4a0610, fog:0x6a0a18, floor:0x2a0509, track:0x3a0a12, ring:0xc8384f, hemi:1.5, left:0xff4060, right:0xff4060}
+  };
+  function setBg(name){
+    bg=BG[name] ? name : "dark"; const p=BG[bg];
+    renderer.setClearColor(p.clear,1); fog.color.setHex(p.fog); floorMat.color.setHex(p.floor); trackMat.color.setHex(p.track);
+    ringMat.color.setHex(p.ring); hemi.intensity=p.hemi;
+    env.strips.forEach((m,i)=>m.material.color.setHex(i?p.right:p.left));
+    env.glows.forEach((m,i)=>m.material.color.setHex(i?p.right:p.left));
+    env.lasers.forEach((m,i)=>m.material.color.setHex(i<2?p.left:p.right));
+    paintLights(); kick();
+  }
+  function paintLights(){
+    const f=Math.min(1,flash), bright=bg==="bright";
+    env.lasers.forEach(m=>{ m.material.opacity=(bright?.35:.55)+.45*f; });
+    env.glows.forEach(m=>{ m.material.opacity=(bright?.3:.45)+.55*f; });
+  }
+  function resize(){
+    const w=Math.max(1,host.clientWidth), h=Math.max(1,host.clientHeight);
+    renderer.setSize(w,h,false); camera.aspect=w/h;
+    const half=1.45, tanv=Math.tan(camera.fov*Math.PI/360), need=half/(tanv*camera.aspect);
+    camera.position.set(0,1.6,CUT_Z+Math.max(2.6,need)); camera.lookAt(0,1.08,CUT_Z-6);
+    camera.updateProjectionMatrix(); kick();
+  }
+  function project(x,y,z){
+    const v=new T.Vector3(x,y,z).project(camera);
+    return {x:Math.max(4,Math.min(96,(v.x+1)*50)), y:Math.max(6,Math.min(94,(1-v.y)*50))};
+  }
+  /* where the hit text should pop for a note at (x,y): a little above the cut, the way it rises off the note in game */
+  function anchor(pos){ const p=pos||MID; return project(p.x, p.y+.34, CUT_Z); }
+  /* a Stream slot (left %, top %) of the flat view to a lane and row on the 3D grid */
+  function lanePos(slot){ const c=Math.max(0,Math.min(3,Math.round((slot[0]-16)/22.67))); return {x:LANE_X[c], y:ROW_Y[slot[1]<45?1:0]}; }
+
+  /* ev: the preview event. opts.pos: lane position for streams. Returns the screen spot (in %) for the hit text. */
+  function cut(ev, opts){
+    opts=opts||{};
+    const kind=ev.event||"cut", pos=opts.pos||MID, side=cutSideOf(ev);
+    const leftSaber=opts.pos ? pos.x<0 : true;
+    let noteColor=leftSaber?RED:BLUE, saberColor=noteColor, face="down", bomb=false;
+    if(kind==="bad"){ if(ev.badType==="WrongColor") noteColor=leftSaber?BLUE:RED; else if(ev.badType==="Bomb") bomb=true; else face="up"; }
+    const g=new T.Group(); g.position.set(pos.x, .2, FAR_Z); scene.add(g);
+    const rot=new T.Group(); g.add(rot);
+    const horiz=side==="above"||side==="below";
+    rot.rotation.z=horiz ? Math.PI/2 : 0;   // a sideways swing for an above/below cut, a down swing for left/right
+    const acc=ev.acc==null ? 15 : Math.max(0,Math.min(15,Number(ev.acc)||0));
+    const off=(kind==="chainLink"||kind==="miss" ? 0 : (15-acc)/15*.21)*((side==="left"||side==="below")?-1:1);   // the saber passes this far from center
+    const parts=[], h=kind==="chainLink"?.15:NOTE;
+    if(bomb){ const b=bombMesh(); rot.add(b); parts.push({m:b,dir:0}); }
+    else{
+      const f=kind==="chainLink"?"dot":face;
+      const L=halfMesh(-NOTE/2,off,h,noteColor,f,0), R=halfMesh(off,NOTE/2,h,noteColor,f,1);
+      rot.add(L); rot.add(R); parts.push({m:L,dir:-1},{m:R,dir:1});
+    }
+    const pre=Math.max(0,Math.min(70,Number(ev.pre)||0)), post=kind==="chainHead"?0:Math.max(0,Math.min(30,Number(ev.post)||0));
+    const sUp=streakMesh(.22+pre/70*.62,saberColor,true), sDn=streakMesh(.08+post/30*.4,saberColor,false);
+    [sUp,sDn].forEach(s=>{ s.position.set(off,0,NOTE/2+.02); rot.add(s); });
+    const links=[];
+    if(kind==="chainHead"){
+      for(let k=1;k<=2;k++){ const lg=new T.Group(); lg.position.set(0,-k*.4,0); rot.add(lg);
+        const a=halfMesh(-NOTE/2,0,.15,noteColor,"dot",0), b=halfMesh(0,NOTE/2,.15,noteColor,"dot",1); lg.add(a); lg.add(b);
+        links.push({g:lg,parts:[{m:a,dir:-1},{m:b,dir:1}],delay:k*.07}); }
+    }
+    live.push({g,rot,parts,links,streaks:[sUp,sDn],t:0,cutAt:CUT_DELAY/1000,miss:kind==="miss",bomb,y:pos.y,spin:(Math.random()-.5)*2.4});
+    kick();
+    return anchor(pos);
+  }
+  function setOpacity(part,o){ (part.userData.mats||[]).forEach(m=>{ m.opacity=o; }); }
+  function step(dt){
+    flash=Math.max(0,flash-dt*3.2);
+    for(let i=live.length-1;i>=0;i--){
+      const n=live[i]; n.t+=dt;
+      const a=Math.min(1,n.t/n.cutAt), e=1-Math.pow(1-a,2.2);
+      if(n.t<n.cutAt || n.miss){
+        if(n.t<n.cutAt){
+          n.g.position.z=FAR_Z+(CUT_Z-FAR_Z)*a;
+          const j=Math.min(1,a/.55), je=1-Math.pow(1-j,3);
+          n.g.position.y=.2+(n.y-.2)*je;
+          n.g.rotation.z=n.spin*(1-je); n.g.rotation.y=n.spin*.25*(1-je);
+        } else {
+          const c=n.t-n.cutAt; n.g.position.z=CUT_Z+c*9; n.g.position.y=n.y-c*c*1.2;
+          n.parts.forEach(p=>setOpacity(p.m,Math.max(0,1-c*2.2)));
+          if(c>.7){ scene.remove(n.g); live.splice(i,1); }
+        }
+        continue;
+      }
+      const c=n.t-n.cutAt;
+      if(!n.cutDone){ n.cutDone=true; flash=1; n.g.position.set(n.g.position.x,n.y,CUT_Z); n.g.rotation.set(0,0,0); }
+      const fade=Math.max(0,1-c/.75);
+      n.streaks.forEach((s,k)=>{ s.scale.y=k?Math.min(1,c/.08):1; const o=Math.min(1,c/.03)*Math.max(0,1-c/.36); s.material.opacity=o; s.userData.core.opacity=o*.9; });
+      if(n.bomb){ const b=n.parts[0].m; b.scale.setScalar(1+c*2.2); setOpacity(b,Math.max(0,1-c*3)); b.userData.flash.opacity=Math.max(0,.55-c*2.4); }
+      else n.parts.forEach(p=>{ p.m.position.x=p.dir*(.03+c*.75); p.m.position.y=-c*c*1.6; p.m.position.z=c*1.1; p.m.rotation.y=p.dir*c*1.3; p.m.rotation.z=-p.dir*c*.9; setOpacity(p.m,fade); });
+      n.links.forEach(l=>{ const lc=Math.max(0,c-l.delay); l.parts.forEach(p=>{ p.m.position.x=p.dir*(lc>0?.03+lc*.7:0); p.m.position.y=-lc*lc*1.5; p.m.position.z=lc*1.1; p.m.rotation.y=p.dir*lc*1.3; setOpacity(p.m,lc>0?Math.max(0,1-lc/.7):1); }); });
+      if(c>.9){ scene.remove(n.g); n.g.traverse(o=>{ if(o.geometry) o.geometry.dispose(); }); live.splice(i,1); }
+    }
+    paintLights();
+  }
+  function frame(ts){
+    const dt=last ? Math.min(.05,(ts-last)/1000) : 0; last=ts;
+    step(dt); renderer.render(scene,camera);
+    if(live.length || flash>0) raf=requestAnimationFrame(frame); else { raf=0; last=0; }
+  }
+  function kick(){ if(!raf){ last=0; raf=requestAnimationFrame(frame); } }
+  function clear(){ live.splice(0).forEach(n=>scene.remove(n.g)); flash=0; kick(); }
+  const ro=new ResizeObserver(resize); ro.observe(host); resize();
+  return {cut, anchor, lanePos, setBg, clear, resize, canvas};
+}
+/* places the main hit text over the 3D cut point (or back in the middle for Flat) */
+function placeHitText(){
+  const el=byId("hittext"); if(!el) return;
+  if(view3d && s3d){ const p=s3d.anchor(); el.style.left=p.x+"%"; el.style.top=p.y+"%"; }
+  else { el.style.left=""; el.style.top=""; el.style.animationDelay=""; }
+}
+function setView3d(on, quiet){
+  const st=byId("stage"); if(!st) return Promise.resolve(false);
+  if(!on){
+    view3d=false; st.classList.remove("s3d"); if(s3d){ s3d.clear(); s3d.canvas.hidden=true; }
+    placeHitText(); return Promise.resolve(false);
+  }
+  return threeLib().then(T=>{
+    if(!s3d) s3d=build3d(T, st);
+    if(!s3d) throw new Error("no webgl");
+    if(byId("viewMode").value!=="3d") return false;   // switched back while it loaded
+    view3d=true; s3d.canvas.hidden=false; st.classList.add("s3d");
+    s3d.setBg(byId("viewBg").value); s3d.resize(); placeHitText();
+    return true;
+  }).catch(()=>{
+    view3d=false; st.classList.remove("s3d");
+    const sel=byId("viewMode"), o=sel.querySelector('option[value="3d"]');
+    sel.value="flat"; o.disabled=true; o.textContent="3D (not available here)";
+    if(!quiet) toast("The 3D preview can't run here (it needs WebGL and a connection the first time). Showing Flat.", true);
+    track("view-3d-unavailable"); placeHitText(); return false;
+  });
+}
+(function(){
+  const sel=byId("viewMode"); if(!sel) return;
+  let mode="3d";
+  try{ const v=JSON.parse(storeGet(VIEW_KEY)||"null"); if(v && (v.mode==="3d"||v.mode==="flat")) mode=v.mode; }catch(e){}
+  sel.value=mode;
+  sel.addEventListener("change",()=>{
+    applyView(); track("view-"+sel.value);
+    setView3d(sel.value==="3d").then(ok=>{ if(ok) renderPreview(true); });
+  });
+  if(mode==="3d"){
+    const st=byId("stage");
+    setView3d(true, true).then(ok=>{
+      if(!ok) return;
+      renderPreview(false);
+      /* one cut the first time the preview scrolls into view, so it's clear what the 3D view shows */
+      if("IntersectionObserver" in window){
+        const io=new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)){ io.disconnect(); if(view3d && !streamTimer) renderPreview(true); } },{threshold:.6});
+        io.observe(st);
+      }
+    });
+  }
 })();
 
 /* Colorblind check used by validation: OKLab distance between neighbouring tiers */
@@ -4344,7 +4624,7 @@ checkShareOnLoad().then(showWhatsNew, showWhatsNew);
      quest-push, quest-push-with-errors, quest-load, template-<id>, replay-analyze,
      replay-even, replay-even-preview, stream, compare, share-link, share-open,
      github-click, kofi-click, js-error, js-error-promise (GoatCounter helpers in <head>),
-     vision-<type>, drop-replay, drop-import, intro-collapse, intro-expand, chains-on,
+     vision-<type>, view-3d, view-flat, view-3d-unavailable, drop-replay, drop-import, intro-collapse, intro-expand, chains-on,
      chain-link-on, assume-max, fixed-position, position-offset, redo, token-insert,
      compact-view, quest-open, quest-auth-wait, quest-no-answer, quest-cancel, quest-diag,
      quest-picker-cancel, quest-error-<not-approved|no-answer|busy|blocked|connect|no-folder|

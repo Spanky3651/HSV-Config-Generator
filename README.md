@@ -28,6 +28,7 @@ This tool replaces that loop. You edit every part of the config visually, watch 
 - **Export that tells you what's next** - name your file, then get the exact steps: the `Beat Saber\UserData\HitScoreVisualizer` folder and the in-game Select button on PC, Push to Quest or a `.hsv` download for MBF on Quest, plus a picture of what a perfect 115 should look like so you know it worked
 - **Judgment tier manager** - add, reorder (drag or nudge), duplicate, and delete score bands, with color pickers, typeable hex fields, and per-tier alpha sliders
 - **Live in-game preview** - a simulated cut renders your actual config, including the full set of TextMeshPro rich-text tags the game understands (`<size>`, `<color>`, `<alpha>`, `<mark>`, `<sup>`, `<rotate>`…). Tags the game does not know print as plain text, just like in game, with the float-up-and-fade decay animation from VR
+- **3D view** - the preview runs in a three.js scene: a note flies down the track and is cut where your accuracy puts the saber (a perfect 15 splits it down the middle), the swing streak shows your pre-swing and follow-through, and your text pops at the cut. Misses, bad cuts, bombs and chains get their own animation, Stream fires notes across the lanes, and Flat is one click away (it's also the fallback when WebGL isn't available)
 - **Score → color spectrum bar** - every score from 0–115 mapped to the exact color your config produces, including Fade blends; click anywhere to simulate that score
 - **Fade done right** - HSV's `fade` flag is a *color lerp* between adjacent tiers, not a fade-out; the preview and spectrum both model it
 - **Full simulator** - independent pre-swing / accuracy / post-swing / time-dependency sliders, a cut-side control for the `%d` arrow, preset buttons, one-click random cuts, and Miss / Bad cut / Chain head / Chain link previews. Replay plays the follow-through the way the game does, so Intermediate updates and Assume max post-swing are visible
@@ -79,7 +80,7 @@ If the connection fails with a claim/busy error, another ADB server owns the dev
 
 ## Running locally
 
-Download `index.html`, double-click it. That's the whole install.
+Download `index.html`, double-click it. That's the whole install. (The 3D view loads three.js from jsDelivr when you run it that way, so it needs a connection; without one the preview stays Flat.)
 
 ## Compatibility & support
 
