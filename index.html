@@ -511,6 +511,13 @@
     .panel-head > .panel-caret{order:3;}
     .panel-head > .ph-hint,.panel-head > .head-actions:has(> :nth-child(2)){order:4;flex:1 0 100%;box-sizing:border-box;margin-left:0;padding-left:18px;justify-content:flex-start;text-align:left;}
     .panel-head > .head-actions > .count{margin-left:0;}
+    /* Judgment Manager: the tier count sits beside the title and the four buttons share one even row under it */
+    #judgPanel > .panel-head{column-gap:8px;}
+    #judgPanel > .panel-head > .head-actions{display:contents;}
+    #judgPanel > .panel-head > .head-actions > .count{order:2;}
+    #judgPanel > .panel-head::after{content:"";order:4;flex-basis:100%;height:0;margin-top:-9px;}
+    #judgPanel > .panel-head > .head-actions > button{order:5;flex:1 1 0;min-width:0;justify-content:center;text-align:center;white-space:nowrap;padding:8px 4px;font-size:13px;}
+    #judgPanel .lbl-d{display:none;}
     .panel-head > .ph-hint{font-size:12px;margin-top:-4px;}
     .panel-sub{padding:10px 13px;}
 
@@ -654,6 +661,10 @@
   .stage.bg-red{background:radial-gradient(ellipse at 50% 30%,#ff2a4a,#3f0812 70%);}
   .vis-protan{filter:url(#cvd-protan);} .vis-deutan{filter:url(#cvd-deutan);} .vis-tritan{filter:url(#cvd-tritan);} .vis-gray{filter:url(#cvd-gray);}
   .hittext.sp{top:44%;}
+  .lbl-m{display:none;}
+  @media(max-width:720px){ #judgPanel .lbl-m{display:inline;} }
+  @media(max-width:720px){ #judgPanel #btnAddJudgment .lbl-d{display:inline;} #judgPanel #btnAddJudgment .lbl-m{display:none;} }
+  @media(max-width:400px){ #judgPanel #btnAddJudgment .lbl-d{display:none;} #judgPanel #btnAddJudgment .lbl-m{display:inline;} }   /* "+ Add" only where "+ Add tier" won't fit */
   .vtoggle{margin-top:12px;}
   /* 3D view: the three.js canvas sits under the vignette, the scanlines and the hit text */
   .stage .stage3d{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;}
@@ -921,9 +932,9 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
         <div class="head-actions">
           <span class="count" id="jCount">0 tiers</span>
           <button class="tiny ghost" id="btnCodeView" aria-pressed="false" title="Show each tier's raw text template plus its alpha, hex and fade settings, instead of the simple style buttons">&lt;/&gt; Code</button>
-          <button class="tiny ghost" id="btnCompact" aria-pressed="false" title="One line per tier. Turn it off to edit alpha, hex and Fade.">▤ Compact</button>
-          <button class="tiny" id="btnSort">⇅ Sort desc</button>
-          <button class="tiny primary" id="btnAddJudgment">+ Add tier</button>
+          <button class="tiny ghost" id="btnCompact" aria-pressed="false" title="One line per tier. Turn it off to edit alpha, hex and Fade."><span class="lbl-d">▤ Compact</span><span class="lbl-m">Compact</span></button>
+          <button class="tiny" id="btnSort" title="Sort the tiers from the highest threshold down"><span class="lbl-d">⇅ Sort desc</span><span class="lbl-m">⇅ Sort</span></button>
+          <button class="tiny primary" id="btnAddJudgment" title="Add a tier"><span class="lbl-d">+ Add tier</span><span class="lbl-m">+ Add</span></button>
         </div>
       </div>
       <div class="panel-sub">These are the score bands. When you slice a block, HSV reads down this list from the top and uses the <b>first tier whose threshold your cut score reaches</b>. So a 115 cut uses the top tier; a 108 cut falls through to the first tier at 105 or below. Each tier sets the <b>threshold</b> (minimum score), the <b>text template</b> (what's drawn, using the tokens below), and the <b>color</b>. Order matters - keep thresholds descending (use <b>Sort desc</b> if they drift). <b>Fade</b> is HSV's color-lerp: the tier's color blends toward the tier above it as the score climbs - the spectrum bar below shows the exact color at every score.</div>
@@ -1291,7 +1302,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
     </a>
   </div>
   <div class="nf-strip">
-    <div class="nf-sl"><a href="#" data-howto class="nf-how">How to install it in game</a><span class="nf-dot">&middot;</span><span class="nf-upd" id="footUpdated" data-updated="2026-11-06T11:40Z">Updated recently</span></div>
+    <div class="nf-sl"><a href="#" data-howto class="nf-how">How to install it in game</a><span class="nf-dot">&middot;</span><span class="nf-upd" id="footUpdated" data-updated="2026-11-06T11:55Z">Updated recently</span></div>
     <div class="nf-sr"><div class="foot-count" id="footCount" hidden></div><span class="nf-btns"><a class="src-badge nf-btn nf-src" data-gc="github-click" href="https://github.com/Spanky3651/HSV-Config-Generator" target="_blank" rel="noopener" title="Source code on GitHub"><svg viewBox="0 0 24 24" width="15" height="15" fill="#fff"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.575.106.785-.25.785-.556 0-.274-.01-1-.015-1.965-3.196.695-3.87-1.54-3.87-1.54-.523-1.33-1.277-1.684-1.277-1.684-1.044-.714.08-.699.08-.699 1.155.081 1.763 1.186 1.763 1.186 1.026 1.758 2.693 1.25 3.35.955.104-.744.402-1.25.73-1.538-2.552-.29-5.235-1.276-5.235-5.68 0-1.255.448-2.28 1.183-3.084-.119-.29-.513-1.46.112-3.043 0 0 .965-.309 3.163 1.178a10.98 10.98 0 0 1 2.88-.387c.977.004 1.96.132 2.88.387 2.196-1.487 3.16-1.178 3.16-1.178.626 1.583.232 2.753.114 3.043.737.804 1.182 1.829 1.182 3.084 0 4.415-2.687 5.386-5.247 5.67.413.355.78 1.056.78 2.13 0 1.538-.014 2.778-.014 3.157 0 .308.207.667.79.554A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>Source</a> <a class="kofi-support nf-btn nf-kofi" data-gc="kofi-click" href="https://ko-fi.com/msploit21?utm_source=hsv-generator&amp;utm_medium=support-button" target="_blank" rel="noopener" title="Support MSploit on Ko-fi"><span class="kofi-heart">❤️</span>Support me</a></span><span class="nf-vr"></span><button type="button" class="fxsw" id="blocksSw" role="switch" aria-checked="false"><span class="fxsw-track"><span class="fxsw-knob"><svg viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" rx="5" class="k-body"/><path d="M3.3 3.3h13.4v1.9L10 8.3 3.3 5.2z" class="k-arrow"/></svg></span></span><span>Falling blocks</span></button></div>
   </div>
 </footer>
