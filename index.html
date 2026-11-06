@@ -644,6 +644,7 @@
   .stage.bg-red{background:radial-gradient(ellipse at 50% 30%,#ff2a4a,#3f0812 70%);}
   .vis-protan{filter:url(#cvd-protan);} .vis-deutan{filter:url(#cvd-deutan);} .vis-tritan{filter:url(#cvd-tritan);} .vis-gray{filter:url(#cvd-gray);}
   .hittext.sp{top:44%;}
+  .vtoggle{margin-top:12px;}
   /* 3D view: the three.js canvas sits under the vignette, the scanlines and the hit text */
   .stage .stage3d{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;}
   .stage .stage3d[hidden]{display:none;}
@@ -1147,6 +1148,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
           <label class="field" for="viewVision">Vision <span class="info" data-tip="Shows the preview and the color bar the way a colorblind player sees them. About 1 in 12 men has some red-green colorblindness.">i</span></label>
           <select id="viewVision"><option value="normal">Normal</option><option value="protan">Protanopia (red-blind)</option><option value="deutan">Deuteranopia (green-blind)</option><option value="tritan">Tritanopia (blue-blind)</option><option value="gray">Grayscale</option></select>
         </div>
+        <div class="vtoggle"><label class="switch"><input type="checkbox" id="viewWait" /><span class="track"></span>Wait for the final score <span class="info" data-tip="Matches the in-game setting that waits to show the score until it's final. On: the text pops once your follow-through is counted, already showing the final number. Off: it pops at the cut and changes as the follow-through comes in. Preview only, it isn't saved in your config file.">i</span></label></div>
         <div class="sim-controls">
           <div class="totline">
             <div><div class="big" id="totVal">115</div><div class="lbl">Total Score</div></div>
@@ -1279,7 +1281,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
     </a>
   </div>
   <div class="nf-strip">
-    <div class="nf-sl"><a href="#" data-howto class="nf-how">How to install it in game</a><span class="nf-dot">&middot;</span><span class="nf-upd" id="footUpdated" data-updated="2026-11-06T02:30Z">Updated recently</span></div>
+    <div class="nf-sl"><a href="#" data-howto class="nf-how">How to install it in game</a><span class="nf-dot">&middot;</span><span class="nf-upd" id="footUpdated" data-updated="2026-11-06T03:10Z">Updated recently</span></div>
     <div class="nf-sr"><div class="foot-count" id="footCount" hidden></div><span class="nf-btns"><a class="src-badge nf-btn nf-src" data-gc="github-click" href="https://github.com/Spanky3651/HSV-Config-Generator" target="_blank" rel="noopener" title="Source code on GitHub"><svg viewBox="0 0 24 24" width="15" height="15" fill="#fff"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.575.106.785-.25.785-.556 0-.274-.01-1-.015-1.965-3.196.695-3.87-1.54-3.87-1.54-.523-1.33-1.277-1.684-1.277-1.684-1.044-.714.08-.699.08-.699 1.155.081 1.763 1.186 1.763 1.186 1.026 1.758 2.693 1.25 3.35.955.104-.744.402-1.25.73-1.538-2.552-.29-5.235-1.276-5.235-5.68 0-1.255.448-2.28 1.183-3.084-.119-.29-.513-1.46.112-3.043 0 0 .965-.309 3.163 1.178a10.98 10.98 0 0 1 2.88-.387c.977.004 1.96.132 2.88.387 2.196-1.487 3.16-1.178 3.16-1.178.626 1.583.232 2.753.114 3.043.737.804 1.182 1.829 1.182 3.084 0 4.415-2.687 5.386-5.247 5.67.413.355.78 1.056.78 2.13 0 1.538-.014 2.778-.014 3.157 0 .308.207.667.79.554A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>Source</a> <a class="kofi-support nf-btn nf-kofi" data-gc="kofi-click" href="https://ko-fi.com/msploit21?utm_source=hsv-generator&amp;utm_medium=support-button" target="_blank" rel="noopener" title="Support MSploit on Ko-fi"><span class="kofi-heart">❤️</span>Support me</a></span><span class="nf-vr"></span><button type="button" class="fxsw" id="blocksSw" role="switch" aria-checked="false"><span class="fxsw-track"><span class="fxsw-knob"><svg viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" rx="5" class="k-body"/><path d="M3.3 3.3h13.4v1.9L10 8.3 3.3 5.2z" class="k-arrow"/></svg></span></span><span>Falling blocks</span></button></div>
   </div>
 </footer>
@@ -2075,8 +2077,10 @@ function renderPreview(triggerAnim){
   if(state.fixedPosition) stageTier.textContent+=" · FIXED";
   if(triggerAnim){
     const d=(view3d && s3d) ? CUT_DELAY : 0;   // in 3D the text waits for the note to reach the saber
-    stage.style.animationDelay=d ? d+"ms" : "";
-    stage.classList.remove("live"); void stage.offsetWidth; stage.classList.add("live"); playCutTimeline(sim,d);
+    const w=(waitFinal && (sim.event||"cut")==="cut") ? SWING_DONE : 0;   // "When final": it also waits for the follow-through
+    stage.style.animationDelay=(d+w) ? (d+w)+"ms" : "";
+    stage.classList.remove("live"); void stage.offsetWidth; stage.classList.add("live");
+    if(w) stopClimb(); else playCutTimeline(sim,d);
     if(d) s3d.cut(sim);
   }
   else stopClimb();
@@ -3926,16 +3930,18 @@ function runStream(cfg){
   const d3=!!(view3d && s3d), wait=d3 ? CUT_DELAY : 0;   // 3D: each text waits for its note to be cut
   let i=0;
   streamTimer=setInterval(()=>{
-    if(i>=N){ clearInterval(streamTimer); streamTimer=null; streamEnd=setTimeout(()=>{ byId("hittext").style.visibility=""; },1300+wait); return; }
+    if(i>=N){ clearInterval(streamTimer); streamTimer=null; streamEnd=setTimeout(()=>{ byId("hittext").style.visibility=""; },1300+wait+(waitFinal?SWING_DONE:0)); return; }
     const ev=nextStreamEvent(i), r=renderEvent(ev, cfg);
     const el=document.createElement("div");
     el.className="hittext sp live";
+    const delay=wait+((waitFinal && (ev.event||"cut")==="cut") ? SWING_DONE : 0);
+    if(delay) el.style.animationDelay=delay+"ms";
     const clearOld=()=>stage.querySelectorAll(".hittext.sp").forEach(e=>{ if(e!==el) e.remove(); });
-    if(fixed){ if(wait) setTimeout(clearOld,wait); else clearOld(); }
+    if(fixed){ if(delay) setTimeout(clearOld,delay); else clearOld(); }
     let slot=fixed ? [50,46] : lanes[i%lanes.length];
     if(d3){
       const p=s3d.cut(ev,{pos:s3d.lanePos(lanes[i%lanes.length])}), a=fixed ? s3d.anchor() : p;
-      slot=[a.x,a.y]; el.style.animationDelay=wait+"ms";
+      slot=[a.x,a.y];
     }
     el.style.left=slot[0]+"%"; el.style.top=slot[1]+"%";
     el.style.color=r.color;
@@ -3967,13 +3973,17 @@ function applyView(){
     if(vis!=="normal") el.classList.add("vis-"+vis);
   });
   if(s3d) s3d.setBg(bg);
-  storeSet(VIEW_KEY, JSON.stringify({bg,vis,mode:(byId("viewMode")||{}).value||"3d"}));
+  waitFinal=byId("viewWait").checked;
+  storeSet(VIEW_KEY, JSON.stringify({bg,vis,mode:(byId("viewMode")||{}).value||"3d",wait:waitFinal?"final":"swing"}));
 }
 (function(){
   try{ const v=JSON.parse(storeGet(VIEW_KEY)||"null");
     if(v){ if(["dark","bright","blue","red"].includes(v.bg)) byId("viewBg").value=v.bg; if(["normal","protan","deutan","tritan","gray"].includes(v.vis)) byId("viewVision").value=v.vis; } }catch(e){}
   byId("viewBg").addEventListener("change",applyView);
   byId("viewVision").addEventListener("change",()=>{ applyView(); if(byId("viewVision").value!=="normal") track("vision-"+byId("viewVision").value); });
+  try{ const v=JSON.parse(storeGet(VIEW_KEY)||"null"); if(v) byId("viewWait").checked=v.wait==="final"; }catch(e){}
+  waitFinal=byId("viewWait").checked;
+  byId("viewWait").addEventListener("change",()=>{ applyView(); track(waitFinal?"score-final":"score-swing"); renderPreview(true); });
 })();
 
 /* ---------- 3D live preview (three.js) ----------
@@ -3984,6 +3994,8 @@ function applyView(){
 var THREE_LOCAL="three-hsv.min.js", THREE_CDN="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js";
 var CUT_DELAY=430;   // ms from a note appearing to the cut; the hit text waits for it
 var s3d=null, s3dLoad=null, view3d=false;   // var: renderPreview can run before this block does
+var SWING_DONE=550;   // ms from the cut until the follow-through is counted (the end of playCutTimeline)
+var waitFinal;  // set by the view block above; the in-game "wait until the score is final" setting, preview only
 function threeLib(){
   return s3dLoad || (s3dLoad=import("./"+THREE_LOCAL).catch(()=>import(THREE_CDN)));
 }
@@ -4624,7 +4636,7 @@ checkShareOnLoad().then(showWhatsNew, showWhatsNew);
      quest-push, quest-push-with-errors, quest-load, template-<id>, replay-analyze,
      replay-even, replay-even-preview, stream, compare, share-link, share-open,
      github-click, kofi-click, js-error, js-error-promise (GoatCounter helpers in <head>),
-     vision-<type>, view-3d, view-flat, view-3d-unavailable, drop-replay, drop-import, intro-collapse, intro-expand, chains-on,
+     vision-<type>, view-3d, view-flat, view-3d-unavailable, score-final, score-swing, drop-replay, drop-import, intro-collapse, intro-expand, chains-on,
      chain-link-on, assume-max, fixed-position, position-offset, redo, token-insert,
      compact-view, quest-open, quest-auth-wait, quest-no-answer, quest-cancel, quest-diag,
      quest-picker-cancel, quest-error-<not-approved|no-answer|busy|blocked|connect|no-folder|
