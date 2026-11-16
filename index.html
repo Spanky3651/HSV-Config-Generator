@@ -142,7 +142,25 @@
   .brand .sub{font-family:var(--mono);font-size:12px;color:var(--muted-2);letter-spacing:1.4px;text-transform:uppercase;margin-top:2px;}
   .brand .sub b{color:var(--blue);}
   .topbar .spacer{flex:1;}
-  .topbar-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center;}
+  .topbar-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  /* Top buttons: one height and style. Undo and Redo are icons, Export is the one solid button, Copy, Share and Reset live in More */
+  .topbar-actions .tb{height:38px;padding:0 14px;border-radius:9px;font-size:13.5px;background:var(--panel-2);border:1px solid var(--border-2);color:var(--text);gap:7px;text-shadow:none;}
+  .topbar-actions .tb svg{width:16px;height:16px;flex:none;}
+  .topbar-actions .tb-i{width:38px;padding:0;justify-content:center;}
+  .topbar-actions .tb-solid{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .topbar-actions .tb-solid:hover{background:#3a7dff;border-color:#3a7dff;color:#fff;}
+  .topbar-actions .tb-line{border-color:var(--blue);color:#cfe4ff;}
+  .topbar-actions .tb-sep{width:1px;height:24px;background:var(--border-2);flex:none;}
+  .topbar-actions .tb-grow{display:none;}
+  .topbar-actions .lbl-m{display:none;}
+  .tb-more{position:relative;flex:none;}
+  .tb-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:60;min-width:210px;background:var(--panel-3);border:1px solid var(--border-2);border-radius:10px;padding:6px;box-shadow:0 12px 30px rgba(0,0,0,.6);}
+  .tb-menu[hidden]{display:none;}
+  .tb-menu button{width:100%;justify-content:flex-start;background:transparent;border:0;border-radius:7px;padding:9px 10px;font-size:13.5px;}
+  .tb-menu button svg{width:16px;height:16px;flex:none;}
+  .tb-menu button:hover,.tb-menu button:focus-visible{background:#0f1d30;box-shadow:none;}
+  .tb-menu .tb-warn{color:#ffcf6b;}
+  .tb-menu hr{border:0;border-top:1px solid var(--border);margin:5px 0;}
 
   /* ---------- Buttons ---------- */
   button{
@@ -503,9 +521,12 @@
     .brand h1{font-size:16px;}
     .brand .sub{display:none;}
     .topbar .spacer{display:none;}
-    .topbar-actions{gap:7px;width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-    .topbar-actions::-webkit-scrollbar{display:none;}
+    .topbar-actions{gap:7px;width:100%;flex-wrap:nowrap;}
     .topbar-actions button,.topbar-actions .status-pill{flex:none;}
+    .topbar-actions .tb-grow{display:block;flex:1;}
+    .topbar-actions .lbl-d{display:none;}
+    .topbar-actions .lbl-m{display:inline;}
+    .topbar-actions #btnMore{width:38px;padding:0;justify-content:center;}
 
     .flow{gap:6px;}
     .flow .step{padding:7px 11px;font-size:13px;}
@@ -671,6 +692,20 @@
   .stage.bg-red{background:radial-gradient(ellipse at 50% 30%,#ff2a4a,#3f0812 70%);}
   .vis-protan{filter:url(#cvd-protan);} .vis-deutan{filter:url(#cvd-deutan);} .vis-tritan{filter:url(#cvd-tritan);} .vis-gray{filter:url(#cvd-gray);}
   .hittext.sp{top:44%;}
+  /* ---------- Hit Text panel ---------- */
+  .ht-step{font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin:0 0 8px;}
+  #htExtras .ht-step{margin-top:16px;}
+  .ht-goals{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;}
+  button.ht-goal{display:flex;flex-direction:column;align-items:flex-start;gap:3px;white-space:normal;text-align:left;padding:10px 11px;border-radius:10px;background:var(--panel-2);border:1px solid var(--border-2);}
+  button.ht-goal b{font-size:14px;font-weight:700;color:var(--text);}
+  button.ht-goal span{font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.4;}
+  button.ht-goal[aria-checked="true"]{border-color:var(--blue);background:#0f1d30;}
+  .ht-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+  .ht-gap{width:8px;}
+  .ht-note{font-size:12.5px;color:var(--muted);margin-top:10px;}
+  .ht-note b{color:var(--text);}
+  .ht-custom{margin-top:14px;border:1px solid var(--border-2);border-radius:10px;padding:12px;background:var(--panel-2);}
+  .ht-custom p{margin:0 0 10px;font-size:14px;}
   .lbl-m{display:none;}
   @media(max-width:720px){ #judgPanel .lbl-m{display:inline;} }
   @media(max-width:720px){ #judgPanel #btnAddJudgment .lbl-d{display:inline;} #judgPanel #btnAddJudgment .lbl-m{display:none;} }
@@ -894,14 +929,22 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
   <div class="topbar-actions">
     <span class="status-pill off" id="linkBadge" data-needs-usb hidden title="Quest USB connection"><span class="led"></span><span id="linkBadgeText">DISCONNECTED</span></span>
     <input type="file" id="importFile" accept=".json,.hsv,application/json" hidden />
-    <button class="ghost" id="btnUndo" disabled title="Undo last structural change (Ctrl+Z)">↶ Undo</button>
-    <button class="ghost" id="btnRedo" disabled title="Redo (Ctrl+Y or Ctrl+Shift+Z)">↷ Redo</button>
-    <button class="ghost" id="btnImport" title="Open a config (.json or .hsv), or drop one anywhere on the page">⇪ Import JSON</button>
-    <button class="caution" id="btnReset" title="Replace your config with HSV's own default. Undo brings yours back.">↺ HSV Default</button>
-    <button class="ghost" id="btnCopy">⧉ Copy</button>
-    <button class="ghost" id="btnShare" title="Copy a link that opens this exact config">🔗 Share</button>
-    <button class="primary" id="btnExport">⤓ Export config.json</button>
-    <button class="violet primary" id="btnQuestTop" data-needs-usb>⚡ Push to Quest</button>
+    <button class="tb tb-i" id="btnUndo" disabled title="Undo (Ctrl+Z)" aria-label="Undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+    <button class="tb tb-i" id="btnRedo" disabled title="Redo (Ctrl+Y or Ctrl+Shift+Z)" aria-label="Redo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14l5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button>
+    <span class="tb-sep" aria-hidden="true"></span>
+    <button class="tb" id="btnImport" title="Open a config (.json or .hsv), or drop one anywhere on the page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M7 9l5-5 5 5"/><path d="M12 4v12"/></svg>Import</button>
+    <span class="tb-grow" aria-hidden="true"></span>
+    <button class="tb tb-solid" id="btnExport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M7 11l5 5 5-5"/><path d="M12 4v12"/></svg><span class="lbl-d">Export config.json</span><span class="lbl-m">Export</span></button>
+    <button class="tb tb-line" id="btnQuestTop" data-needs-usb><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>Push to Quest</button>
+    <span class="tb-more">
+      <button class="tb" id="btnMore" aria-haspopup="menu" aria-expanded="false" aria-controls="moreMenu" title="Copy, share or reset" aria-label="More"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg><span class="lbl-d">More</span></button>
+      <div class="tb-menu" id="moreMenu" role="menu" hidden>
+        <button role="menuitem" id="btnCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Copy JSON</button>
+        <button role="menuitem" id="btnShare" title="Copy a link that opens this exact config"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 15l6-6"/><path d="M11 6l.5-.5a4.5 4.5 0 0 1 6.4 6.4L17.5 12"/><path d="M13 18l-.5.5a4.5 4.5 0 0 1-6.4-6.4L6.5 12"/></svg>Share link</button>
+        <hr>
+        <button role="menuitem" class="tb-warn" id="btnReset" title="Replace your config with HSV's own default. Undo brings yours back."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11A8 8 0 1 0 18 17"/><path d="M20 4v7h-7"/></svg>Reset to HSV default</button>
+      </div>
+    </span>
   </div>
 </header>
 
@@ -933,6 +976,42 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
       <div class="panel-head"><span class="dot"></span><h2>Starter Templates</h2><span class="count ph-hint">click one to load it · Undo goes back</span></div>
       <div class="panel-sub">Not sure where to start? Load a ready-made config, then tweak it. Each card shows its colors from 0 to 115.</div>
       <div class="panel-body"><div class="tpl-grid" id="tplGrid"></div></div>
+    </section>
+
+    <!-- Hit Text: pick what each hit shows, the tool writes the text -->
+    <section class="panel" id="hitPanel">
+      <div class="panel-head"><span class="dot" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></span><h2>Hit Text</h2><span class="count ph-hint">what each hit shows</span></div>
+      <div class="panel-sub">Pick what each hit should show, then add extras. The tool writes the text for every tier, so there are no codes to type. Colors and score bands still come from the tiers below.</div>
+      <div class="panel-body">
+        <div class="ht-step">Step 1: What should each hit show?</div>
+        <div class="ht-goals" id="htGoals" role="radiogroup" aria-label="What each hit shows">
+          <button type="button" class="ht-goal" data-goal="colors" role="radio" aria-checked="false"><b>Score in colors</b><span>Your total, colored by how good it was</span></button>
+          <button type="button" class="ht-goal" data-goal="aim" role="radio" aria-checked="false"><b>Score + aim</b><span>Plus an arrow showing where you missed</span></button>
+          <button type="button" class="ht-goal" data-goal="acc" role="radio" aria-checked="false"><b>Accuracy trainer</b><span>Only how close to center (0-15)</span></button>
+          <button type="button" class="ht-goal" data-goal="swing" role="radio" aria-checked="false"><b>Swing coach</b><span>Plus red numbers on short swings</span></button>
+          <button type="button" class="ht-goal" data-goal="custom" role="radio" aria-checked="false"><b>&lt;/&gt; Custom</b><span>Write the text and rows yourself</span></button>
+        </div>
+        <div id="htExtras">
+          <div class="ht-step">Step 2: Extras</div>
+          <div class="ht-row">
+            <button type="button" class="tiny" id="htArrow" aria-pressed="false" title="An arrow under the score points from your cut toward the note's center. It grows and turns red the further off you were.">Aim arrow</button>
+            <button type="button" class="tiny ghost ht-size" data-size="1" aria-pressed="false">Small</button>
+            <button type="button" class="tiny ghost ht-size" data-size="2" aria-pressed="false">Medium</button>
+            <button type="button" class="tiny ghost ht-size" data-size="3" aria-pressed="false">Large for VR</button>
+            <span class="ht-gap" aria-hidden="true"></span>
+            <button type="button" class="tiny" id="htSwing" aria-pressed="false" title="Small red numbers beside the score show your pre-swing and follow-through, only when they came up short.">Red swing numbers</button>
+          </div>
+          <div class="ht-note">A perfect 115 never shows extras. Want to write it by hand? Pick <b>Custom</b>.</div>
+        </div>
+        <div class="ht-custom" id="htCustomBox" hidden>
+          <p id="htCustomMsg"></p>
+          <div class="ht-row">
+            <button type="button" class="tiny" id="htGoCode">&lt;/&gt; Edit tier text in Code view</button>
+            <button type="button" class="tiny" id="htGoSub">Edit swing and accuracy rows</button>
+            <button type="button" class="tiny ghost" id="htGoTokens">Token reference</button>
+          </div>
+        </div>
+      </div>
     </section>
 
 
@@ -1313,7 +1392,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
     </a><a class="kofi-support nf-kofi" data-gc="kofi-click" href="https://ko-fi.com/msploit21?utm_source=hsv-generator&amp;utm_medium=support-button" target="_blank" rel="noopener" title="Support MSploit on Ko-fi"><span class="kofi-heart">❤️</span>Support me</a></div>
   </div>
   <div class="nf-strip">
-    <div class="nf-sl"><a href="#" data-howto class="nf-how">How to install it in game</a><span class="nf-dot">&middot;</span><span class="nf-upd" id="footUpdated" data-updated="2026-11-16T11:55Z">Updated recently</span></div>
+    <div class="nf-sl"><a href="#" data-howto class="nf-how">How to install it in game</a><span class="nf-dot">&middot;</span><span class="nf-upd" id="footUpdated" data-updated="2026-11-16T14:24Z">Updated recently</span></div>
     <div class="nf-sr"><div class="foot-count" id="footCount" hidden></div><button type="button" class="fxsw" id="blocksSw" role="switch" aria-checked="false"><span class="fxsw-track"><span class="fxsw-knob"><svg viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" rx="5" class="k-body"/><path d="M3.3 3.3h13.4v1.9L10 8.3 3.3 5.2z" class="k-arrow"/></svg></span></span><span>Falling blocks</span></button></div>
   </div>
 </footer>
@@ -2598,6 +2677,7 @@ function renderAll(){
 /* Keeps the newer panels in step with every edit */
 function afterChange(){
   scheduleSave();
+  if(typeof renderHitText==="function") renderHitText();
   if(replays.length) renderReplay();
   const sug=document.getElementById("replaySuggest"); if(sug && sug.innerHTML) sug.innerHTML="";   // a suggestion is only valid for the tiers it was made from
 }
@@ -2680,6 +2760,15 @@ document.getElementById("importFile").addEventListener("change",e=>{
   e.target.value="";
 });
 document.getElementById("btnExport").addEventListener("click",exportConfig);
+/* More menu: Copy, Share and Reset to HSV default */
+(function(){
+  const btn=byId("btnMore"), menu=byId("moreMenu"); if(!btn||!menu) return;
+  const close=()=>{ menu.hidden=true; btn.setAttribute("aria-expanded","false"); };
+  btn.addEventListener("click",e=>{ e.stopPropagation(); const open=menu.hidden; menu.hidden=!open; btn.setAttribute("aria-expanded",open?"true":"false"); if(open){ track("more-open"); const f=menu.querySelector("button"); if(f) f.focus(); } });
+  menu.addEventListener("click",e=>{ if(e.target.closest("button")) close(); });
+  document.addEventListener("click",e=>{ if(!menu.hidden && !e.target.closest(".tb-more")) close(); });
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape" && !menu.hidden){ close(); btn.focus(); } });
+})();
 document.getElementById("btnReset").addEventListener("click",()=>{
   pushUndo();
   state=clone(DEFAULT_HSV_CONFIG);
@@ -3931,6 +4020,101 @@ byId("btnEvenTiers").addEventListener("click",showEvenSuggestion);
   });
 })();
 
+/* ---------- Hit Text: pick a look and extras, the tool writes the text ----------
+   A look writes the text template for every tier, plus the accuracy or swing rows it needs. Tier colors,
+   thresholds and fade stay as they are. A config that doesn't match a look, or any hand edit, shows as
+   Custom and is never touched. var, not const: afterChange can call renderHitText before this block runs. */
+var HT_RED="#FF3B3B";
+var HT_ARROW={1:[75,100,125],2:[110,150,190],3:[150,200,260]};   // arrow size at 13-14, 10-12 and 0-9 accuracy (Small is the Aim arrows template, Medium and Large are bold for VR)
+var HT_ACC_ARROW={1:100,2:150,3:200};
+var HT_ACC_ROWS=[[15,"#FFFFFF",160],[14,"#D6C0FF",145],[13,"#AD80FF",135],[12,"#9C6BFF",125],[11,"#7FA0FF",120],[10,"#22E0A1",115],[9,"#00FF00",110],[8,"#80EE00",105],[7,"#C0E600",100],[6,"#E0E200",100],[5,"#FFDD00",100],[4,"#FFC000",100],[3,"#FFA600",100],[2,"#FF6E00",100],[1,"#FF3700",100],[0,"#FF0000",100]];
+var htCustomFor=null;         // the config Custom was picked for: it stays Custom even when the text matches a look, until the config is replaced
+var htSize=3;                 // the arrow size to use when a look turns the arrow on
+function htSwingRows(top){ const r=[{threshold:top,text:""}]; for(let v=top-1;v>=0;v--) r.push({threshold:v,text:"<color="+HT_RED+">"+v+"</color>"}); return r; }
+function htArrowRows(size){ const z=HT_ARROW[size], b=size>1?"<b>":""; return [{threshold:15,text:"<alpha=#00>"},{threshold:13,text:"<size="+z[0]+"%>"+b+"<color=#FFE14D>"},{threshold:10,text:"<size="+z[1]+"%>"+b+"<color=#FF9A1F>"},{threshold:0,text:"<size="+z[2]+"%>"+b+"<color=#FF3B3B>"}]; }
+function htAccRows(){ return HT_ACC_ROWS.map(r=>({threshold:r[0],text:"<size="+r[2]+"%><color="+r[1]+">"+r[0]+"</color></size>"})); }
+/* o = {mode:"score"|"acc", arrow, size, swing} -> the text for the top (115) tier and the rest, and the rows it needs */
+function htBuild(o){
+  const sw=t=>o.swing ? "<sup><size=55%>%B</size></sup>"+t+"<sup><size=55%>%A</size></sup>" : t;
+  const rows={};
+  let top, rest;
+  if(o.mode==="acc"){
+    top=sw("%C"); rest=sw("%C")+(o.arrow ? "%n<size="+HT_ACC_ARROW[o.size]+"%><b>%d</b></size>" : "");
+    rows.accuracyJudgments=htAccRows();
+  } else {
+    top=sw("%s"); rest=sw("%s")+(o.arrow ? "%n%C%d" : "");
+    if(o.arrow) rows.accuracyJudgments=htArrowRows(o.size);
+  }
+  if(o.swing){ rows.beforeCutAngleJudgments=htSwingRows(70); rows.afterCutAngleJudgments=htSwingRows(30); }
+  return {top, rest, rows};
+}
+function htSameRows(a,b){
+  if(!Array.isArray(a) || a.length!==b.length) return false;
+  const k=r=>r.map(x=>Number(x.threshold)+"\u0001"+(x.text||"")).sort().join("\u0002");
+  return k(a)===k(b);
+}
+/* which look the current config is, or null */
+function htDetect(cfg=state){
+  if((cfg.displayMode||"format")!=="format" || !Array.isArray(cfg.judgments) || !cfg.judgments.length) return null;
+  for(const mode of ["score","acc"]) for(const swing of [false,true]) for(const arrow of [false,true]) for(const size of (arrow?[1,2,3]:[htSize])){
+    const o={mode,arrow,size,swing}, b=htBuild(o);
+    if(!cfg.judgments.every(j=>(j.text||"")===(Number(j.threshold)>=115 ? b.top : b.rest))) continue;
+    if(!Object.keys(b.rows).every(k=>htSameRows(cfg[k],b.rows[k]))) continue;
+    return o;
+  }
+  return null;
+}
+function htGoalOf(o){ return !o ? "custom" : o.mode==="acc" ? "acc" : o.swing ? "swing" : o.arrow ? "aim" : "colors"; }
+var HT_NAMES={colors:"Score in colors",aim:"Score + aim",acc:"Accuracy trainer",swing:"Swing coach"};
+function htApply(o, why){
+  pushUndo();
+  const b=htBuild(o);
+  state.displayMode="format";
+  state.judgments.forEach(j=>{ j.text = Number(j.threshold)>=115 ? b.top : b.rest; });
+  Object.keys(b.rows).forEach(k=>{ state[k]=clone(b.rows[k]); });
+  if(o.swing) state.assumeMaxPostSwing=true;   // otherwise the red follow-through number counts up on every cut
+  if(o.arrow) htSize=o.size;
+  htCustomFor=null;
+  renderAll();
+  toast(why || ("Hit text set to "+HT_NAMES[htGoalOf(o)]+". Undo brings your old text back."));
+}
+function renderHitText(){
+  const panel=byId("hitPanel"); if(!panel) return;
+  const picked=htCustomFor===state, o=htDetect(), goal=picked ? "custom" : htGoalOf(o);
+  if(o && o.arrow) htSize=o.size;
+  panel.querySelectorAll(".ht-goal").forEach(b=>b.setAttribute("aria-checked", b.dataset.goal===goal ? "true" : "false"));
+  const custom=goal==="custom";
+  byId("htExtras").hidden=custom;
+  byId("htCustomBox").hidden=!custom;
+  if(custom){
+    byId("htCustomMsg").textContent = picked
+      ? "You're writing it yourself. Hit Text won't touch your text."
+      : "Your text doesn't match one of these looks, so it's left alone. Pick a look to replace it (Undo brings yours back), or keep editing by hand.";
+    return;
+  }
+  byId("htArrow").setAttribute("aria-pressed", o.arrow ? "true" : "false");
+  panel.querySelectorAll(".ht-size").forEach(b=>{ b.setAttribute("aria-pressed", (o.arrow && Number(b.dataset.size)===o.size) ? "true" : "false"); b.disabled=!o.arrow; });
+  byId("htSwing").setAttribute("aria-pressed", o.swing ? "true" : "false");
+}
+(function(){
+  const panel=byId("hitPanel"); if(!panel) return;
+  const PRESET={colors:{mode:"score",arrow:false,swing:false}, aim:{mode:"score",arrow:true,swing:false}, acc:{mode:"acc",arrow:true,swing:false}, swing:{mode:"score",arrow:true,swing:true}};
+  panel.querySelectorAll(".ht-goal").forEach(b=>b.addEventListener("click",()=>{
+    const g=b.dataset.goal;
+    if(g==="custom"){ htCustomFor=state; renderHitText(); track("hittext-custom"); return; }
+    htApply(Object.assign({size:htSize}, PRESET[g])); track("hittext-"+g);
+  }));
+  const cur=()=>htDetect();
+  byId("htArrow").addEventListener("click",()=>{ const o=cur(); if(!o) return; htApply(Object.assign({},o,{arrow:!o.arrow,size:htSize})); track(o.arrow?"hittext-arrow-off":"hittext-arrow-on"); });
+  panel.querySelectorAll(".ht-size").forEach(b=>b.addEventListener("click",()=>{ const o=cur(); if(!o||!o.arrow) return; const size=Number(b.dataset.size); if(size===o.size) return; htApply(Object.assign({},o,{size})); track("hittext-arrow-"+size); }));
+  byId("htSwing").addEventListener("click",()=>{ const o=cur(); if(!o) return; htApply(Object.assign({},o,{swing:!o.swing})); track(o.swing?"hittext-swing-off":"hittext-swing-on"); });
+  const go=(id,fn)=>{ fn(); const el=byId(id); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); };
+  byId("htGoCode").addEventListener("click",()=>go("judgPanel",()=>{ openPanel("judgPanel"); setTierView("code",true); }));
+  byId("htGoSub").addEventListener("click",()=>go("subPanel",()=>openPanel("subPanel")));
+  byId("htGoTokens").addEventListener("click",()=>go("tokenPanel",()=>openPanel("tokenPanel")));
+  renderHitText();
+})();
+
 /* ---------- Stream preview ---------- */
 let streamTimer=null, streamEnd=null;
 function randomCut(){
@@ -4704,7 +4888,7 @@ renderTemplates();
 renderAll();
 applyView();
 initQuestEnv();
-if(restoreDraft()) toast("Restored your last session. Load a template or HSV Default to start fresh.");
+if(restoreDraft()) toast("Restored your last session. Load a template, or use More, Reset to HSV default, to start fresh.");
 autosaveReady=true;
 checkShareOnLoad().then(showWhatsNew, showWhatsNew);
 </script>
@@ -4716,7 +4900,7 @@ checkShareOnLoad().then(showWhatsNew, showWhatsNew);
      quest-push, quest-push-with-errors, quest-load, template-<id>, replay-analyze,
      replay-even, replay-even-preview, stream, compare, share-link, share-open,
      github-click, kofi-click, js-error, js-error-promise (GoatCounter helpers in <head>),
-     vision-<type>, clear-logo (triple tap on the logo), clear-key (Ctrl+Shift+X), view-3d, view-flat, view-3d-unavailable, score-final, score-swing, drop-replay, drop-import, intro-collapse, intro-expand, chains-on,
+     vision-<type>, hittext-<colors|aim|acc|swing|custom>, hittext-arrow-<on|off|1|2|3>, hittext-swing-<on|off>, more-open, clear-logo (triple tap on the logo), clear-key (Ctrl+Shift+X), view-3d, view-flat, view-3d-unavailable, score-final, score-swing, drop-replay, drop-import, intro-collapse, intro-expand, chains-on,
      chain-link-on, assume-max, fixed-position, position-offset, redo, token-insert,
      compact-view, quest-open, quest-auth-wait, quest-no-answer, quest-cancel, quest-diag,
      quest-picker-cancel, quest-error-<not-approved|no-answer|busy|blocked|connect|no-folder|
