@@ -893,10 +893,10 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
   <div class="spacer"></div>
   <div class="topbar-actions">
     <span class="status-pill off" id="linkBadge" data-needs-usb hidden title="Quest USB connection"><span class="led"></span><span id="linkBadgeText">DISCONNECTED</span></span>
-    <input type="file" id="importFile" accept=".json,application/json" hidden />
+    <input type="file" id="importFile" accept=".json,.hsv,application/json" hidden />
     <button class="ghost" id="btnUndo" disabled title="Undo last structural change (Ctrl+Z)">↶ Undo</button>
     <button class="ghost" id="btnRedo" disabled title="Redo (Ctrl+Y or Ctrl+Shift+Z)">↷ Redo</button>
-    <button class="ghost" id="btnImport" title="Open a config.json (or drop one anywhere on the page)">⇪ Import JSON</button>
+    <button class="ghost" id="btnImport" title="Open a config (.json or .hsv), or drop one anywhere on the page">⇪ Import JSON</button>
     <button class="caution" id="btnReset" title="Replace your config with HSV's own default. Undo brings yours back.">↺ HSV Default</button>
     <button class="ghost" id="btnCopy">⧉ Copy</button>
     <button class="ghost" id="btnShare" title="Copy a link that opens this exact config">🔗 Share</button>
@@ -1200,7 +1200,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
     <!-- Compare -->
     <section class="panel" id="comparePanel" data-collapsed>
       <div class="panel-head"><span class="dot" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></span><h2>Compare</h2>
-        <div class="head-actions"><button class="tiny" id="btnPinB" title="Keep a copy of the current config to compare against">📌 Pin current</button><button class="tiny" id="btnLoadB" title="Compare against a config file">⇪ Load file</button><button class="tiny ghost" id="btnClearB" disabled>✕</button><input type="file" id="fileB" accept=".json,application/json" hidden></div>
+        <div class="head-actions"><button class="tiny" id="btnPinB" title="Keep a copy of the current config to compare against">📌 Pin current</button><button class="tiny" id="btnLoadB" title="Compare against a config file">⇪ Load file</button><button class="tiny ghost" id="btnClearB" disabled>✕</button><input type="file" id="fileB" accept=".json,.hsv,application/json" hidden></div>
       </div>
       <div class="panel-sub" id="cmpHint">Pin the current config (or load another file), keep editing, and see both side by side for the same cut, plus a list of what changed.</div>
       <div class="panel-body" id="cmpBody" hidden>
@@ -1251,7 +1251,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
         </div>
 
         <div class="qload" id="qLoadRow" hidden>
-          <label class="field" for="qList">Configs on headset <span class="info" data-tip="The .json files in the destination folder. Load one to edit it here. Its name is copied to File name, so Push saves your changes back over it.">i</span></label>
+          <label class="field" for="qList">Configs on headset <span class="info" data-tip="The .json and .hsv configs in the destination folder. Load one to edit it here. Its name is copied to File name, so Push saves your changes back over it.">i</span></label>
           <div class="qload-row"><select id="qList"></select><button class="tiny violet" id="btnQLoad">⇩ Load</button><button class="tiny ghost" id="btnQRefresh" title="List the files again">⟳</button></div>
         </div>
 
@@ -1313,7 +1313,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
     </a><a class="kofi-support nf-kofi" data-gc="kofi-click" href="https://ko-fi.com/msploit21?utm_source=hsv-generator&amp;utm_medium=support-button" target="_blank" rel="noopener" title="Support MSploit on Ko-fi"><span class="kofi-heart">❤️</span>Support me</a></div>
   </div>
   <div class="nf-strip">
-    <div class="nf-sl"><a href="#" data-howto class="nf-how">How to install it in game</a><span class="nf-dot">&middot;</span><span class="nf-upd" id="footUpdated" data-updated="2026-11-11T12:57Z">Updated recently</span></div>
+    <div class="nf-sl"><a href="#" data-howto class="nf-how">How to install it in game</a><span class="nf-dot">&middot;</span><span class="nf-upd" id="footUpdated" data-updated="2026-11-16T11:55Z">Updated recently</span></div>
     <div class="nf-sr"><div class="foot-count" id="footCount" hidden></div><button type="button" class="fxsw" id="blocksSw" role="switch" aria-checked="false"><span class="fxsw-track"><span class="fxsw-knob"><svg viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" rx="5" class="k-body"/><path d="M3.3 3.3h13.4v1.9L10 8.3 3.3 5.2z" class="k-arrow"/></svg></span></span><span>Falling blocks</span></button></div>
   </div>
 </footer>
@@ -1405,7 +1405,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
       <div class="wn-item" data-wn="start-color" data-welcome data-startonly><span class="wn-ic">2</span><div><p class="wn-t">Change colors and text</p><p class="wn-d">Each tier is a score range. Click its colored square to change the color, and use the size and style buttons for the text. The live preview shows the result as you go.</p></div></div>
       <div class="wn-item" data-wn="start-export" data-welcome data-startonly><span class="wn-ic">3</span><div><p class="wn-t">Get it into the game</p><p class="wn-d"><span data-needs-usb>Press <b>Export</b> (PC) or <b>Push to Quest</b> (Quest plugged into this PC). </span><span data-no-usb>Press <b>Export</b>. </span>The tool shows exactly where the file goes and how to turn it on in game. You need the HitScoreVisualizer mod installed.</p></div></div>
       <div class="wn-item" data-wn="beginners"><span class="wn-ic">★</span><div><p class="wn-t">Easier for new players</p><p class="wn-d">Export now names your file and shows where it goes, simple size and style buttons on each tier, a .hsv download for MBF, and advanced settings folded away until you need them.</p></div></div>
-      <div class="wn-item" data-wn="drop"><span class="wn-ic">⇣</span><div><p class="wn-t">Drop files anywhere</p><p class="wn-d">Drag a .bsor replay or a .json config onto the page. Replays go to the tuner and configs import. No buttons needed.</p></div></div>
+      <div class="wn-item" data-wn="drop"><span class="wn-ic">⇣</span><div><p class="wn-t">Drop files anywhere</p><p class="wn-d">Drag a .bsor replay or a .json or .hsv config onto the page. Replays go to the tuner and configs import. No buttons needed.</p></div></div>
       <div class="wn-item" data-wn="chains"><span class="wn-ic">⋯</span><div><p class="wn-t">Chains</p><p class="wn-d">Set your own text for chain heads and chain links, preview both, and see how the chain heads in your replays split.</p></div></div>
       <div class="wn-item" data-wn="settings"><span class="wn-ic">◎</span><div><p class="wn-t">Every HSV setting</p><p class="wn-d">Fixed position, target offset, assume max post-swing, and the default display mode older configs use. Configs without a display mode now import untouched.</p></div></div>
       <div class="wn-item" data-wn="safety"><span class="wn-ic">✓</span><div><p class="wn-t">Safer exports and pushes</p><p class="wn-d">Export and Push warn you about errors first, and a push keeps the headset's old copy as a .bak you can load back.</p></div></div>
@@ -1434,7 +1434,7 @@ body.blocks-on .fxsw .k-body{fill:#ff1e3c;}body.blocks-on .fxsw .k-arrow{fill:#f
   <div class="drop-card">
     <div class="drop-ic">⇣</div>
     <div class="drop-title">Drop to load</div>
-    <div class="drop-sub"><b>.bsor</b> replay → Tune From Your Replays<br><b>.json</b> config → Import</div>
+    <div class="drop-sub"><b>.bsor</b> replay → Tune From Your Replays<br><b>.json</b> or <b>.hsv</b> config → Import</div>
   </div>
 </div>
 <div id="tipbox"></div>
@@ -3064,7 +3064,7 @@ function questTarget(){
   const dir=Q.el.path.value.trim().replace(/\/+$/,"");
   // basename only, and no leading dots, so a filename cannot escape the destination folder
   let fname=((Q.el.name.value.trim().split(/[\/\\]/).pop())||"").replace(/^\.+/,"").trim()||"config.json";
-  if(!/\.json$/i.test(fname)) fname+=".json";
+  if(!/\.(json|hsv)$/i.test(fname)) fname+=".json";   // a .hsv loaded from the headset keeps its name
   return {dir, fname, fullPath:dir+"/"+fname};
 }
 async function questPush(){
@@ -3908,7 +3908,7 @@ byId("btnEvenTiers").addEventListener("click",showEvenSuggestion);
   ["dragleave","drop"].forEach(t=>dz.addEventListener(t,()=>dz.classList.remove("over")));
   dz.addEventListener("drop",e=>{ e.preventDefault(); if(e.dataTransfer && e.dataTransfer.files) loadReplayFiles(e.dataTransfer.files); });
   byId("btnReplayClear").addEventListener("click",()=>{ replays=[]; replaySkipped=[]; renderReplay(); });
-  // Drop a file anywhere on the page: .bsor tunes from your replays, .json imports as a config. No buttons needed.
+  // Drop a file anywhere on the page: .bsor tunes from your replays, .json or .hsv imports as a config. No buttons needed.
   const hasFiles=e=>e.dataTransfer && [...(e.dataTransfer.types||[])].includes("Files");
   const overlay=byId("dropOverlay");
   const inDz=t=>!!(t && t.nodeType===1 && dz.contains(t));
@@ -3924,10 +3924,10 @@ byId("btnEvenTiers").addEventListener("click",showEvenSuggestion);
     e.preventDefault();
     const files=[...e.dataTransfer.files];
     const bsor=files.filter(f=>/\.bsor$/i.test(f.name));
-    const json=files.filter(f=>/\.json$/i.test(f.name));
+    const json=files.filter(f=>/\.(json|hsv)$/i.test(f.name));   // a .hsv is the same JSON, named for MBF
     if(bsor.length){ track("drop-replay"); loadReplayFiles(bsor); openPanel("replayPanel"); byId("replayPanel").scrollIntoView({behavior:"smooth",block:"start"}); }
-    else if(json.length){ track("drop-import"); if(json.length>1) toast("Only the first .json was imported."); importJsonFile(json[0]); }
-    else toast("Drop a .bsor replay or a .json config.",true);
+    else if(json.length){ track("drop-import"); if(json.length>1) toast("Only the first config was imported."); importJsonFile(json[0]); }
+    else toast("Drop a .bsor replay, or a .json or .hsv config.",true);
   });
 })();
 
@@ -4613,12 +4613,12 @@ async function questListConfigs(){
       let ents;
       if(sync.readdir) ents=await sync.readdir(qDir());
       else { ents=[]; for await(const x of sync.opendir(qDir())) ents.push(x); }
-      names=ents.filter(x=>x && x.name && x.name!=="." && x.name!==".." && /\.json(\.bak)?$/i.test(x.name) && x.type!==4).map(x=>x.name).sort((a,b)=>a.localeCompare(b));
+      names=ents.filter(x=>x && x.name && x.name!=="." && x.name!==".." && /\.(json|hsv)(\.bak)?$/i.test(x.name) && x.type!==4).map(x=>x.name).sort((a,b)=>a.localeCompare(b));
     } finally { try{ await sync.dispose?.(); }catch(e){} }
   }catch(e){ qlog("Could not list the configs on the headset: "+((e&&e.message)||e),"warn"); failed=true; }
   if(!Q.adb){ row.hidden=true; Q.files=[]; return null; }   // disconnected while listing
   Q.files=names;
-  sel.innerHTML=names.length ? names.map(n=>'<option value="'+escapeAttr(n)+'">'+escapeHtml(n)+(/\.bak$/i.test(n)?" (backup)":"")+'</option>').join("") : '<option value="">(no .json files yet)</option>';
+  sel.innerHTML=names.length ? names.map(n=>'<option value="'+escapeAttr(n)+'">'+escapeHtml(n)+(/\.bak$/i.test(n)?" (backup)":"")+'</option>').join("") : '<option value="">(no configs yet)</option>';
   const cur=((Q.el.name.value||"").trim().split(/[\/\\]/).pop());
   if(names.includes(cur)) sel.value=cur;
   byId("btnQLoad").disabled=!names.length;
